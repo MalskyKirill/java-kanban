@@ -10,11 +10,11 @@ public class Task {
     private  Status status;
 
     // конструктор
-    public Task (String name, String description, int id) {
+    public Task (String name, String description) {
         this.name = name;
         this.description = description;
-        this.id = id;
-        this.status = Status.NEW;
+        this.id = hashCode(); // генерируем айдишник через метод hashCode
+        this.status = Status.NEW; // берем значение из енама
     }
 
     // геттер имени
@@ -47,7 +47,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id &&
+        return
             Objects.equals(name, task.name) &&
             Objects.equals(description, task.description) &&
             status == task.status;
@@ -56,7 +56,7 @@ public class Task {
     // переопределили метод hashCode
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, id, status);
+        return Objects.hash(name, description, status);
     }
 
     // переопределили метод hashCode

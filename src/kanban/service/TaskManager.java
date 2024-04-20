@@ -9,7 +9,15 @@ public class TaskManager {
     //создал хеш-маппу для хранения тасочек
     private HashMap<Integer, Task> tasksList = new HashMap<>();
 
-    public void addNewTask(int id, Task task) {
+    public void addNewTask(Task task) { // метод добавления задачки в хешмапу
+        int id = task.getId(); // получаем id задачки
+        for (int taskId : tasksList.keySet()){ // пробегаемся по ключам-айдишникам
+            if (id == taskId) { // если задача с таким айдишником существует
+                System.out.println("Задача с таким именем и описанием уже существует");
+                return; // вылетаем
+            }
+        }
+
         tasksList.put(id, task);
     }
 
