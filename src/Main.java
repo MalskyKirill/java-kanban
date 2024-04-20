@@ -1,9 +1,16 @@
-import kanban.model.Task;
+import kanban.service.TaskManager;
+
+import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    static TaskManager taskManager;
+    static Scanner scanner;
 
-        System.out.println("Поехали!");
+    public static void main(String[] args) {
+        taskManager = new TaskManager();
+        scanner = new Scanner(System.in);
+
+
     }
 }
