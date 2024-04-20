@@ -1,6 +1,6 @@
 package kanban.model;
 
-public class Epic extends Task{
+public class Epic {
 
 
 }
