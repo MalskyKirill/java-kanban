@@ -23,7 +23,10 @@ public class Main {
                     createNewTask();
                     break;
                 case "2":
-                    getTaskByCategory();
+                    getTasksByCategory();
+                    break;
+                case "3":
+                    deleteAllTasks();
                     break;
                 case "10":
                     return;
@@ -38,6 +41,7 @@ public class Main {
         System.out.println("Выберите команду");
         System.out.println("1 - Создать задачу");
         System.out.println("2 - Посмотреть все задачи");
+        System.out.println("3 - Удалить все задачи");
         System.out.println("10 - Выход");
 
     }
@@ -52,7 +56,7 @@ public class Main {
         taskManager.addNewTask(task); // у менеджера задач вызываем метод добавление задачки
     }
 
-    private static void getTaskByCategory() { // метод получения задачек из категории
+    private static void getTasksByCategory() { // метод получения задачек из категории
         System.out.println("Введите категорию задач которые вы хотите распечатать: ");
         System.out.println("1 - простые");
         System.out.println("2 - эпики");
@@ -60,13 +64,29 @@ public class Main {
 
         switch (category) { // проверяем категорию
             case "1":
-                taskManager.getAllTasks("простые");  
+                taskManager.getAllTasks("простые");
                 break;
             case "2":
                 taskManager.getAllTasks("эпики");
                 break;
             default:
                 System.out.println("Такой категории нет :)");
+        }
+    }
+
+    private static void deleteAllTasks() {
+        System.out.println("Уверены что хотите удалить все задачи");
+        System.out.println("1 - да");
+        System.out.println("Ели хотите отменить нажмите любую кнопку кроме 1");
+
+        String del = scanner.nextLine().trim(); // считываем имя
+
+        switch (del) { // проверяем категорию
+            case "1":
+                taskManager.removeAllTasks();
+                break;
+            default:
+                System.out.println("Отлично, отменяем удаление :)");
         }
     }
 }

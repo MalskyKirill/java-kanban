@@ -33,13 +33,18 @@ public class TaskManager {
                 System.out.println("Описание - " + task.getDescription()); // описание
                 System.out.println("Статус - " + task.getStatus()); // статус
                 System.out.println("");
+
             }
         }
     }
 
-//    public void removeAllTasks() {
-//
-//    }
+    public void removeAllTasks() {
+        if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
+            System.out.println("Пока нечего удалять :)");
+            return; // вылетаем
+        }
+        tasksList.clear();
+    }
 
     @Override
     public String toString() {
