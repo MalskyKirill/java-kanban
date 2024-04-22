@@ -1,3 +1,4 @@
+import kanban.model.Status;
 import kanban.model.Task;
 import kanban.service.TaskManager;
 
@@ -31,6 +32,9 @@ public class Main {
                 case "4":
                     getTask();
                     break;
+                case "5":
+                    updateTask();
+                    break;
                 case "10":
                     return;
                 default:
@@ -45,6 +49,7 @@ public class Main {
         System.out.println("2 - Посмотреть все задачи");
         System.out.println("3 - Удалить все задачи");
         System.out.println("4 - Получить задачку по id");
+        System.out.println("5 - Обновить задачку по id");
         System.out.println("10 - Выход");
     }
 
@@ -53,9 +58,8 @@ public class Main {
         String name = scanner.nextLine().trim(); // считываем имя
         System.out.println("Введите описание задачи:");
         String description = scanner.nextLine().trim(); // считываем описание
-        Task task = new Task(name, description); // создаем обьект класса Task с аргументами имя и описание
 
-        taskManager.addNewTask(task); // у менеджера задач вызываем метод добавление задачки
+        taskManager.addNewTask(name, description); // у менеджера задач вызываем метод добавление задачки
     }
 
     private static void getTasksByCategory() { // метод получения задачек из категории
@@ -101,6 +105,17 @@ public class Main {
             if (task != null) { // если вернулся не null
                 System.out.println(task.toString()); // вызываем переопределленый метод toString
             }
+        } catch(NumberFormatException e){ // ловим исключение
+            System.out.println("Введено не число");
+        }
+    }
+
+    private static void updateTask() {
+        System.out.println("Введите id задачки которую хотите обновить");
+
+        try { // проверочка что пользовотель введет строку которую можно преобразовать в число
+            int taskId = Integer.parseInt(scanner.nextLine().trim()); // считываем ввод
+            taskManager.updateTaskById(scanner, taskId);
         } catch(NumberFormatException e){ // ловим исключение
             System.out.println("Введено не число");
         }
