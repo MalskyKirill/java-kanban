@@ -35,6 +35,9 @@ public class Main {
                 case "5":
                     updateTask();
                     break;
+                case "6":
+                    deleteTask();
+                    break;
                 case "10":
                     return;
                 default:
@@ -50,6 +53,7 @@ public class Main {
         System.out.println("3 - Удалить все задачи");
         System.out.println("4 - Получить задачку по id");
         System.out.println("5 - Обновить задачку по id");
+        System.out.println("6 - Удалить задачку по id");
         System.out.println("10 - Выход");
     }
 
@@ -120,4 +124,16 @@ public class Main {
             System.out.println("Введено не число");
         }
     }
+
+    private static void deleteTask() {
+        System.out.println("Введите id задачки которую хотите удалить");
+
+        try { // проверочка что пользовотель введет строку которую можно преобразовать в число
+            int taskId = Integer.parseInt(scanner.nextLine().trim()); // считываем ввод
+            taskManager.removeTaskById(taskId);
+        } catch(NumberFormatException e){ // ловим исключение
+            System.out.println("Введено не число");
+        }
+    }
+
 }
