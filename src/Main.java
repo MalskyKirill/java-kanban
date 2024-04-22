@@ -28,11 +28,13 @@ public class Main {
                 case "3":
                     deleteAllTasks();
                     break;
+                case "4":
+                    getTask();
+                    break;
                 case "10":
                     return;
                 default:
                     System.out.println("Такой команды еще нет :)");
-
             }
         }
     }
@@ -42,8 +44,8 @@ public class Main {
         System.out.println("1 - Создать задачу");
         System.out.println("2 - Посмотреть все задачи");
         System.out.println("3 - Удалить все задачи");
+        System.out.println("4 - Получить задачку по id");
         System.out.println("10 - Выход");
-
     }
 
     private static void createNewTask() { // метод создания задачки
@@ -74,19 +76,33 @@ public class Main {
         }
     }
 
-    private static void deleteAllTasks() {
+    private static void deleteAllTasks() { // метод удаления всех задачек
         System.out.println("Уверены что хотите удалить все задачи");
         System.out.println("1 - да");
         System.out.println("Ели хотите отменить нажмите любую кнопку кроме 1");
 
-        String del = scanner.nextLine().trim(); // считываем имя
+        String del = scanner.nextLine().trim(); // считываем ответ
 
-        switch (del) { // проверяем категорию
+        switch (del) { // проверяем ответ
             case "1":
-                taskManager.removeAllTasks();
+                taskManager.removeAllTasks(); // если да, удаляем
                 break;
             default:
                 System.out.println("Отлично, отменяем удаление :)");
+        }
+    }
+
+    private static void getTask() { // метод получения задачки
+        System.out.println("Введите id задачки которую хотите получить");
+
+        try { // проверочка что пользовотель введет строку которую можно преобразовать в число
+            int taskId = Integer.parseInt(scanner.nextLine().trim()); // считываем ввод
+            Task task = taskManager.getTaskById(taskId); // записываем в переменную task обьект возврщенный из метода getTaskById
+            if (task != null) { // если вернулся не null
+                System.out.println(task.toString()); // вызываем переопределленый метод toString
+            }
+        } catch(NumberFormatException e){ // ловим исключение
+            System.out.println("Введено не число");
         }
     }
 }
