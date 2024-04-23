@@ -1,8 +1,11 @@
 package kanban.service;
 
+import kanban.model.Epic;
 import kanban.model.Status;
+import kanban.model.SubTask;
 import kanban.model.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -10,13 +13,26 @@ public class TaskManager {
 
     //создал хеш-маппу для хранения тасочек
     private HashMap<Integer, Task> tasksList = new HashMap<>();
+    private HashMap<Integer, Epic> epicList = new HashMap<>();
+    private HashMap<Integer, SubTask> subTaskList = new HashMap<>();
     private int taskId = 1;
+    private int epicId = 1;
+    private int subTaskId = 1;
+
 
     public void addNewTask(String name, String description) { // метод добавления задачки в хешмапу
         Task task = new Task(name, description, taskId, Status.NEW); // создаем новую задачку
         tasksList.put(taskId, task); // кидаем задачку в мапу
         taskId++; // увеличиваем айдишник
         System.out.println("Задачка " + task.getName() + " добавлена на доску!");
+    }
+
+    public void addNewEpic(String name, String description) { // метод добавления эпика в хешмапу
+        ArrayList<Integer> subTasksIdEnum = new ArrayList<>(); // создаем списочек для хранения id подзадач конкретного эпика
+        Epic epic = new Epic(name, description, epicId, Status.NEW, subTasksIdEnum); // создаем новый эпик
+        epicList.put(taskId, epic); // кидаем эпик в мапу
+        epicId++; // увеличиваем айдишник
+        System.out.println("Эпик задачка " + epic.getName() + " добавлена на доску!");
     }
 
     public void getAllTasks(String category) { // печатаем все задачки из категории
@@ -144,8 +160,6 @@ public class TaskManager {
             System.out.println("задачи с таким id нет");
         }
     }
-
-
 
     @Override
     public String toString() {

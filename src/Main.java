@@ -38,6 +38,9 @@ public class Main {
                 case "6":
                     deleteTask();
                     break;
+                case "7":
+                    createNewEpic();
+                    break;
                 case "10":
                     return;
                 default:
@@ -54,6 +57,8 @@ public class Main {
         System.out.println("4 - Получить задачку по id");
         System.out.println("5 - Обновить задачку по id");
         System.out.println("6 - Удалить задачку по id");
+        System.out.println("7 - Создать эпик");
+        System.out.println("8 - Создать подзадачку для эпика");
         System.out.println("10 - Выход");
     }
 
@@ -65,6 +70,26 @@ public class Main {
 
         taskManager.addNewTask(name, description); // у менеджера задач вызываем метод добавление задачки
     }
+
+    private static void createNewEpic() {
+        System.out.println("Введите имя эпика:");
+        String name = scanner.nextLine().trim(); // считываем имя
+        System.out.println("Введите описание эпика:");
+        String description = scanner.nextLine().trim(); // считываем описание
+
+        taskManager.addNewEpic(name, description); // у менеджера задач вызываем метод добавление задачки
+    }
+
+//    private static void createNewSubTask() {
+//        System.out.println("Введите id эпика для которого создать подзадачу:");
+//        String epicId = scanner.nextLine().trim(); // считываем id эпика
+//        System.out.println("Введите имя подзадачи:");
+//        String name = scanner.nextLine().trim(); // считываем имя
+//        System.out.println("Введите описание подзадачи:");
+//        String description = scanner.nextLine().trim(); // считываем описание
+//
+//        taskManager.addNewSubTask(epicId, name, description); // у менеджера задач вызываем метод добавление задачки
+//    }
 
     private static void getTasksByCategory() { // метод получения задачек из категории
         System.out.println("Введите категорию задач которые вы хотите распечатать: ");

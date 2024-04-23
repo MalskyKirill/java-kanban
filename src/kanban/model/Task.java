@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class Task {
     // свойства таски
-    private final String name;
-    private final String description;
-    private final int id;
-    private final Status status;
+    protected final String name;
+    protected final String description;
+    protected final int id;
+    protected final Status status;
 
     // конструктор
     public Task (String name, String description, int id, Status status) {
