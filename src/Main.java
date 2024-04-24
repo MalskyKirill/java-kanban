@@ -62,6 +62,7 @@ public class Main {
         System.out.println("6 - Удалить задачку по id");
         System.out.println("7 - Создать эпик");
         System.out.println("8 - Создать подзадачку для эпика");
+        System.out.println("9 - Обновить подзадачку по id");
         System.out.println("10 - Выход");
     }
 
@@ -132,7 +133,14 @@ public class Main {
 
         try { // проверочка что пользовотель введет строку которую можно преобразовать в число
             int taskId = Integer.parseInt(scanner.nextLine().trim()); // считываем ввод
-            Task task = taskManager.getTaskById(taskId); // записываем в переменную task обьект возврщенный из метода getTaskById
+
+            System.out.println("Из какой категории вы хотите получить задачку?");
+            System.out.println("1 - обычные");
+            System.out.println("2 - эпики");
+            System.out.println("3 - подзадачки");
+            int category = Integer.parseInt(scanner.nextLine().trim());
+
+            Task task = taskManager.getTaskById(taskId, category); // записываем в переменную task обьект возврщенный из метода getTaskById
             if (task != null) { // если вернулся не null
                 System.out.println(task.toString()); // вызываем переопределленый метод toString
             }

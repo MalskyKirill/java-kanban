@@ -73,30 +73,64 @@ public class TaskManager {
                 System.out.println("");
 
             }
+        } else if (category.equals("эпики")) {
+            if (epicList.isEmpty()) { // проверяем что хешмапа не пустая
+                System.out.println("Эпиков пока нет");
+                return; // вылетаем
+            }
+
+            for (Epic task : epicList.values()) { // провегаемся по значениям хешмапы и печатаем
+                System.out.println("Эпик - " + task.getName()); // имя
+                System.out.println("Описание - " + task.getDescription()); // описание
+                System.out.println("Статус - " + task.getStatus()); // статус
+                System.out.println("Id - " + task.getId()); // получаем айдишник
+            }
         }
     }
 
     public void removeAllTasks() { // метод удаления всех задачек
-        if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
+        if (tasksList.isEmpty() && epicList.isEmpty() && subTaskList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("Пока нечего удалять :)");
             return; // вылетаем
         }
         tasksList.clear(); // очищаем мапу
-        System.out.println("Простых задачет теперь нет!");
+        System.out.println("Задачет теперь нет!");
     }
 
-    public Task getTaskById(int id) {
-        if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
+    public Task getTaskById(int id, int category) {
+        if (tasksList.isEmpty() && epicList.isEmpty() && subTaskList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("задачек пока нет");
             return null; // возвращаем null
         }
 
-        if (tasksList.containsKey(id)) { // проверяем что в мапе есть такой ключик-id
-            Task task = tasksList.get(id); // если ок, достаем из мапы задачку по айдишнику
-            return task; // возвращаем обьектик
-        } else { // ежели нет
-            System.out.println("задачи с таким id нет");
-            return null; // возвращаем null
+        switch (category) {
+            case 1:
+                if (tasksList.containsKey(id)) { // проверяем что в мапе есть такой ключик-id
+                    Task task = tasksList.get(id); // если ок, достаем из мапы задачку по айдишнику
+                    return task; // возвращаем обьектик
+                } else { // ежели нет
+                    System.out.println("задачи с таким id нет");
+                    return null; // возвращаем null
+                }
+            case 2:
+                if (epicList.containsKey(id)) { // проверяем что в мапе есть такой ключик-id
+                    Task task = epicList.get(id); // если ок, достаем из мапы эпик по айдишнику
+                    return task; // возвращаем обьектик
+                } else { // ежели нет
+                    System.out.println("эпика с таким id нет");
+                    return null; // возвращаем null
+                }
+            case 3:
+                if (subTaskList.containsKey(id)) { // проверяем что в мапе есть такой ключик-id
+                    Task task = subTaskList.get(id); // если ок, достаем из мапы подзадачку по айдишнику
+                    return task; // возвращаем обьектик
+                } else { // ежели нет
+                    System.out.println("подзадачки с таким id нет");
+                    return null; // возвращаем null
+                }
+            default:
+                System.out.println("такой категории нет");
+                return null;
         }
     }
 
