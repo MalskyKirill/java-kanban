@@ -9,4 +9,12 @@ public class Epic extends Task{
 
         this.subTaskId = subTasksId;
     }
+
+    public ArrayList<Integer> getSubTaskId() {
+        return subTaskId;
+    }
+
+    public void setSubTaskId(ArrayList<Integer> subTaskId) {
+        this.subTaskId = subTaskId;
+    }
 }

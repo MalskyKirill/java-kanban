@@ -41,6 +41,9 @@ public class Main {
                 case "7":
                     createNewEpic();
                     break;
+                case "8":
+                    createNewSubTask();
+                    break;
                 case "10":
                     return;
                 default:
@@ -80,16 +83,15 @@ public class Main {
         taskManager.addNewEpic(name, description); // у менеджера задач вызываем метод добавление задачки
     }
 
-//    private static void createNewSubTask() {
-//        System.out.println("Введите id эпика для которого создать подзадачу:");
-//        String epicId = scanner.nextLine().trim(); // считываем id эпика
-//        System.out.println("Введите имя подзадачи:");
-//        String name = scanner.nextLine().trim(); // считываем имя
-//        System.out.println("Введите описание подзадачи:");
-//        String description = scanner.nextLine().trim(); // считываем описание
-//
-//        taskManager.addNewSubTask(epicId, name, description); // у менеджера задач вызываем метод добавление задачки
-//    }
+    private static void createNewSubTask() {
+        System.out.println("Введите id эпика для которого создать подзадачу:");
+        try { // проверочка что пользовотель введет строку которую можно преобразовать в число
+            int epicId = Integer.parseInt(scanner.nextLine().trim()); // считываем id эпика
+            taskManager.addNewSubTask(epicId, scanner); // у менеджера задач вызываем метод добавление задачки
+        } catch (NumberFormatException e){ // ловим исключение
+            System.out.println("Введено не число");
+        }
+    }
 
     private static void getTasksByCategory() { // метод получения задачек из категории
         System.out.println("Введите категорию задач которые вы хотите распечатать: ");

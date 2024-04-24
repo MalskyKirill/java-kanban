@@ -16,8 +16,6 @@ public class TaskManager {
     private HashMap<Integer, Epic> epicList = new HashMap<>();
     private HashMap<Integer, SubTask> subTaskList = new HashMap<>();
     private int taskId = 1;
-    private int epicId = 1;
-    private int subTaskId = 1;
 
 
     public void addNewTask(String name, String description) { // метод добавления задачки в хешмапу
@@ -29,10 +27,35 @@ public class TaskManager {
 
     public void addNewEpic(String name, String description) { // метод добавления эпика в хешмапу
         ArrayList<Integer> subTasksIdEnum = new ArrayList<>(); // создаем списочек для хранения id подзадач конкретного эпика
-        Epic epic = new Epic(name, description, epicId, Status.NEW, subTasksIdEnum); // создаем новый эпик
+        Epic epic = new Epic(name, description, taskId, Status.NEW, subTasksIdEnum); // создаем новый эпик
         epicList.put(taskId, epic); // кидаем эпик в мапу
-        epicId++; // увеличиваем айдишник
+        taskId++; // увеличиваем айдишник
         System.out.println("Эпик задачка " + epic.getName() + " добавлена на доску!");
+    }
+
+    public void addNewSubTask(int epicId, Scanner scanner) { // метод добавления субтаски в хешмапу
+
+        if (!epicList.containsKey(epicId)) { // проверяем есть ли айди эпика для которого создаем субтаску
+            System.out.println("Эпика с таким id пока нет");
+            return; // если нет, вылетаем
+        }
+
+        Epic epic = epicList.get(epicId); // если эпик существует, то получаем его по айдишнику и заисываем ссылку на него в переменную
+
+        ArrayList<Integer> getSubTaskIdList = epic.getSubTaskId(); // получаем список айдишников подзадач у эпика
+        getSubTaskIdList.add(taskId); // добавляем в него айдишник новой подзадачи
+        epic.setSubTaskId(getSubTaskIdList); // обнавляем список айдишников подзадач у эпика
+
+        System.out.println("Введите имя подзадачи:");
+        String name = scanner.nextLine().trim(); // считываем имя
+        System.out.println("Введите описание подзадачи:");
+        String description = scanner.nextLine().trim(); // считываем описание
+
+        SubTask subTask = new SubTask(name, description, taskId, Status.NEW, epicId); // создаем новую подзадачу и записываем в нее id эпика к которому она относится
+        subTaskList.put(taskId, subTask); // добавляем подзадачу в мапу подзадач
+        taskId++; // увеличиваем айдишник
+
+        System.out.println("Подзадача " + subTask.getName() + " добавлена в эпик " + epic.getName());
     }
 
     public void getAllTasks(String category) { // печатаем все задачки из категории
