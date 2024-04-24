@@ -203,6 +203,110 @@ public class TaskManager {
         }
     }
 
+    public void updateSubTaskById (Scanner scanner, int subTaskId, int epicId) {
+        Epic epic = epicList.get(epicId);
+
+        if (!epic.getSubTaskId().contains(subTaskId)) {
+            System.out.println("В эпике нет задачки с данным id");
+            return;
+        }
+        Task oldSubTask = subTaskList.get(subTaskId); // в мапе находим подзадачу которую нужно изменить
+
+        System.out.println("Какой параметр вы хотите обновить?"); // менюшка
+        System.out.println("1 - имя");
+        System.out.println("2 - описание");
+        System.out.println("3 - статус");
+        String param = scanner.nextLine().trim(); // считаваем условие
+
+        switch (param) { // в цикл передаем параметр
+            case "1": // если один то поменять имя
+                System.out.println("Введите новое имя задачи:");
+                String newName = scanner.nextLine().trim(); // сохраняем введенное новае имя
+                // создаем новый обьект с аргумантами новое имя, а остальные аргументы берем из старого обьекта
+                SubTask newSubTaskName = new SubTask(newName, oldSubTask.getDescription(), oldSubTask.getId(), oldSubTask.getStatus(), epicId);
+                tasksList.put(oldSubTask.getId(), newSubTaskName); // перезаписываем старый оьект на новый
+                System.out.println("Имя задачки изменено");
+                break;
+            case "2": // тоже что и в первом кейсе только с описанием
+                System.out.println("Введите новое описание задачи:");
+                String newDescription = scanner.nextLine().trim();
+
+                SubTask newSubTaskDescription = new SubTask(oldSubTask.getName(), newDescription, oldSubTask.getId(), oldSubTask.getStatus(), epicId);
+                tasksList.put(oldSubTask.getId(), newSubTaskDescription);
+                System.out.println("Описание задачки изменено");
+                break;
+            case "3": // если три то меняем статус
+                System.out.println("Введите новый статус задачи:");
+                System.out.println("1 - новая");
+                System.out.println("2 - в прогрессе");
+                System.out.println("3 - выполнена");
+
+                String newStatus = scanner.nextLine().trim(); // считываем номар
+                SubTask newSubTaskStatus; // обьявляем переменную для ссылки на задачу
+
+                if (newStatus.equals("1")) { // если надо поменять на новую
+                    // инициализируем переменную ссылкой на новый обьект
+                    newSubTaskStatus = new SubTask(oldSubTask.getName(), oldSubTask.getDescription(),
+                        oldSubTask.getId(), Status.NEW, epicId);
+                    subTaskList.put(oldSubTask.getId(), newSubTaskStatus); // перезаписываем обект в мапу
+                    System.out.println("Задачка " + oldSubTask.getName() + " вернулась в статус новая");
+                } else if (newStatus.equals("2")) { // если поменять на в прогрессе
+                    newSubTaskStatus = new SubTask(oldSubTask.getName(), oldSubTask.getDescription(),
+                        oldSubTask.getId(), Status.IN_PROGRESS, epicId);
+                    subTaskList.put(oldSubTask.getId(), newSubTaskStatus);
+                    System.out.println("Задачка " + oldSubTask.getName() + " теперь в прогрессе");
+                } else if (newStatus.equals("3")) { // если нужно поменять на завершенную
+                    newSubTaskStatus = new SubTask(oldSubTask.getName(), oldSubTask.getDescription(),
+                        oldSubTask.getId(), Status.DONE, epicId);
+                    subTaskList.put(oldSubTask.getId(), newSubTaskStatus);
+                    System.out.println("Задачка " + oldSubTask.getName() + " завершена :)");
+                } else {
+                    System.out.println("Такого статуса нет");
+                }
+                break;
+            default:
+                System.out.println("Такого параметра нет");
+        }
+
+        // установка значения статуса эпика
+        ArrayList<Integer> epicSubTaskIdList = epic.getSubTaskId(); // получаем список id поздадач эпика
+
+        ArrayList<Status> subTaskListStatus = new ArrayList<>(); // создаем список для статусов каждой подзадачки
+
+        // счетчики статусов
+        int countnNewSubTask = 0;
+        int countnProgressSubTask = 0;
+        int countnDoneSubTask = 0;
+
+        for (int SubTaskId : epicSubTaskIdList) { // пробигаемся циклом по списку айдишников
+            subTaskListStatus.add(subTaskList.get(SubTaskId).getStatus()); // достаем для каждого айдишника статус и записываем в subTaskListStatus
+        }
+
+        for (Status status : subTaskListStatus) { // пробегаемся по списку статусов
+            if (status == Status.NEW) { // если статус равен Status.NEW
+                countnNewSubTask++; // увеличиваем счетчик
+            } else if (status == Status.IN_PROGRESS) {
+                countnProgressSubTask++;
+            } else if (status == Status.DONE) {
+                countnDoneSubTask++;
+            }
+        }
+
+        if (countnNewSubTask == subTaskListStatus.size()) { // проверяем что если все задачки со статусом new
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription(), epic.getId(), Status.NEW, epic.getSubTaskId()); // создаем эпик ср статусом нью
+            epicList.put(epic.getId(), newEpic); // и перезаписываем его в epicList
+            System.out.println("эпик" + oldSubTask.getName() + " опять со статусом new");
+        } else if (countnDoneSubTask == subTaskListStatus.size()) { // ежели все со статусом done
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription(), epic.getId(), Status.DONE, epic.getSubTaskId());
+            epicList.put(epic.getId(), newEpic);
+            System.out.println("эпик" + oldSubTask.getName() + " со статусом done");
+        } else { // а здесь если есть хоть один и не new и не done
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription(), epic.getId(), Status.IN_PROGRESS, epic.getSubTaskId());
+            epicList.put(epic.getId(), newEpic);
+            System.out.println("эпик" + oldSubTask.getName() + " со статусом IN_PROGRESS");
+        }
+    }
+
     public void removeTaskById(int id) {
         if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("задачек пока нет");

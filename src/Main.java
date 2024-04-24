@@ -44,7 +44,10 @@ public class Main {
                 case "8":
                     createNewSubTask();
                     break;
-                case "10":
+                case "9":
+                    updateSubTask();
+                    break;
+                case "11":
                     return;
                 default:
                     System.out.println("Такой команды еще нет :)");
@@ -63,7 +66,8 @@ public class Main {
         System.out.println("7 - Создать эпик");
         System.out.println("8 - Создать подзадачку для эпика");
         System.out.println("9 - Обновить подзадачку по id");
-        System.out.println("10 - Выход");
+        System.out.println("10 - Получить список подзадач у конкретного эпика");
+        System.out.println("11 - Выход");
     }
 
     private static void createNewTask() { // метод создания задачки
@@ -160,6 +164,20 @@ public class Main {
         }
     }
 
+    private static void updateSubTask() {
+
+        System.out.println("Введите id епика который содержит подзадачу которую хотите обновить");
+
+        try { // проверочка что пользовотель введет строку которую можно преобразовать в число
+            int epicId = Integer.parseInt(scanner.nextLine().trim()); // считываем ввод
+            System.out.println("Введите id подзадачи которую хотите обновить");
+            int subTaskId = Integer.parseInt(scanner.nextLine().trim()); // считываем ввод
+            taskManager.updateSubTaskById(scanner, subTaskId, epicId);
+        } catch(NumberFormatException e){ // ловим исключение
+            System.out.println("Введено не число");
+        }
+    }
+
     private static void deleteTask() {
         System.out.println("Введите id задачки которую хотите удалить");
 
@@ -170,5 +188,4 @@ public class Main {
             System.out.println("Введено не число");
         }
     }
-
 }
