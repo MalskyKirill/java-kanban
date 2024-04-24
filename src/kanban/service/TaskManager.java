@@ -88,6 +88,22 @@ public class TaskManager {
         }
     }
 
+    public void getSubTasksByEpicId(int epicId) {
+        Epic epic = epicList.get(epicId); // получаем эпик по айди
+
+        if (epic.getSubTaskId().isEmpty()) { // проверяем что в эпики есть айдишники подзадачек
+            System.out.println("В эпике нет подзадач");
+            return;// если нет вылетаем
+        }
+
+        ArrayList<Integer> epicSubTaskIdList = epic.getSubTaskId(); // получаем список id поздадач эпика
+
+        for (Integer subtaskId : epicSubTaskIdList) { // пробегаемся по списочку id поздадач
+            SubTask subtask = subTaskList.get(subtaskId); // достаем подзадачку
+            System.out.println(subtask.toString()); // вызываем у нее переопределенный метод toString
+        }
+    }
+
     public void removeAllTasks() { // метод удаления всех задачек
         if (tasksList.isEmpty() && epicList.isEmpty() && subTaskList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("Пока нечего удалять :)");

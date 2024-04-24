@@ -47,6 +47,9 @@ public class Main {
                 case "9":
                     updateSubTask();
                     break;
+                case "10":
+                    getSubTasks();
+                    break;
                 case "11":
                     return;
                 default:
@@ -113,6 +116,17 @@ public class Main {
                 break;
             default:
                 System.out.println("Такой категории нет :)");
+        }
+    }
+
+    private static void getSubTasks() {
+        System.out.println("Введите id эпика подзадачи которого вы хотите распечатать");
+
+        try { // проверочка что пользовотель введет строку которую можно преобразовать в число
+            int epicId = Integer.parseInt(scanner.nextLine().trim()); // считываем ввод
+            taskManager.getSubTasksByEpicId(epicId);
+        } catch(NumberFormatException e){ // ловим исключение
+            System.out.println("Введено не число");
         }
     }
 
