@@ -91,6 +91,11 @@ public class TaskManager {
     public void getSubTasksByEpicId(int epicId) {
         Epic epic = epicList.get(epicId); // получаем эпик по айди
 
+        if (epic == null) { // проверяем что эпик есть
+            System.out.println("Такого эпика не существует");
+            return;// если нет вылетаем
+        }
+
         if (epic.getSubTaskId().isEmpty()) { // проверяем что в эпики есть айдишники подзадачек
             System.out.println("В эпике нет подзадач");
             return;// если нет вылетаем
