@@ -17,6 +17,12 @@ public class Task {
         this.status = status;
     }
 
+    public Task (String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
     // геттер имени
     public String getName() {
         return name;
