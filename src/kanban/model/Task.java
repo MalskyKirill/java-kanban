@@ -6,7 +6,7 @@ public class Task {
     // свойства таски
     protected final String name;
     protected final String description;
-    protected final int id;
+    protected int id;
     protected final Status status;
 
     // конструктор
