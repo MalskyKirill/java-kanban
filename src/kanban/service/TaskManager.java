@@ -24,13 +24,12 @@ public class TaskManager {
         return newTask;
     }
 
-//    public void addNewEpic(String name, String description) { // метод добавления эпика в хешмапу
-//        ArrayList<Integer> subTasksIdEnum = new ArrayList<>(); // создаем списочек для хранения id подзадач конкретного эпика
-//        Epic epic = new Epic(name, description, taskId, Status.NEW, subTasksIdEnum); // создаем новый эпик
-//        epicList.put(taskId, epic); // кидаем эпик в мапу
-//        taskId++; // увеличиваем айдишник
-//        System.out.println("Эпик задачка " + epic.getName() + " добавлена на доску!");
-//    }
+    public Epic addNewEpic(Epic epic) { // метод добавления эпика в хешмапу
+        Epic newEpic = new Epic(epic.getName(), epic.getDescription(), taskId); // создаем новый эпик
+        epicList.put(taskId, epic); // кидаем эпик в мапу
+        taskId++; // увеличиваем айдишник
+        return newEpic;
+    }
 
 //    public void addNewSubTask(int epicId, Scanner scanner) { // метод добавления субтаски в хешмапу
 //
