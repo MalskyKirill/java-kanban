@@ -11,7 +11,10 @@ public class Main {
 
     public static void main(String[] args) {
         taskManager = new TaskManager();
-        scanner = new Scanner(System.in);
+
+        Task task = new Task("name", "description", Status.NEW);
+
+        taskManager.addNewTask(task);
 
 //        while (true) { //запускаем цикл
 //            // печатаем менюшку
