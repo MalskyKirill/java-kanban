@@ -4,12 +4,12 @@ import java.util.Objects;
 
 public class Task {
     // свойства таски
-    protected final String name;
-    protected final String description;
+    protected String name;
+    protected String description;
     protected int id;
-    protected final Status status;
+    protected Status status;
 
-    // конструктор
+    // конструктор для создания подзадачки
     public Task (String name, String description, int id, Status status) {
         this.name = name;
         this.description = description;
@@ -17,6 +17,7 @@ public class Task {
         this.status = status;
     }
 
+    // конструктор для апдейта подзадачки
     public Task (String name, String description, Status status) {
         this.name = name;
         this.description = description;
