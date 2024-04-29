@@ -5,12 +5,15 @@ import java.util.ArrayList;
 public class Epic extends Task{
     private ArrayList<Integer> subTasksIdList = new ArrayList<>(); // список для хранения айдишников подзадач
 
+    // конструктор для создания эпика
     public Epic(String name, String description, int id) {
         super(name, description, id, Status.NEW);
     }
 
-    public Epic(String name, String description, Status status) {
+    // конструктор для обнавления эпика
+    public Epic(String name, String description, Status status, ArrayList<Integer> subTasksIdList) {
         super(name, description, status);
+        this.subTasksIdList = subTasksIdList;
     }
 
     public ArrayList<Integer> getSubTasksIdList() { // получить список айдишников подзадач

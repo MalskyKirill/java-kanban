@@ -46,8 +46,48 @@ public class TaskManager {
         subTaskList.put(taskId, newSubTask); // добавляем подзадачу в мапу подзадач
         taskId++; // увеличиваем айдишник
 
-        return newSubTask;
+        setEpicStatus(epic); // проверили статус эпика
+
+        return newSubTask; // вернули обьект подзадачи
     }
+
+    private void setEpicStatus(Epic epic) { // изменение статуса эпика
+        ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList(); // получаем список id поздадач эпика
+
+        ArrayList<Status> subTaskListStatus = new ArrayList<>(); // создаем список для статусов каждой подзадачки
+
+        // счетчики статусов
+        int countnNewSubTask = 0;
+        int countnProgressSubTask = 0;
+        int countnDoneSubTask = 0;
+
+        for (int SubTaskId : epicSubTaskIdList) { // пробигаемся циклом по списку айдишников
+            subTaskListStatus.add(subTaskList.get(SubTaskId).getStatus()); // достаем для каждого айдишника статус и записываем в subTaskListStatus
+        }
+
+        for (Status status : subTaskListStatus) { // пробегаемся по списку статусов
+            if (status == Status.NEW) { // если статус равен Status.NEW
+                countnNewSubTask++; // увеличиваем счетчик
+            } else if (status == Status.IN_PROGRESS) {
+                countnProgressSubTask++;
+            } else if (status == Status.DONE) {
+                countnDoneSubTask++;
+            }
+        }
+
+        if (countnNewSubTask == subTaskListStatus.size()) { // проверяем что если все задачки со статусом new
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription(), Status.NEW, epicSubTaskIdList); // создаем эпик ср статусом нью
+            epicList.put(epic.getId(), newEpic); // и перезаписываем его в epicList
+        } else if (countnDoneSubTask == subTaskListStatus.size()) { // ежели все со статусом done
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription(), Status.DONE, epicSubTaskIdList);
+            epicList.put(epic.getId(), newEpic);
+        } else { // а здесь если есть хоть один и не new и не done
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription(), Status.IN_PROGRESS, epicSubTaskIdList);
+            epicList.put(epic.getId(), newEpic);
+        }
+    }
+
+
 
 //    public void getAllTasks(String category) { // печатаем все задачки из категории
 //        if (category.equals("простые")) { // проверяем категорию
