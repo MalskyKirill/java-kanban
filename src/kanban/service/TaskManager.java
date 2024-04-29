@@ -146,6 +146,33 @@ public class TaskManager {
         return epicSubTaskList; // возвращаем список
     }
 
+    public void removeAllTasks() {
+        if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
+            System.out.println("Пока нечего удалять :)");
+            return; // вылетаем
+        }
+
+        tasksList.clear();
+    }
+
+    public void removeAllEpics() {
+        if (epicList.isEmpty()) { // проверяем что хешмапа не пустая
+            System.out.println("Пока нечего удалять :)");
+            return; // вылетаем
+        }
+
+        epicList.clear();
+    }
+
+    public void removeAllSubTasks() {
+        if (subTaskList.isEmpty()) { // проверяем что хешмапа не пустая
+            System.out.println("Пока нечего удалять :)");
+            return; // вылетаем
+        }
+
+        subTaskList.clear();
+    }
+
 
 
 //    public void getAllTasks(String category) { // печатаем все задачки из категории
