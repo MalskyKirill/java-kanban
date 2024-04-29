@@ -7,7 +7,6 @@ import kanban.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class TaskManager {
 
@@ -146,7 +145,7 @@ public class TaskManager {
         return epicSubTaskList; // возвращаем список
     }
 
-    public void removeAllTasks() {
+    public void removeAllTasks() { // удаляев все задачки
         if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("Пока нечего удалять :)");
             return; // вылетаем
@@ -155,7 +154,7 @@ public class TaskManager {
         tasksList.clear();
     }
 
-    public void removeAllEpics() {
+    public void removeAllEpics() { // удаляем все эпики
         if (epicList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("Пока нечего удалять :)");
             return; // вылетаем
@@ -164,7 +163,7 @@ public class TaskManager {
         epicList.clear();
     }
 
-    public void removeAllSubTasks() {
+    public void removeAllSubTasks() { // удаляем все подзадачи
         if (subTaskList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("Пока нечего удалять :)");
             return; // вылетаем
@@ -173,7 +172,7 @@ public class TaskManager {
         subTaskList.clear();
     }
 
-    public Task getTaskById(int taskId) {
+    public Task getTaskById(int taskId) { // удаляем задачку по айди
         if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("Пока нечего удалять :)");
             return null; // вылетаем
@@ -186,7 +185,7 @@ public class TaskManager {
         }
     }
 
-    public Epic getEpicById(int epicId) {
+    public Epic getEpicById(int epicId) { // удаляем эпик по айди
         if (epicList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("Пока нечего удалять :)");
             return null; // вылетаем
@@ -199,7 +198,7 @@ public class TaskManager {
         }
     }
 
-    public SubTask getSubTaskById(int subTaskId) {
+    public SubTask getSubTaskById(int subTaskId) { // удаляем подзадачку по айди
         if (subTaskList.isEmpty()) { // проверяем что хешмапа не пустая
             System.out.println("Пока нечего удалять :)");
             return null; // вылетаем
@@ -212,6 +211,51 @@ public class TaskManager {
         }
     }
 
+    public void updateTask(Task task) { // обновляем задачку
+        if (task == null) { // если пришел null
+            return; // вылетаем
+        }
+
+        int taskId = task.getId(); // берем айдишник новой задачки
+        if (tasksList.containsKey(taskId)) { // если он есть как ключ в списке задач
+            tasksList.put(taskId, task); // обновляем задачку
+        } else { // ежели нет
+            System.out.println("такой задачки нет");
+        }
+    }
+
+    public void updateEpic(Epic epic) {  // обновляем эпик
+        if (epic == null) { // проверка
+            return;
+        }
+
+        int epicId = epic.getId(); // берем айдишник новго эпика
+        Status epicStatus = epicList.get(epicId).getStatus(); // берем статус
+        Epic newEpic = new Epic(epic.getName(), epic.getDescription(), epicStatus, epic.getSubTasksIdList()); // создаем новый эпик для обновления
+
+        if (epicList.containsKey(epicId)) { // если эпик с таким ключем есть в списке
+            epicList.put(epicId, newEpic); // обновляем эпик
+            setEpicStatus(newEpic.getId()); // проверяем его статус
+        } else { // ежели нет
+            System.out.println("такой задачки нет");
+        }
+    }
+
+    public void updateSubTask(SubTask subTask) { // обновляем подзадачку
+        if (subTask == null) { // проверка
+            return;
+        }
+
+        int subTaskId = subTask.getId(); // берем айди подзадачи
+
+        if (subTaskList.containsKey(subTaskId)) { // если такой ключ есть в списке
+            subTaskList.put(subTaskId, subTask); // обновляем подзадачу
+        }
+
+        int subTaskIdByEpic = subTask.getEpicId(); // берем айдишник эпика из подзалдачи
+        Epic epic = epicList.get(subTaskIdByEpic); // берем эпик
+        setEpicStatus(epic.getId());// обновляем статус эпика
+    }
 
 
 //    public void getAllTasks(String category) { // печатаем все задачки из категории
