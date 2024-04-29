@@ -173,6 +173,45 @@ public class TaskManager {
         subTaskList.clear();
     }
 
+    public Task getTaskById(int taskId) {
+        if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
+            System.out.println("Пока нечего удалять :)");
+            return null; // вылетаем
+        }
+
+        if (tasksList.containsKey(taskId)) { // если в мапе есть ключик
+            return tasksList.get(taskId); // достаем и возвращаем обьект
+        } else { //ежели нет
+            return null; //возвращаем null
+        }
+    }
+
+    public Epic getEpicById(int epicId) {
+        if (epicList.isEmpty()) { // проверяем что хешмапа не пустая
+            System.out.println("Пока нечего удалять :)");
+            return null; // вылетаем
+        }
+
+        if (epicList.containsKey(epicId)) {
+            return epicList.get(epicId);
+        } else {
+            return null;
+        }
+    }
+
+    public SubTask getSubTaskById(int subTaskId) {
+        if (subTaskList.isEmpty()) { // проверяем что хешмапа не пустая
+            System.out.println("Пока нечего удалять :)");
+            return null; // вылетаем
+        }
+
+        if (subTaskList.containsKey(subTaskId)) {
+            return subTaskList.get(subTaskId);
+        } else {
+            return null;
+        }
+    }
+
 
 
 //    public void getAllTasks(String category) { // печатаем все задачки из категории
