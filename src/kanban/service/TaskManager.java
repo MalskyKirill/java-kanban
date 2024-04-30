@@ -85,12 +85,7 @@ public class TaskManager {
     }
 
     public ArrayList<Task> getAllTasks() { // метод получения всех задачек
-        if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
-                System.out.println("Простых задачек пока нет");
-                return null; // вылетаем
-            }
-
-        ArrayList<Task> allTasks = new ArrayList<>(); //
+        ArrayList<Task> allTasks = new ArrayList<>(); // создаем список для задачек
         for (Task task : tasksList.values()) {
             allTasks.add(task);
         }
@@ -98,18 +93,22 @@ public class TaskManager {
         return allTasks;
     }
 
-    public ArrayList<Epic> getAllEpics() { // метод получения всех задачек
-        if (epicList.isEmpty()) { // проверяем что хешмапа не пустая
-            System.out.println("Простых задачек пока нет");
-            return null; // вылетаем
-        }
-
-        ArrayList<Epic> allEpics = new ArrayList<>(); //
+    public ArrayList<Epic> getAllEpics() { // метод получения всех эпиков
+        ArrayList<Epic> allEpics = new ArrayList<>();
         for (Epic task : epicList.values()) {
             allEpics.add(task);
         }
 
         return allEpics;
+    }
+
+    public ArrayList<SubTask> getAllSubTask() { // метод получения всех подзадачек
+        ArrayList<SubTask> allSubTask = new ArrayList<>();
+        for (SubTask task : subTaskList.values()) {
+            allSubTask.add(task);
+        }
+
+        return allSubTask;
     }
 
     public ArrayList<SubTask> getAllSubtasksByEpic(int epicId) { // метод получения подзадач эпика
