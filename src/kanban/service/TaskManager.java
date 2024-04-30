@@ -148,7 +148,8 @@ public class TaskManager {
             return; // вылетаем
         }
 
-        epicList.clear();
+        epicList.clear(); // удалили все эпики
+        subTaskList.clear(); // удалили все подзадачи
     }
 
     public void removeAllSubTasks() { // удаляем все подзадачи
@@ -157,7 +158,12 @@ public class TaskManager {
             return; // вылетаем
         }
 
-        subTaskList.clear();
+        subTaskList.clear(); // удалили все подзадачи
+
+        for (Epic epic : epicList.values()) { // пробежались по списку эпиков
+            epic.clearSubTasksIdList(); // у каждого эпика очистили список айдишников подзадач
+            setEpicStatus(epic.getId()); // пересчитали статус
+        }
     }
 
     public Task getTaskById(int taskId) { // удаляем задачку по айди
