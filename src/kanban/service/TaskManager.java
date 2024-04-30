@@ -112,24 +112,22 @@ public class TaskManager {
     }
 
     public ArrayList<SubTask> getAllSubtasksByEpic(int epicId) { // метод получения подзадач эпика
-        if (!epicList.containsKey(epicId)) { // проверяем что эпик есть в списке
-            System.out.println("Такого эпика нет в списке");
-            return null;
-        }
-
-        Epic epic = epicList.get(epicId); // получаем эпик
-
         ArrayList<SubTask> epicSubTaskList = new ArrayList<>(); // создали список для подзадач
-        ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList(); // получаем список id поздадач эпика
 
-        if (epicSubTaskIdList.isEmpty()) { // проверяем что задачки есть
-            System.out.println("Эпик пока пустой");
-            return null;
-        }
+        if (epicList.containsKey(epicId)) { // если эпик есть в списке
+            Epic epic = epicList.get(epicId); // получаем эпик
 
-        for (Integer subTaskId : epicSubTaskIdList) { // пробегаемся по списку подзадач
-            SubTask newSubTask = subTaskList.get(subTaskId); // достаем подзадачку и мапы подзадачек
-            epicSubTaskList.add(newSubTask); // добавляем ее в список эпика
+            ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList(); // получаем список id поздадач эпика
+
+            if (epicSubTaskIdList.isEmpty()) { // проверяем что задачки есть
+                System.out.println("Эпик пока пустой");
+                return epicSubTaskList; // возвращаем пустой список
+            }
+
+            for (Integer subTaskId : epicSubTaskIdList) { // пробегаемся по списку подзадач
+                SubTask newSubTask = subTaskList.get(subTaskId); // достаем подзадачку и мапы подзадачек
+                epicSubTaskList.add(newSubTask); // добавляем ее в список эпика
+            }
         }
 
         return epicSubTaskList; // возвращаем список
