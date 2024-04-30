@@ -34,12 +34,14 @@ public class TaskManager {
         int epicId = subTask.getEpicId(); // получил айди эпика
         Epic epic = epicList.get(epicId); //  получили эпик
 
-        subTask.setId(taskId); // обогатили подзадачку айдишником
-        epic.addSubTaskById(subTask.getId()); // добавляем подзадачку в эпик
-        subTaskList.put(taskId, subTask); // добавляем подзадачу в мапу подзадач
-        taskId++; // увеличиваем айдишник
+        if (epic != null) { // проверка на null
+            subTask.setId(taskId); // обогатили подзадачку айдишником
+            epic.addSubTaskById(subTask.getId()); // добавляем подзадачку в эпик
+            subTaskList.put(taskId, subTask); // добавляем подзадачу в мапу подзадач
+            taskId++; // увеличиваем айдишник
 
-        setEpicStatus(epicId); // проверили статус эпика
+            setEpicStatus(epicId); // проверили статус эпика
+        }
         return subTask; // вернули обьект подзадачи
     }
 
