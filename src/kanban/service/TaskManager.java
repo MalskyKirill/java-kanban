@@ -166,43 +166,16 @@ public class TaskManager {
         }
     }
 
-    public Task getTaskById(int taskId) { // удаляем задачку по айди
-        if (tasksList.isEmpty()) { // проверяем что хешмапа не пустая
-            System.out.println("Пока нечего удалять :)");
-            return null; // вылетаем
-        }
-
-        if (tasksList.containsKey(taskId)) { // если в мапе есть ключик
-            return tasksList.get(taskId); // достаем и возвращаем обьект
-        } else { //ежели нет
-            return null; //возвращаем null
-        }
+    public Task getTaskById(int taskId) { // получаем задачку по айди
+        return tasksList.get(taskId); // достаем и возвращаем обьект
     }
 
-    public Epic getEpicById(int epicId) { // удаляем эпик по айди
-        if (epicList.isEmpty()) { // проверяем что хешмапа не пустая
-            System.out.println("Пока нечего удалять :)");
-            return null; // вылетаем
-        }
-
-        if (epicList.containsKey(epicId)) {
-            return epicList.get(epicId);
-        } else {
-            return null;
-        }
+    public Epic getEpicById(int epicId) { // получаем эпик по айди
+        return epicList.get(epicId);
     }
 
-    public SubTask getSubTaskById(int subTaskId) { // удаляем подзадачку по айди
-        if (subTaskList.isEmpty()) { // проверяем что хешмапа не пустая
-            System.out.println("Пока нечего удалять :)");
-            return null; // вылетаем
-        }
-
-        if (subTaskList.containsKey(subTaskId)) {
-            return subTaskList.get(subTaskId);
-        } else {
-            return null;
-        }
+    public SubTask getSubTaskById(int subTaskId) { // получаем подзадачку по айди
+        return subTaskList.get(subTaskId);
     }
 
     public void updateTask(Task task) { // обновляем задачку
