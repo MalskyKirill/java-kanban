@@ -41,7 +41,7 @@ public class TaskManager {
 
         epic.addSubTaskById(taskId); // добавляем подзадачку в эпик
 
-        SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), taskId, subTask.getStatus(), epicId); // создаем новую подзадачу и записываем в нее id эпика к которому она относится
+        SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), taskId, subTask.getStatus()); // создаем новую подзадачу и записываем в нее id эпика к которому она относится
         subTaskList.put(taskId, newSubTask); // добавляем подзадачу в мапу подзадач
         taskId++; // увеличиваем айдишник
 
@@ -82,13 +82,13 @@ public class TaskManager {
         }
 
         if (countnNewSubTask == subTaskListStatus.size()) { // проверяем что если все задачки со статусом new
-            Epic newEpic = new Epic(epic.getName(), epic.getDescription(), Status.NEW, epicSubTaskIdList); // создаем эпик ср статусом нью
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription()); // создаем эпик ср статусом нью
             epicList.put(epic.getId(), newEpic); // и перезаписываем его в epicList
         } else if (countnDoneSubTask == subTaskListStatus.size()) { // ежели все со статусом done
-            Epic newEpic = new Epic(epic.getName(), epic.getDescription(), Status.DONE, epicSubTaskIdList);
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription());
             epicList.put(epic.getId(), newEpic);
         } else { // а здесь если есть хоть один и не new и не done
-            Epic newEpic = new Epic(epic.getName(), epic.getDescription(), Status.IN_PROGRESS, epicSubTaskIdList);
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription());
             epicList.put(epic.getId(), newEpic);
         }
     }
@@ -231,7 +231,7 @@ public class TaskManager {
 
         int epicId = epic.getId(); // берем айдишник новго эпика
         Status epicStatus = epicList.get(epicId).getStatus(); // берем статус
-        Epic newEpic = new Epic(epic.getName(), epic.getDescription(), epicStatus, epic.getSubTasksIdList()); // создаем новый эпик для обновления
+        Epic newEpic = new Epic(epic.getName(), epic.getDescription()); // создаем новый эпик для обновления
 
         if (epicList.containsKey(epicId)) { // если эпик с таким ключем есть в списке
             epicList.put(epicId, newEpic); // обновляем эпик
