@@ -58,7 +58,6 @@ public class TaskManager {
             return; // завершаем метод
         }
 
-        ArrayList<Status> subTaskListStatus = new ArrayList<>(); // создаем список для статусов каждой подзадачки
         // счетчики статусов
         int countnNewSubTask = 0;
         int countnProgressSubTask = 0;
@@ -66,7 +65,6 @@ public class TaskManager {
 
         for (int SubTaskId : epicSubTaskIdList) { // пробигаемся циклом по списку айдишников
             Status status = subTaskList.get(SubTaskId).getStatus(); // достаем для каждого айдишника статус
-            subTaskListStatus.add(status); // статус записываем в subTaskListStatus
 
             if (status == Status.NEW) { // если статус равен Status.NEW
                 countnNewSubTask++; // увеличиваем счетчик
@@ -77,9 +75,9 @@ public class TaskManager {
             }
         }
 
-        if (countnNewSubTask == subTaskListStatus.size()) { // проверяем что если все задачки со статусом new
+        if (countnNewSubTask == epicSubTaskIdList.size()) { // проверяем что если все задачки со статусом new
             epic.setStatus(Status.NEW);
-        } else if (countnDoneSubTask == subTaskListStatus.size()) { // ежели все со статусом done
+        } else if (countnDoneSubTask == epicSubTaskIdList.size()) { // ежели все со статусом done
             epic.setStatus(Status.DONE);
         } else { // а здесь если есть хоть один и не new и не done
             epic.setStatus(Status.IN_PROGRESS);
