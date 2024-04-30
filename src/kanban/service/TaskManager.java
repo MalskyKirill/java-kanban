@@ -196,13 +196,11 @@ public class TaskManager {
             return;
         }
 
-        int epicId = epic.getId(); // берем айдишник новго эпика
-        Status epicStatus = epicList.get(epicId).getStatus(); // берем статус
-        Epic newEpic = new Epic(epic.getName(), epic.getDescription()); // создаем новый эпик для обновления
-
+        int epicId = epic.getId(); // берем айдишник эпика
         if (epicList.containsKey(epicId)) { // если эпик с таким ключем есть в списке
-            epicList.put(epicId, newEpic); // обновляем эпик
-            setEpicStatus(newEpic.getId()); // проверяем его статус
+            Epic updateEpic = epicList.get(epicId); // находим эпик для обновления в списке
+            updateEpic.setName(epic.getName()); // устанавливаем новое имя
+            updateEpic.setDescription(epic.getDescription()); // и описание
         } else { // ежели нет
             System.out.println("такой задачки нет");
         }

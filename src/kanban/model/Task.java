@@ -29,9 +29,19 @@ public class Task {
         return name;
     }
 
+    // сеттер имени
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // геттер описания
     public String getDescription() {
         return description;
+    }
+
+    // сеттер описания
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     // геттер id
