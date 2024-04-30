@@ -259,4 +259,14 @@ public class TaskManager {
             System.out.println("такого подзадачки нет");
         }
     }
+
+    public Task createTask(Task task) {
+        return new Task(task.getName(), task.getDescription(), task.getStatus());
+    }
+    public Epic createEpic(Epic epic) {
+        return new Epic(epic.getName(), epic.getDescription());
+    }
+    public SubTask createSubTask(SubTask subTask) {
+        return new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(), subTask.getEpicId());
+    }
 }
