@@ -212,13 +212,15 @@ public class TaskManager {
         }
 
         int subTaskId = subTask.getId(); // берем айди подзадачи
-        int subTaskIdByEpic = subTask.getEpicId(); // берем айдишник эпика из подзалдачи
-        int oldSubTaskIdByEpic = subTaskList.get(subTaskId).getEpicId(); // берем старую подзадачку по айдишнику из списка и достаем оттуда айди эпика
+        if (subTaskList.containsKey(subTaskId)) { // проверяем что такая подзадача есть в списке
+            int subTaskIdByEpic = subTask.getEpicId(); // берем айдишник эпика из подзалдачи
+            int oldSubTaskIdByEpic = subTaskList.get(subTaskId).getEpicId(); // берем старую подзадачку по айдишнику из списка и достаем оттуда айди эпика
 
-        if (subTaskList.containsKey(subTaskId) && subTaskIdByEpic == oldSubTaskIdByEpic) { // если такой ключ есть в списке
-            subTaskList.put(subTaskId, subTask); // обновляем подзадачу
-            Epic epic = epicList.get(subTaskIdByEpic); // берем эпик
-            setEpicStatus(epic.getId());// обновляем статус эпика
+            if (subTaskIdByEpic == oldSubTaskIdByEpic) { // проверяем что айдишник пришедшей подзадачи и айдишни существующей подзадачи совпадают
+                subTaskList.put(subTaskId, subTask); // обновляем подзадачу
+                Epic epic = epicList.get(subTaskIdByEpic); // берем эпик
+                setEpicStatus(epic.getId());// обновляем статус эпика
+            }
         }
     }
 

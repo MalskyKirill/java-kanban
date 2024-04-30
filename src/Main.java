@@ -76,6 +76,8 @@ public class Main {
 
         taskManager.updateTask(new Task("Отвести дочку в школу", "Не забыть портфель и сменку и форму", 6, Status.IN_PROGRESS));
         taskManager.updateEpic(new Epic("Поехать в отпуск на море", "Поехать в отпуск с семьей", 8));
+        taskManager.updateSubTask(new SubTask(
+            "Взять семью", "Жена, дочка, я сам", 9, Status.IN_PROGRESS, 8));
 
         System.out.println(taskManager.getAllTasks());
         System.out.println(taskManager.getAllEpics());
