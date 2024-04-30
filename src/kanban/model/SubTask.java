@@ -4,8 +4,10 @@ public class SubTask extends Task{
     private int epicId; // айдишник епика которому принадлежин подзадача
 
     //переопредилил консруктор обработки подзадачи менеджером
-    public SubTask(String name, String description, int id, Status status) {
+    public SubTask(String name, String description, int id, Status status, int epicId) {
         super(name, description, id, status);
+
+        this.epicId = epicId;
     }
 
     //переопредилил консруктор создания подзадачки
