@@ -49,22 +49,23 @@ public class TaskManager {
             return;
         }
 
-        Epic epic = epicList.get(epicId);
-
+        Epic epic = epicList.get(epicId); // достаем эпик
         ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList(); // получаем список id поздадач эпика
+        if (epicSubTaskIdList.isEmpty()) { // проверяем, ежели в список пуст
+            epic.setStatus(Status.NEW); // устанавливаем на статус нью
+            return; // завершаем метод
+        }
 
         ArrayList<Status> subTaskListStatus = new ArrayList<>(); // создаем список для статусов каждой подзадачки
-
         // счетчики статусов
         int countnNewSubTask = 0;
         int countnProgressSubTask = 0;
         int countnDoneSubTask = 0;
 
         for (int SubTaskId : epicSubTaskIdList) { // пробигаемся циклом по списку айдишников
-            subTaskListStatus.add(subTaskList.get(SubTaskId).getStatus()); // достаем для каждого айдишника статус и записываем в subTaskListStatus
-        }
+            Status status = subTaskList.get(SubTaskId).getStatus(); // достаем для каждого айдишника статус
+            subTaskListStatus.add(status); // статус записываем в subTaskListStatus
 
-        for (Status status : subTaskListStatus) { // пробегаемся по списку статусов
             if (status == Status.NEW) { // если статус равен Status.NEW
                 countnNewSubTask++; // увеличиваем счетчик
             } else if (status == Status.IN_PROGRESS) {
@@ -75,14 +76,11 @@ public class TaskManager {
         }
 
         if (countnNewSubTask == subTaskListStatus.size()) { // проверяем что если все задачки со статусом new
-            Epic newEpic = new Epic(epic.getName(), epic.getDescription()); // создаем эпик ср статусом нью
-            epicList.put(epic.getId(), newEpic); // и перезаписываем его в epicList
+            epic.setStatus(Status.NEW);
         } else if (countnDoneSubTask == subTaskListStatus.size()) { // ежели все со статусом done
-            Epic newEpic = new Epic(epic.getName(), epic.getDescription());
-            epicList.put(epic.getId(), newEpic);
+            epic.setStatus(Status.DONE);
         } else { // а здесь если есть хоть один и не new и не done
-            Epic newEpic = new Epic(epic.getName(), epic.getDescription());
-            epicList.put(epic.getId(), newEpic);
+            epic.setStatus(Status.IN_PROGRESS);
         }
     }
 

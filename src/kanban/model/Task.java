@@ -39,13 +39,19 @@ public class Task {
         return id;
     }
 
+    // сеттер id
+    public void setId(int id) {
+        this.id = id;
+    }
+
     // геттер статуса
     public Status getStatus() {
         return status;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    // сеттер статуса
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     // переопределили метод equals
