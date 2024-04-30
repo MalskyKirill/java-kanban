@@ -44,6 +44,10 @@ public class Task {
         return status;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     // переопределили метод equals
     @Override
     public boolean equals(Object o) {

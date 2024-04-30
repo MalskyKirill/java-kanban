@@ -17,37 +17,30 @@ public class TaskManager {
     private int taskId = 1;
 
     public Task addNewTask(Task task) { // метод добавления задачки в хешмапу
-        Task newTask = new Task(task.getName(), task.getDescription(), taskId, task.getStatus()); // создаем новую задачку
+        task.setId(taskId); // обогатили задачку id
         tasksList.put(taskId, task); // кидаем задачку в мапу
         taskId++; // увеличиваем айдишник
-        return newTask;
+        return task;
     }
 
     public Epic addNewEpic(Epic epic) { // метод добавления эпика в хешмапу
-        Epic newEpic = new Epic(epic.getName(), epic.getDescription(), taskId); // создаем новый эпик
+        epic.setId(taskId); // обогатили эпик id
         epicList.put(taskId, epic); // кидаем эпик в мапу
         taskId++; // увеличиваем айдишник
-        return newEpic;
+        return epic;
     }
 
-    public SubTask addNewSubTask(int epicId, SubTask subTask) { // метод добавления субтаски в хешмапу
+    public SubTask addNewSubTask(SubTask subTask) { // метод добавления субтаски в хешмапу
+        int epicId = subTask.getEpicId(); // получил айди эпика
+        Epic epic = epicList.get(epicId); //  получили эпик
 
-        if (!epicList.containsKey(epicId)) { // проверяем есть ли айди эпика для которого создаем субтаску
-            System.out.println("Эпика с таким id пока нет");
-            return null; // если нет, вылетаем
-        }
-
-        Epic epic = epicList.get(epicId); // если эпик существует, то получаем его по айдишнику и заисываем ссылку на него в переменную
-
-        epic.addSubTaskById(taskId); // добавляем подзадачку в эпик
-
-        SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), taskId, subTask.getStatus()); // создаем новую подзадачу и записываем в нее id эпика к которому она относится
-        subTaskList.put(taskId, newSubTask); // добавляем подзадачу в мапу подзадач
+        subTask.setId(taskId); // обогатили подзадачку айдишником
+        epic.addSubTaskById(subTask.getId()); // добавляем подзадачку в эпик
+        subTaskList.put(taskId, subTask); // добавляем подзадачу в мапу подзадач
         taskId++; // увеличиваем айдишник
 
         setEpicStatus(epicId); // проверили статус эпика
-
-        return newSubTask; // вернули обьект подзадачи
+        return subTask; // вернули обьект подзадачи
     }
 
     private void setEpicStatus(int epicId) { // метод изменение статуса эпика
