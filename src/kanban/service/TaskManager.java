@@ -250,7 +250,7 @@ public class TaskManager {
             int epicId = subTask.getEpicId(); // получаем айди эпика из подзадачи
             Epic epic = epicList.get(epicId); // получаем эпик которому пренадлежит подзадача
             if (epic != null) { // проверяем что эпик не null
-                epic.removeSubtaskById(epicId); // удаляем айдишник подзадачки из списка у эпика
+                epic.removeSubtaskById(subTask.getId()); // удаляем айдишник подзадачки из списка у эпика
                 setEpicStatus(epic.getId()); // пересчитываем статус эпика
             }
 
