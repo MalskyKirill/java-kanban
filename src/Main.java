@@ -2,14 +2,14 @@ import kanban.model.Epic;
 import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
-import kanban.service.TaskManager;
+import kanban.service.InMemoryTaskManager;
 
 public class Main {
 
-    static TaskManager taskManager;
+    static InMemoryTaskManager taskManager;
 
     public static void main(String[] args) {
-        taskManager = new TaskManager();
+        taskManager = new InMemoryTaskManager();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
         taskManager.addNewTask(firstTask);
