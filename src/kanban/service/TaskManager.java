@@ -1,6 +1,7 @@
 package kanban.service;
 
 import kanban.model.Epic;
+import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
 

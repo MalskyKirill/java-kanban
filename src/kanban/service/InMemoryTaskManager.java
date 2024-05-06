@@ -17,8 +17,7 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, SubTask> subTaskList = new HashMap<>();
     private int taskId = 1;
 
-    private ArrayList<Task> historyTasksList = new ArrayList<>();
-    private int MAX_SIZE_HISTORY = 3;
+    private HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
 
     @Override
     public Task addNewTask(Task task) { // метод добавления задачки в хешмапу
@@ -144,21 +143,21 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int taskId) { // получаем задачку по айди
         Task task = tasksList.get(taskId);
-        addTaskInHistory(task);
+        inMemoryHistoryManager.addTask(task);
         return task; // достаем и возвращаем обьект
     }
 
     @Override
     public Epic getEpicById(int epicId) { // получаем эпик по айди
         Epic epic = epicList.get(epicId);
-        addTaskInHistory(epic);
+        inMemoryHistoryManager.addTask(epic);
         return epic;
     }
 
     @Override
     public SubTask getSubTaskById(int subTaskId) { // получаем подзадачку по айди
         SubTask subTask = subTaskList.get(subTaskId);
-        addTaskInHistory(subTask);
+        inMemoryHistoryManager.addTask(subTask);
         return subTask;
     }
 
@@ -265,6 +264,11 @@ public class InMemoryTaskManager implements TaskManager {
         return new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(), subTask.getEpicId());
     }
 
+    @Override
+    public List<Task> getHistory() {
+        return inMemoryHistoryManager.getHistory();
+    }
+
     private void setEpicStatus(int epicId) { // метод изменение статуса эпика
         if (!epicList.containsKey(epicId)) {
             System.out.println("Такого эпика нет в списке");
@@ -301,22 +305,6 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStatus(Status.DONE);
         } else { // а здесь если есть хоть один и не new и не done
             epic.setStatus(Status.IN_PROGRESS);
-        }
-    }
-
-    @Override
-    public List<Task> getHistory() { // возвращает историю запросов
-        return historyTasksList;
-    }
-
-    private void addTaskInHistory(Task task) { // добавляет задачу в историю
-        if (task != null) { // проверка на null
-            if (historyTasksList.size() < MAX_SIZE_HISTORY) { // если список не превышает максимального размера
-                historyTasksList.add(task); // добавляем туда задачку
-            } else { // ежели превышает
-                historyTasksList.remove(0); // удаляем первую в списке
-                historyTasksList.add(task); // добавляем в конец новую
-            }
         }
     }
 }

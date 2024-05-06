@@ -2,83 +2,84 @@ import kanban.model.Epic;
 import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
-import kanban.service.InMemoryTaskManager;
 import kanban.service.Managers;
 import kanban.service.TaskManager;
 
 public class Main {
 
-    static TaskManager inMemoryTaskManager;
+    static TaskManager manager;
 
     public static void main(String[] args) {
-        inMemoryTaskManager = Managers.getDefault();
+        manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
-        inMemoryTaskManager.addNewTask(firstTask);
+        manager.addNewTask(firstTask);
         Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW);
-        inMemoryTaskManager.addNewTask(secondTask);
+        manager.addNewTask(secondTask);
 
         Epic firstEpic = new Epic("Поехать в отпуск",
             "Поехать в отпуск с семьей");
-        inMemoryTaskManager.addNewEpic(firstEpic);
+        manager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(
         "Взять семью", "Жена, дочка", Status.NEW, 3);
-        inMemoryTaskManager.addNewSubTask(firstSubTask);
+        manager.addNewSubTask(firstSubTask);
 
         SubTask secondSubTask = new SubTask(
             "Взять собак", "Пэди, Потап, Дик", Status.DONE, 3);
-        inMemoryTaskManager.addNewSubTask(secondSubTask);
+        manager.addNewSubTask(secondSubTask);
 
         System.out.println("1 - Получение списков всех задач");
-        System.out.println(inMemoryTaskManager.getAllTasks());
-        System.out.println(inMemoryTaskManager.getAllEpics());
-        System.out.println(inMemoryTaskManager.getAllSubTask());
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTask());
 
         System.out.println("2 - Получение по идентификатору");
-        System.out.println(inMemoryTaskManager.getTaskById(1));
-        System.out.println(inMemoryTaskManager.getEpicById(3));
-        System.out.println(inMemoryTaskManager.getSubTaskById(4));
-        System.out.println(inMemoryTaskManager.getTaskById(1));
-        System.out.println(inMemoryTaskManager.getEpicById(3));
-        System.out.println(inMemoryTaskManager.getSubTaskById(4));
-        System.out.println(inMemoryTaskManager.getTaskById(1));
-        System.out.println(inMemoryTaskManager.getEpicById(3));
-        System.out.println(inMemoryTaskManager.getSubTaskById(4));
-        System.out.println(inMemoryTaskManager.getTaskById(1));
-        System.out.println(inMemoryTaskManager.getEpicById(3));
-        System.out.println(inMemoryTaskManager.getSubTaskById(4));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubTaskById(4));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubTaskById(4));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubTaskById(4));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubTaskById(4));
 
         System.out.println("2.1 - Получение истории");
-        System.out.println(inMemoryTaskManager.getHistory());
+        for(Task task : manager.getHistory()){
+            System.out.println(task);
+        }
 
         System.out.println("3 Удаление всех задач");
-        inMemoryTaskManager.removeAllTasks();
-        inMemoryTaskManager.removeAllEpics();
-        inMemoryTaskManager.removeAllSubTasks();
+        manager.removeAllTasks();
+        manager.removeAllEpics();
+        manager.removeAllSubTasks();
 
-        System.out.println(inMemoryTaskManager.getAllTasks());
-        System.out.println(inMemoryTaskManager.getAllEpics());
-        System.out.println(inMemoryTaskManager.getAllSubTask());
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTask());
 
         System.out.println("4 Создание задачек");
-        Task newFirstTask = inMemoryTaskManager.createTask(firstTask);
-        inMemoryTaskManager.addNewTask(newFirstTask);
-        Task newSecondTask = inMemoryTaskManager.createTask(secondTask);
-        inMemoryTaskManager.addNewTask(newSecondTask);
+        Task newFirstTask = manager.createTask(firstTask);
+        manager.addNewTask(newFirstTask);
+        Task newSecondTask = manager.createTask(secondTask);
+        manager.addNewTask(newSecondTask);
 
-        Epic newEpic = inMemoryTaskManager.createEpic(firstEpic);
-        inMemoryTaskManager.addNewEpic(newEpic);
+        Epic newEpic = manager.createEpic(firstEpic);
+        manager.addNewEpic(newEpic);
 
         SubTask firdSubTask = new SubTask(
             "Взять семью", "Жена, дочка", Status.NEW, 8);
         SubTask fourthSubTask = new SubTask(
             "Взять собак", "Пэди, Потап, Дик", Status.DONE, 8);
 
-        SubTask newFirstSubTask = inMemoryTaskManager.createSubTask(firdSubTask);
-        inMemoryTaskManager.addNewSubTask(newFirstSubTask);
-        SubTask newSecondSubTask = inMemoryTaskManager.createSubTask(fourthSubTask);
-        inMemoryTaskManager.addNewSubTask(newSecondSubTask);
+        SubTask newFirstSubTask = manager.createSubTask(firdSubTask);
+        manager.addNewSubTask(newFirstSubTask);
+        SubTask newSecondSubTask = manager.createSubTask(fourthSubTask);
+        manager.addNewSubTask(newSecondSubTask);
 
         System.out.println(newFirstTask);
         System.out.println(newSecondTask);
@@ -88,24 +89,24 @@ public class Main {
 
         System.out.println("5 Обновление задачек");
 
-        inMemoryTaskManager.updateTask(new Task("Отвести дочку в школу", "Не забыть портфель и сменку и форму", 6, Status.IN_PROGRESS));
-        inMemoryTaskManager.updateEpic(new Epic("Поехать в отпуск на море", "Поехать в отпуск с семьей", 8));
-        inMemoryTaskManager.updateSubTask(new SubTask(
+        manager.updateTask(new Task("Отвести дочку в школу", "Не забыть портфель и сменку и форму", 6, Status.IN_PROGRESS));
+        manager.updateEpic(new Epic("Поехать в отпуск на море", "Поехать в отпуск с семьей", 8));
+        manager.updateSubTask(new SubTask(
             "Взять семью", "Жена, дочка, я сам", 9, Status.IN_PROGRESS, 8));
 
-        System.out.println(inMemoryTaskManager.getAllTasks());
-        System.out.println(inMemoryTaskManager.getAllEpics());
-        System.out.println(inMemoryTaskManager.getAllSubTask());
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTask());
 
         System.out.println("6 Получение списка всех подзадач определённого эпика");
-        System.out.println(inMemoryTaskManager.getAllSubtasksByEpic(8));
+        System.out.println(manager.getAllSubtasksByEpic(8));
 
         System.out.println("7 Удаление по id");
-        inMemoryTaskManager.removeTaskById(6);
+        manager.removeTaskById(6);
 //        taskManager.removeEpicById(8);
-        inMemoryTaskManager.removeSubTaskById(9);
-        System.out.println(inMemoryTaskManager.getAllTasks());
-        System.out.println(inMemoryTaskManager.getAllEpics());
-        System.out.println(inMemoryTaskManager.getAllSubTask());
+        manager.removeSubTaskById(9);
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTask());
     }
 }
