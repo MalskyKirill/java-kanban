@@ -1,11 +1,11 @@
 package kanban.service;
 
 import kanban.model.Epic;
-import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     // добавить задачки
@@ -59,5 +59,5 @@ public interface TaskManager {
 
     SubTask createSubTask(SubTask subTask);
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 }

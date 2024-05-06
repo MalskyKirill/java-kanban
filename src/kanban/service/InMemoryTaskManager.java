@@ -7,6 +7,7 @@ import kanban.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -304,7 +305,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> getHistory() { // возвращает историю запросов
+    public List<Task> getHistory() { // возвращает историю запросов
         return historyTasksList;
     }
 

@@ -3,13 +3,15 @@ import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
 import kanban.service.InMemoryTaskManager;
+import kanban.service.Managers;
+import kanban.service.TaskManager;
 
 public class Main {
 
-    static InMemoryTaskManager inMemoryTaskManager;
+    static TaskManager inMemoryTaskManager;
 
     public static void main(String[] args) {
-        inMemoryTaskManager = new InMemoryTaskManager();
+        inMemoryTaskManager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
         inMemoryTaskManager.addNewTask(firstTask);
