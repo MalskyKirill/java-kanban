@@ -20,7 +20,11 @@ public class Epic extends Task{
     }
 
     public void addSubTaskById(int subTaskId) { // добавить айди подзадачки в список айдишников подзадач
-        subTasksIdList.add(subTaskId);
+        if (subTaskId != this.id) {
+            subTasksIdList.add(subTaskId);
+        } else {
+            System.out.println("Вы пытаетесь добавить эпик сам в себя в виде подзадачи");
+        }
     }
 
     public void removeSubtaskById(Integer subTaskId) { // удалить айди подзадачки из списка айдишников подзадач
