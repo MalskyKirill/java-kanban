@@ -13,13 +13,13 @@ public class InMemoryHistoryManager implements HistoryManager{
         if (task != null) { // проверка на null
             if (historyTasksList.size() >= MAX_SIZE_HISTORY) { // если список равен или больше максимального размера
                 historyTasksList.remove(0); // удаляем первую в списке
-            } 
+            }
             historyTasksList.add(task); // добавляем в список задачку
         }
     }
 
     @Override
     public List<Task> getHistory() {
-       return historyTasksList;
+        return  new ArrayList<>(historyTasksList);
     }
 }

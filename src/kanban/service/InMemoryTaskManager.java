@@ -8,13 +8,14 @@ import kanban.model.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
     //создал хеш-маппу для хранения тасочек
-    private HashMap<Integer, Task> tasksList = new HashMap<>();
-    private HashMap<Integer, Epic> epicList = new HashMap<>();
-    private HashMap<Integer, SubTask> subTaskList = new HashMap<>();
+    private Map<Integer, Task> tasksList = new HashMap<>();
+    private Map<Integer, Epic> epicList = new HashMap<>();
+    private Map<Integer, SubTask> subTaskList = new HashMap<>();
     private int taskId = 1;
 
     private HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
