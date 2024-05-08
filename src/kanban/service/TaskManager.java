@@ -1,11 +1,9 @@
 package kanban.service;
 
 import kanban.model.Epic;
-import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
@@ -17,13 +15,13 @@ public interface TaskManager {
     SubTask addNewSubTask(SubTask subTask);
 
     //получить все задачки
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
-    ArrayList<Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
-    ArrayList<SubTask> getAllSubTask();
+    List<SubTask> getAllSubTask();
 
-    ArrayList<SubTask> getAllSubtasksByEpic(int epicId);
+    List<SubTask> getAllSubtasksByEpic(int epicId);
 
     // удалить все задачки
     void removeAllTasks();
