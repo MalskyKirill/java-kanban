@@ -1,9 +1,6 @@
 package kanban.service;
 
-import kanban.model.Epic;
-import kanban.model.Status;
-import kanban.model.SubTask;
-import kanban.model.Task;
+import kanban.model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -267,6 +264,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
+        Map<Integer, Node<Task>> handeMadeLinkedHash = inMemoryHistoryManager.getMap();
+
+        for (int id : handeMadeLinkedHash.keySet()) {
+            System.out.println(handeMadeLinkedHash.get(id));
+        }
+
         return inMemoryHistoryManager.getHistory();
     }
 
