@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryHistoryManager implements HistoryManager{
+public class InMemoryHistoryManager implements HistoryManager {
     private List<Task> historyTasksList = new ArrayList<>(); // список для формирования истории
     private Map<Integer, Node<Task>> handeMadeLinkedHashMap = new HashMap<>(); // мапа для реализации двусвязного списка
 
