@@ -17,10 +17,11 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     @Override
     public void addTask(Task task) {
+        int taskId = task.getId(); // получаем id задачки
+        remove(taskId); // каждый раз проверяем, если задачка с таким айдишником уже есть в мапе удалим ее
 
-        int tasId = task.getId();
         setNewTail(task); // делаем новую задачку хвостом связного списка
-        handeMadeLinkedHashMap.put(tasId, tail); // добавляем айдиник и новый хвост в мапу
+        handeMadeLinkedHashMap.put(taskId, tail); // добавляем айдиник и новый хвост в мапу
     }
 
     private void setNewTail(Task task) {
@@ -36,6 +37,23 @@ public class InMemoryHistoryManager implements HistoryManager{
         }
     }
 
+    private void removeNode(Node node) { // удаляем ноду из двусвязного списка
+        Node nextNode = node.getNext(); // получаем ссылку на следующую ноду
+        Node prevNode = node.getPrev(); // получаем ссылку на предыдущую ноду
+
+        if (prevNode == null) { // если ссылка на предыдущую ноду null, значит мы удаляем первую ноду
+            head = nextNode; // перезаписываем ссылку head и теперь голова ссылается на nextNode
+        } else { // ежели нет, значит мы удаляем ноду из середины
+            prevNode.setNext(nextNode); // записываем в ссылку предыдущей ноды ссылку на nextNode
+        }
+
+        if (nextNode == null) { //если ссылка на следующую ноду null, значит мы удаляем последнюю ноду
+            tail = prevNode; // перезаписываем ссылку tail и теперь хвост ссылается на prevNode
+        } else { // ежели нет
+            nextNode.setPrev(prevNode); // записываем в ссылку следующей ноды ссылку на prevNode
+        }
+    }
+
     public void getTasks() { // формируем историю
         Node<Task> node = head; // записываем в ноду голову
 
@@ -47,12 +65,15 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     @Override
     public List<Task> getHistory() { // возвращаем историю
-        getTasks();
+        getTasks(); // заполняем список задачками
         return new ArrayList<>(historyTasksList);
     }
 
     @Override
-    public void remove(int id) {
-
+    public void remove(int id) { // удаляем задачку
+        if (handeMadeLinkedHashMap.containsKey(id)) { // проверяем если такой айдишник уже есть в мапе
+            removeNode(handeMadeLinkedHashMap.get(id)); // по айдишнику находим ноду и удаляем ее из двусвязного списка
+            handeMadeLinkedHashMap.remove(id); // удаляем ноду из мапы
+        }
     }
 }
