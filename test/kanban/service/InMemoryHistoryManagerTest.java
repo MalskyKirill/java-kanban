@@ -31,4 +31,5 @@ class InMemoryHistoryManagerTest {
 
         assertEquals(List.of(secondTask, firstTask), historyManager.getHistory(), "данные не совподают");
     }
+
 }

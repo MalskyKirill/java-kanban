@@ -22,7 +22,7 @@ public class Main {
         manager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(
-        "Взять семью", "Жена, дочка", Status.NEW, 3);
+            "Взять семью", "Жена, дочка", Status.NEW, 3);
         manager.addNewSubTask(firstSubTask);
 
         SubTask secondSubTask = new SubTask(
@@ -49,7 +49,7 @@ public class Main {
         System.out.println(manager.getSubTaskById(4));
 
         System.out.println("2.1 - Получение истории");
-        for(Task task : manager.getHistory()){
+        for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
 
