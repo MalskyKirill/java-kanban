@@ -17,17 +17,10 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     @Override
     public void addTask(Task task) {
-//        if (task != null) { // проверка на null
-//            if (historyTasksList.size() >= MAX_SIZE_HISTORY) { // если список равен или больше максимального размера
-//                historyTasksList.remove(0); // удаляем первую в списке
-//            }
-//            historyTasksList.add(task); // добавляем в список задачку
-//        }
 
         int tasId = task.getId();
         setNewTail(task); // делаем новую задачку хвостом связного списка
         handeMadeLinkedHashMap.put(tasId, tail); // добавляем айдиник и новый хвост в мапу
-
     }
 
     private void setNewTail(Task task) {
@@ -43,15 +36,19 @@ public class InMemoryHistoryManager implements HistoryManager{
         }
     }
 
-    @Override
-    public Map<Integer, Node<Task>> getMap() {
-        return handeMadeLinkedHashMap;
+    public void getTasks() { // формируем историю
+        Node<Task> node = head; // записываем в ноду голову
+
+        while (node != null) { // пока нода не null
+            historyTasksList.add(node.getData()); // добавляем в список данные из ноды
+            node = node.getNext(); // переприсваеваем ноде ссылку на следующую ноду
+        }
     }
 
-
     @Override
-    public List<Task> getHistory() {
-        return  new ArrayList<>(historyTasksList);
+    public List<Task> getHistory() { // возвращаем историю
+        getTasks();
+        return new ArrayList<>(historyTasksList);
     }
 
     @Override

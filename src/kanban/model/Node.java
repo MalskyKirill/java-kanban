@@ -1,7 +1,5 @@
 package kanban.model;
 
-import java.util.Objects;
-
 public class Node<E> {
     E data;
     Node<E> prev;

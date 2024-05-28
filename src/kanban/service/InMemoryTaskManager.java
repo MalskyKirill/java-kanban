@@ -264,12 +264,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
-        Map<Integer, Node<Task>> handeMadeLinkedHash = inMemoryHistoryManager.getMap();
-
-        for (int id : handeMadeLinkedHash.keySet()) {
-            System.out.println(handeMadeLinkedHash.get(id));
-        }
-
         return inMemoryHistoryManager.getHistory();
     }
 
