@@ -1,6 +1,6 @@
 package kanban.model;
 
-public class SubTask extends Task{
+public class SubTask extends Task {
     private int epicId; // айдишник епика которому принадлежин подзадача
 
     //переопредилил консруктор обработки подзадачи менеджером

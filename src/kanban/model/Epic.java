@@ -2,7 +2,7 @@ package kanban.model;
 
 import java.util.ArrayList;
 
-public class Epic extends Task{
+public class Epic extends Task {
     private ArrayList<Integer> subTasksIdList = new ArrayList<>(); // список для хранения айдишников подзадач
 
     // конструктор для обработки эпика

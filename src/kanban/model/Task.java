@@ -10,7 +10,7 @@ public class Task {
     protected Status status;
 
     // конструктор для обработки задачи менеджером
-    public Task (String name, String description, int id, Status status) {
+    public Task(String name, String description, int id, Status status) {
         this.name = name;
         this.description = description;
         this.id = id;
@@ -18,7 +18,7 @@ public class Task {
     }
 
     // конструктор для создания задачи
-    public Task (String name, String description, Status status) {
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
