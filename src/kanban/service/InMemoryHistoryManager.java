@@ -54,7 +54,7 @@ public class InMemoryHistoryManager implements HistoryManager{
         }
     }
 
-    public void getTasks() { // формируем историю
+    private void getTasks() { // формируем историю
         Node<Task> node = head; // записываем в ноду голову
 
         while (node != null) { // пока нода не null
