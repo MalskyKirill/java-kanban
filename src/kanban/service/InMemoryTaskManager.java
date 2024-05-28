@@ -253,10 +253,12 @@ public class InMemoryTaskManager implements TaskManager {
     public Task createTask(Task task) { // создаем задачку
         return new Task(task.getName(), task.getDescription(), task.getStatus());
     }
+
     @Override
     public Epic createEpic(Epic epic) { // создаем эпик
         return new Epic(epic.getName(), epic.getDescription());
     }
+
     @Override
     public SubTask createSubTask(SubTask subTask) { // создаем подзадачку
         return new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(), subTask.getEpicId());
@@ -285,8 +287,8 @@ public class InMemoryTaskManager implements TaskManager {
         int countnProgressSubTask = 0;
         int countnDoneSubTask = 0;
 
-        for (int SubTaskId : epicSubTaskIdList) { // пробигаемся циклом по списку айдишников
-            Status status = subTaskList.get(SubTaskId).getStatus(); // достаем для каждого айдишника статус
+        for (int subTaskId : epicSubTaskIdList) { // пробигаемся циклом по списку айдишников
+            Status status = subTaskList.get(subTaskId).getStatus(); // достаем для каждого айдишника статус
 
             if (status == Status.NEW) { // если статус равен Status.NEW
                 countnNewSubTask++; // увеличиваем счетчик
