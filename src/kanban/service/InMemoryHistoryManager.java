@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private List<Task> historyTasksList = new ArrayList<>(); // список для формирования истории
-    private Map<Integer, Node<Task>> handeMadeLinkedHashMap = new HashMap<>(); // мапа для реализации двусвязного списка
+    private final Map<Integer, Node<Task>> handeMadeLinkedHashMap = new HashMap<>(); // мапа для реализации двусвязного списка
 
     private Node<Task> head; // голова списка
     private Node<Task> tail; // хвост списка
@@ -54,19 +53,21 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    private void getTasks() { // формируем историю
+    private List getTasks() { // формируем историю
+        List<Task> historyTasksList = new ArrayList<>(); // обьявляем список для задач
         Node<Task> node = head; // записываем в ноду голову
 
         while (node != null) { // пока нода не null
             historyTasksList.add(node.getData()); // добавляем в список данные из ноды
             node = node.getNext(); // переприсваеваем ноде ссылку на следующую ноду
         }
+
+        return historyTasksList;
     }
 
     @Override
     public List<Task> getHistory() { // возвращаем историю
-        getTasks(); // заполняем список задачками
-        return new ArrayList<>(historyTasksList);
+        return new ArrayList<>(getTasks()); // возвращаем список задач
     }
 
     @Override
