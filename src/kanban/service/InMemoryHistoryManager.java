@@ -42,8 +42,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         if (prevNode == null) { // если ссылка на предыдущую ноду null, значит мы удаляем первую ноду
             head = nextNode; // перезаписываем ссылку head и теперь голова ссылается на nextNode
-            if (head != null) {
-                head.setPrev(null);
+            if (head != null) { // проверяем что в голове еще что то осталось
+                head.setPrev(null); // ежели да, обнуляем ссылку на предыдущую ноду
             }
         } else { // ежели нет, значит мы удаляем ноду из середины
             prevNode.setNext(nextNode); // записываем в ссылку предыдущей ноды ссылку на nextNode
@@ -51,8 +51,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         if (nextNode == null) { //если ссылка на следующую ноду null, значит мы удаляем последнюю ноду
             tail = prevNode; // перезаписываем ссылку tail и теперь хвост ссылается на prevNode
-            if (tail != null) {
-                tail.setNext(null);
+            if (tail != null) { // проверяем что хвост есть
+                tail.setNext(null); // если да, обнуляем ссылку на следующую ноду
             }
         } else { // ежели нет
             nextNode.setPrev(prevNode); // записываем в ссылку следующей ноды ссылку на prevNode
