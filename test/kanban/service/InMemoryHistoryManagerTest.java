@@ -18,8 +18,8 @@ class InMemoryHistoryManagerTest {
     @BeforeEach
     void beforeEach() {
         historyManager = new InMemoryHistoryManager();
-        firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
-        secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW);
+        firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", 0, Status.NEW);
+        secondTask = new Task("Сходить на бокс", "Не получить по голове", 1, Status.NEW);
     }
 
     // проверка что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных
@@ -27,7 +27,9 @@ class InMemoryHistoryManagerTest {
     void addHistoryTasksList() {
         historyManager.addTask(firstTask);
         historyManager.addTask(secondTask);
+        historyManager.addTask(firstTask);
 
-        assertEquals(List.of(firstTask, secondTask), historyManager.getHistory(), "данные не совподают");
+        assertEquals(List.of(secondTask, firstTask), historyManager.getHistory(), "данные не совподают");
     }
+
 }

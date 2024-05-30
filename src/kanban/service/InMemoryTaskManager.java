@@ -1,9 +1,6 @@
 package kanban.service;
 
-import kanban.model.Epic;
-import kanban.model.Status;
-import kanban.model.SubTask;
-import kanban.model.Task;
+import kanban.model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,7 +93,7 @@ public class InMemoryTaskManager implements TaskManager {
                 return epicSubTaskList; // возвращаем пустой список
             }
 
-            for (Integer subTaskId : epicSubTaskIdList) { // пробегаемся по списку подзадач
+            for (int subTaskId : epicSubTaskIdList) { // пробегаемся по списку подзадач
                 SubTask newSubTask = subTaskList.get(subTaskId); // достаем подзадачку и мапы подзадачек
                 epicSubTaskList.add(newSubTask); // добавляем ее в список эпика
             }
@@ -112,6 +109,10 @@ public class InMemoryTaskManager implements TaskManager {
             return; // вылетаем
         }
 
+        for (int id : tasksList.keySet()) { // пробегаемся по списку ключей из листа задач
+            inMemoryHistoryManager.remove(id); // вызываем метод remove для каждой задачки в inMemoryHistoryManager
+        }
+
         tasksList.clear();
     }
 
@@ -122,7 +123,14 @@ public class InMemoryTaskManager implements TaskManager {
             return; // вылетаем
         }
 
+        for (int id : epicList.keySet()) { // пробегаемся по списку ключей из листа эпиков
+            inMemoryHistoryManager.remove(id);
+        }
         epicList.clear(); // удалили все эпики
+
+        for (int id : subTaskList.keySet()) { // пробегаемся по списку ключей из листа подзадачек
+            inMemoryHistoryManager.remove(id);
+        }
         subTaskList.clear(); // удалили все подзадачи
     }
 
@@ -133,6 +141,9 @@ public class InMemoryTaskManager implements TaskManager {
             return; // вылетаем
         }
 
+        for (int id : subTaskList.keySet()) { // пробегаемся по списку ключей из листа подзадачек
+            inMemoryHistoryManager.remove(id);
+        }
         subTaskList.clear(); // удалили все подзадачи
 
         for (Epic epic : epicList.values()) { // пробежались по списку эпиков
@@ -214,6 +225,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTaskById(int taskId) { // удалить задачку по айди
         if (tasksList.containsKey(taskId)) { // проверяем в списке есть ли ключ
+            inMemoryHistoryManager.remove(taskId); // удаляем задачку из inMemoryHistoryManager
             tasksList.remove(taskId); // удаляем задачку
         } else {
             System.out.println("такой задачки нет");
@@ -225,9 +237,11 @@ public class InMemoryTaskManager implements TaskManager {
         if (epicList.containsKey(epicId)) { // проверяем есть ли ключ в мапе
             Epic epic = epicList.get(epicId); // достаем эпик по айди
             for (int subTask : epic.getSubTasksIdList()) { // пробегаемся по спику айдишников подзадач эпика
+                inMemoryHistoryManager.remove(subTask); // удаляем подзадачки из inMemoryHistoryManager
                 subTaskList.remove(subTask); // удаляем из списка подзадач те кторые принадлежат эпику
             }
 
+            inMemoryHistoryManager.remove(epicId); // удаляем эпик из inMemoryHistoryManager
             epicList.remove(epicId); // удаляем эпик
         } else {
             System.out.println("такого эпика нет");
@@ -246,6 +260,7 @@ public class InMemoryTaskManager implements TaskManager {
                 setEpicStatus(epic.getId()); // пересчитываем статус эпика
             }
 
+            inMemoryHistoryManager.remove(subTaskId); // удаляем подзадачку из inMemoryHistoryManager
             subTaskList.remove(subTaskId); // удаляем подзадачку из мапы
         } else {
             System.out.println("такого подзадачки нет");
@@ -256,10 +271,12 @@ public class InMemoryTaskManager implements TaskManager {
     public Task createTask(Task task) { // создаем задачку
         return new Task(task.getName(), task.getDescription(), task.getStatus());
     }
+
     @Override
     public Epic createEpic(Epic epic) { // создаем эпик
         return new Epic(epic.getName(), epic.getDescription());
     }
+
     @Override
     public SubTask createSubTask(SubTask subTask) { // создаем подзадачку
         return new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(), subTask.getEpicId());
@@ -288,8 +305,8 @@ public class InMemoryTaskManager implements TaskManager {
         int countnProgressSubTask = 0;
         int countnDoneSubTask = 0;
 
-        for (int SubTaskId : epicSubTaskIdList) { // пробигаемся циклом по списку айдишников
-            Status status = subTaskList.get(SubTaskId).getStatus(); // достаем для каждого айдишника статус
+        for (int subTaskId : epicSubTaskIdList) { // пробигаемся циклом по списку айдишников
+            Status status = subTaskList.get(subTaskId).getStatus(); // достаем для каждого айдишника статус
 
             if (status == Status.NEW) { // если статус равен Status.NEW
                 countnNewSubTask++; // увеличиваем счетчик

@@ -14,15 +14,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
 class InMemoryTaskManagerTest {
 
     public InMemoryTaskManager taskManager;
     Task task;
     Epic epic;
     SubTask subTask;
+
     @BeforeEach // перед каждым тестом создаем новый менеджер и новую задачку
-    public void beforeEach(){
+    public void beforeEach() {
         taskManager = new InMemoryTaskManager();
         task = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
         epic = new Epic("Поехать в отпуск", "Поехать в отпуск с семьей");
@@ -36,7 +36,8 @@ class InMemoryTaskManagerTest {
         taskManager.addNewSubTask(subTask);
     }
 
-    @Test // тест создания задачки
+    @Test
+        // тест создания задачки
     void addNewTask() {
         addTasks();
 
@@ -58,7 +59,8 @@ class InMemoryTaskManagerTest {
         assertEquals(savedTask.getId(), task.getId());
     }
 
-    @Test // тест создания эпика
+    @Test
+        // тест создания эпика
     void addNewEpic() {
         addTasks();
         final Epic savedEpic = taskManager.getEpicById(2);
@@ -79,7 +81,8 @@ class InMemoryTaskManagerTest {
         assertEquals(idList, savedEpic.getSubTasksIdList());
     }
 
-    @Test // тест создания подзадачки
+    @Test
+        // тест создания подзадачки
     void addNewSubTask() {
         addTasks();
         final SubTask savedSubTask = taskManager.getSubTaskById(3);
