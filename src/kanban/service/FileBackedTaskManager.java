@@ -1,5 +1,7 @@
 package kanban.service;
 
+import kanban.model.Epic;
+import kanban.model.SubTask;
 import kanban.model.Task;
 import kanban.model.TypeTask;
 
@@ -31,6 +33,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return newTask;
     }
 
+    @Override
+    public Epic addNewEpic(Epic epic) {
+       Epic newEpic = super.addNewEpic(epic);
+       save();
+       return newEpic;
+    }
+
+    @Override
+    public SubTask addNewSubTask(SubTask subTask) {
+        SubTask newSubTask = super.addNewSubTask(subTask);
+        save();
+        return newSubTask;
+    }
+
     private void save() { // метод сохранения задачек в файл
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) { // создаем bufferedWriter для записи задачек в файл
 
@@ -39,6 +55,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             for (Task task : getAllTasks()) { // для каждой задачки из списка задачек
                 bufferedWriter.write(task.getId() + "," + TypeTask.TASK + "," + task.getName() + ","
                     + task.getStatus() + "," + task.getDescription() + "\n"); // записываем в файл следующие данные
+            }
+
+            for (Epic epic : getAllEpics()) {
+                bufferedWriter.write(epic.getId() + "," + TypeTask.EPIC + "," + epic.getName() + ","
+                    + epic.getStatus() + "," + epic.getDescription() + "\n");
+            }
+
+            for (SubTask subTask : getAllSubTask()) { // для каждой задачки из списка задачек
+                bufferedWriter.write(subTask.getId() + "," + TypeTask.SUB_TASK + "," + subTask.getName() + ","
+                    + subTask.getStatus() + "," + subTask.getDescription() + "," + subTask.getEpicId() + "\n"); // записываем в файл следующие данные
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

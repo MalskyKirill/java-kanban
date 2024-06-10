@@ -30,6 +30,13 @@ public class Main {
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
         backedManager.addNewTask(firstTask);
+        Epic firstEpic = new Epic("Поехать в отпуск",
+            "Поехать в отпуск с семьей");
+        backedManager.addNewEpic(firstEpic);
+
+        SubTask firstSubTask = new SubTask(
+            "Взять семью", "Жена, дочка", Status.NEW, 2);
+        backedManager.addNewSubTask(firstSubTask);
 
  /*       manager = Managers.getDefault();
 
