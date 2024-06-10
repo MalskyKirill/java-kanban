@@ -28,7 +28,8 @@ public class Main {
 
         backedManager = new FileBackedTaskManager(path.toFile());
 
-
+        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
+        backedManager.addNewTask(firstTask);
 
  /*       manager = Managers.getDefault();
 
