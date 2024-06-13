@@ -38,6 +38,11 @@ public class Main {
             "Взять семью", "Жена, дочка", Status.NEW, 2);
         backedManager.addNewSubTask(firstSubTask);
 
+        Task secondTask = backedManager.fromString("2,TASK,Отвести дочку в школу,DONE,Не забыть портфель и сменку");
+
+
+        System.out.println(secondTask);
+
  /*       manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);

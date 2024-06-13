@@ -1,9 +1,6 @@
 package kanban.service;
 
-import kanban.model.Epic;
-import kanban.model.SubTask;
-import kanban.model.Task;
-import kanban.model.TypeTask;
+import kanban.model.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,9 +25,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public Task addNewTask(Task task) { // пререопределили метод длбавление задачки
-        Task newTask = super.addNewTask(task);
-        save();
-        return newTask;
+        Task newTask = super.addNewTask(task); //записали в переменную результат родительского метода
+        save(); // вызвали метод сохранения задачки в файл
+        return newTask; // вернули задачку
     }
 
     @Override
@@ -69,6 +66,31 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Task fromString(String value) { // метод создания задачки из строки
+
+        String[] taskFields = value.split(","); // разбиваем строку по разделителю на массив полей задачки
+        int id = Integer.parseInt(taskFields[0]); // в переменную id сохраняем первый эл-т массива (попутно его преобразовав из строки) и идем далее по массиву
+        TypeTask type = TypeTask.valueOf(taskFields[1]); // сохраняем тип
+        String name = taskFields[2]; // сохранием имя
+        Status status = Status.valueOf(taskFields[3]); // сохраняем статус
+        String description = taskFields[4]; // сохраняем описание
+        int epicId = 0; // заводим переменную для присвоения подзадачки epicId
+
+        if (taskFields.length == 6) { // если в массиве полуй 6 элементов
+            epicId = Integer.parseInt(taskFields[5]); // присваеваем epicId
+        }
+
+        if (type == TypeTask.TASK) { // если тип равет TASK
+            return new Task(name, description, id, status); // возвращаем новую задачку
+        } else if (type == TypeTask.EPIC) { // ежели EPIC
+            return new Epic(name, description, id, status); // возвращаем новый эпик, создал доп конструктор
+        } else if (type == TypeTask.SUB_TASK) { // ежели SUB_TASK
+            return new SubTask(name, description, id, status, epicId); // возвращаем подзадачку
+        }
+
+        return null; // иначе возвращаем null
     }
 
 
