@@ -43,6 +43,8 @@ public class Main {
             "Взять собак", "Пэди, Потап, Дик", Status.DONE, 2);
         backedManager.addNewSubTask(secondSubTask);
 
+        backedManager.updateTask(new Task("Отвести дочку в школу", "Не забыть портфель и сменку и форму", 1, Status.IN_PROGRESS));
+
         FileBackedTaskManager backedManager2 = FileBackedTaskManager.loadFromFile(path.toFile());
 
         System.out.println(backedManager2.getAllTasks());

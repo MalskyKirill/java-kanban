@@ -45,6 +45,102 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return newSubTask;
     }
 
+    @Override
+    public void removeAllTasks() {
+        super.removeAllTasks();
+        save();
+    }
+
+    @Override
+    public void removeAllEpics() {
+        super.removeAllEpics();
+        save();
+    }
+
+    @Override
+    public void removeAllSubTasks() {
+        super.removeAllSubTasks();
+        save();
+    }
+
+    @Override
+    public Task getTaskById(int taskId) {
+        Task task = super.getTaskById(taskId);
+        save();
+        return task;
+    }
+
+    @Override
+    public Epic getEpicById(int epicId) {
+        Epic epic = super.getEpicById(epicId);
+        save();
+        return epic;
+    }
+
+    @Override
+    public SubTask getSubTaskById(int subTaskId) {
+        SubTask subTask = super.getSubTaskById(subTaskId);
+        save();
+        return subTask;
+    }
+
+    @Override
+    public void updateTask(Task task) {
+        super.updateTask(task);
+        save();
+    }
+
+    @Override
+    public void updateEpic(Epic epic) {
+        super.updateEpic(epic);
+        save();
+    }
+
+    @Override
+    public void updateSubTask(SubTask subTask) {
+        super.updateSubTask(subTask);
+        save();
+    }
+
+    @Override
+    public void removeTaskById(int taskId) {
+        super.removeTaskById(taskId);
+        save();
+    }
+
+    @Override
+    public void removeEpicById(int epicId) {
+        super.removeEpicById(epicId);
+        save();
+    }
+
+    @Override
+    public void removeSubTaskById(int subTaskId) {
+        super.removeSubTaskById(subTaskId);
+        save();
+    }
+
+    @Override
+    public Task createTask(Task task) {
+        Task newTask = super.createTask(task);
+        save();
+        return newTask;
+    }
+
+    @Override
+    public Epic createEpic(Epic epic) {
+        Epic newEpic = super.createEpic(epic);
+        save();
+        return newEpic;
+    }
+
+    @Override
+    public SubTask createSubTask(SubTask subTask) {
+        SubTask newSubTask = super.createSubTask(subTask);
+        save();
+        return newSubTask;
+    }
+
     private void save() { // метод сохранения задачек в файл
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) { // создаем bufferedWriter для записи задачек в файл
 
