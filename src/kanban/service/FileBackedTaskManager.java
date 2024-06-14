@@ -1,13 +1,12 @@
 package kanban.service;
 
+import kanban.exceptions.ManagerSaveException;
 import kanban.model.*;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -19,7 +18,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             try {
                 Files.createFile(Paths.get("vendor" + File.separator + "data.scv")); // если файл отсутствует пытаемся его создать
             } catch (IOException e) { // если не получается
-                throw new RuntimeException(e); // кидаем исключение
+                throw new ManagerSaveException("Ошибка, не удалось создать файл"); // кидаем исключение
             }
         }
     }
@@ -33,9 +32,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public Epic addNewEpic(Epic epic) {
-       Epic newEpic = super.addNewEpic(epic);
-       save();
-       return newEpic;
+        Epic newEpic = super.addNewEpic(epic);
+        save();
+        return newEpic;
     }
 
     @Override
@@ -161,7 +160,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     + subTask.getStatus() + "," + subTask.getDescription() + "," + subTask.getEpicId() + "\n"); // записываем в файл следующие данные
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ManagerSaveException(e.getMessage());
         }
     }
 
@@ -181,8 +180,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         if (type == TypeTask.TASK) { // если тип равет TASK
             return new Task(name, description, id, status); // возвращаем новую задачку
-        }
-        else if (type == TypeTask.EPIC) { // ежели EPIC
+        } else if (type == TypeTask.EPIC) { // ежели EPIC
             return new Epic(name, description, id, status); // возвращаем новый эпик, создал доп конструктор
         } else if (type == TypeTask.SUB_TASK) { // ежели SUB_TASK
             return new SubTask(name, description, id, status, epicId); // возвращаем подзадачку
@@ -195,14 +193,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         FileBackedTaskManager backedManager = new FileBackedTaskManager(file); // создаем новый баккет манагер
         List<String> taskList = new ArrayList<>(); // создаем список
 
-        try(FileReader fileReader = new FileReader(file); // в конструкции try-with-resourcestry, создаем файлреадер и баффередреадер
-            BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-            while(bufferedReader.ready()) { // пока все строки не прочитаны
+        try (FileReader fileReader = new FileReader(file); // в конструкции try-with-resourcestry, создаем файлреадер и баффередреадер
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            while (bufferedReader.ready()) { // пока все строки не прочитаны
                 String line = bufferedReader.readLine(); // читаем новую строчку
                 taskList.add(line); // и добавляем ее в список
             }
         } catch (IOException e) { // если что то не ок, ловим исключение
-            throw new RuntimeException(e);
+            throw new ManagerSaveException(e.getMessage());
         }
 
         for (int i = 1; i < taskList.size(); i++) { // бежим по элементам списка

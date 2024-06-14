@@ -49,8 +49,6 @@ public class Main {
 
         System.out.println(backedManager2.getAllTasks());
 
-
-
  /*       manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
