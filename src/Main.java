@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 
 public class Main {
 
@@ -38,10 +39,15 @@ public class Main {
             "Взять семью", "Жена, дочка", Status.NEW, 2);
         backedManager.addNewSubTask(firstSubTask);
 
-        Task secondTask = backedManager.fromString("2,TASK,Отвести дочку в школу,DONE,Не забыть портфель и сменку");
+        SubTask secondSubTask = new SubTask(
+            "Взять собак", "Пэди, Потап, Дик", Status.DONE, 2);
+        backedManager.addNewSubTask(secondSubTask);
+
+        FileBackedTaskManager backedManager2 = FileBackedTaskManager.loadFromFile(path.toFile());
+
+        System.out.println(backedManager2.getAllTasks());
 
 
-        System.out.println(secondTask);
 
  /*       manager = Managers.getDefault();
 

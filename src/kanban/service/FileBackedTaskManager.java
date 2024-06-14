@@ -2,12 +2,13 @@ package kanban.service;
 
 import kanban.model.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private File file; // переменная для хранения файла
@@ -68,7 +69,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public Task fromString(String value) { // метод создания задачки из строки
+    public static Task fromString(String value) { // метод создания задачки из строки
 
         String[] taskFields = value.split(","); // разбиваем строку по разделителю на массив полей задачки
         int id = Integer.parseInt(taskFields[0]); // в переменную id сохраняем первый эл-т массива (попутно его преобразовав из строки) и идем далее по массиву
@@ -84,13 +85,45 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         if (type == TypeTask.TASK) { // если тип равет TASK
             return new Task(name, description, id, status); // возвращаем новую задачку
-        } else if (type == TypeTask.EPIC) { // ежели EPIC
+        }
+        else if (type == TypeTask.EPIC) { // ежели EPIC
             return new Epic(name, description, id, status); // возвращаем новый эпик, создал доп конструктор
         } else if (type == TypeTask.SUB_TASK) { // ежели SUB_TASK
             return new SubTask(name, description, id, status, epicId); // возвращаем подзадачку
         }
 
         return null; // иначе возвращаем null
+    }
+
+    public static FileBackedTaskManager loadFromFile(File file) { // метод востановления данных из файла
+        FileBackedTaskManager backedManager = new FileBackedTaskManager(file); // создаем новый баккет манагер
+        List<String> taskList = new ArrayList<>(); // создаем список
+
+        try(FileReader fileReader = new FileReader(file); // в конструкции try-with-resourcestry, создаем файлреадер и баффередреадер
+            BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            while(bufferedReader.ready()) { // пока все строки не прочитаны
+                String line = bufferedReader.readLine(); // читаем новую строчку
+                taskList.add(line); // и добавляем ее в список
+            }
+        } catch (IOException e) { // если что то не ок, ловим исключение
+            throw new RuntimeException(e);
+        }
+
+        for (int i = 1; i < taskList.size(); i++) { // бежим по элементам списка
+            Task task = fromString(taskList.get(i)); // для каждого элемента преобразовавыем строчку в задачку
+
+            if (TypeTask.TASK == task.getType()) { // если тип задачка
+                backedManager.tasksList.put(task.getId(), task); // кидаем ее в хешмапу задачек (в родительском классе поменял модификатор доступа с private на protected)
+            } else if (TypeTask.EPIC == task.getType()) { // ежели тип задачки эпик
+                Epic epic = (Epic) task; // приводим задачку к типу эпик
+                backedManager.epicList.put(epic.getId(), epic); // кидаем ее в хешмапу эпиков
+            } else if (TypeTask.SUB_TASK == task.getType()) { // ежели субтаска
+                SubTask subTask = (SubTask) task; // приводим к типу субтаск
+                backedManager.subTaskList.put(subTask.getId(), subTask); // кидаем ее в соответствующую мапу
+            }
+        }
+
+        return backedManager; // возвращаем бакет манагер
     }
 
 

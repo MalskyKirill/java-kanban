@@ -10,9 +10,9 @@ import java.util.Map;
 public class InMemoryTaskManager implements TaskManager {
 
     //создал хеш-маппу для хранения тасочек
-    private Map<Integer, Task> tasksList = new HashMap<>();
-    private Map<Integer, Epic> epicList = new HashMap<>();
-    private Map<Integer, SubTask> subTaskList = new HashMap<>();
+    protected Map<Integer, Task> tasksList = new HashMap<>();
+    protected Map<Integer, Epic> epicList = new HashMap<>();
+    protected Map<Integer, SubTask> subTaskList = new HashMap<>();
     private int taskId = 1;
 
     private HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();

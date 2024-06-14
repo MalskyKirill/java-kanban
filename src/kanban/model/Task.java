@@ -64,6 +64,10 @@ public class Task {
         this.status = status;
     }
 
+    public TypeTask getType() {
+        return TypeTask.TASK;
+    }
+
     // переопределили метод equals
     @Override
     public boolean equals(Object o) {
