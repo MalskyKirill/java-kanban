@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -171,7 +172,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String description = taskFields[4]; // сохраняем описание
         int epicId = 0; // заводим переменную для присвоения подзадачки epicId
 
-        if (taskFields.length == 6) { // если в массиве полуй 6 элементов
+        if (taskFields.length == 6) { // если в массиве 6 элементов
             epicId = Integer.parseInt(taskFields[5]); // присваеваем epicId
         }
 
@@ -212,6 +213,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             } else if (TypeTask.SUB_TASK == task.getType()) { // ежели субтаска
                 SubTask subTask = (SubTask) task; // приводим к типу субтаск
                 backedManager.subTaskList.put(subTask.getId(), subTask); // кидаем ее в соответствующую мапу
+                if (!backedManager.epicList.isEmpty()) { // если список эпиков не пустой
+                    Epic epic = backedManager.epicList.get(subTask.getEpicId()); // находим эпик к которому относится подзадачки
+                    if (epic != null) { // проверяем что эпик нашелся
+                        epic.addSubTaskById(subTask.getId()); // кидаем субтаску в список субтаск эпика
+                    }
+                }
             }
 
             if (task.getId() > maxId) { // смотрим если айдишник задачки больше максимального в этом бакет манагере
@@ -222,6 +229,4 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         backedManager.taskId = maxId; // присваеваем maxId переменной отвечающей за значения id при создании файла
         return backedManager; // возвращаем бакет манагер
     }
-
-
 }
