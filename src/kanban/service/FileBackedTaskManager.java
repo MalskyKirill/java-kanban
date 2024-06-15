@@ -146,18 +146,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             bufferedWriter.write("id,type,name,status,description,epic\n"); // записываем в файл хедер
 
             for (Task task : getAllTasks()) { // для каждой задачки из списка задачек
-                bufferedWriter.write(task.getId() + "," + TypeTask.TASK + "," + task.getName() + ","
-                    + task.getStatus() + "," + task.getDescription() + "\n"); // записываем в файл следующие данные
+                bufferedWriter.write(task.toStringTask()); // записываем в файл следующие данные
             }
 
             for (Epic epic : getAllEpics()) {
-                bufferedWriter.write(epic.getId() + "," + TypeTask.EPIC + "," + epic.getName() + ","
-                    + epic.getStatus() + "," + epic.getDescription() + "\n");
+                bufferedWriter.write(epic.toStringTask());
             }
 
             for (SubTask subTask : getAllSubTask()) { // для каждой задачки из списка задачек
-                bufferedWriter.write(subTask.getId() + "," + TypeTask.SUB_TASK + "," + subTask.getName() + ","
-                    + subTask.getStatus() + "," + subTask.getDescription() + "," + subTask.getEpicId() + "\n"); // записываем в файл следующие данные
+                bufferedWriter.write(subTask.toStringTask()); // записываем в файл следующие данные
             }
         } catch (IOException e) {
             throw new ManagerSaveException(e.getMessage());

@@ -68,6 +68,11 @@ public class Task {
         return TypeTask.TASK;
     }
 
+    public String toStringTask() {
+        return getId() + "," + getType() + "," + getName() + ","
+            + getStatus() + "," + getDescription() + "\n";
+    }
+
     // переопределили метод equals
     @Override
     public boolean equals(Object o) {
