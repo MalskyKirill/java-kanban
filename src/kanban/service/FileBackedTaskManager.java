@@ -189,6 +189,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static FileBackedTaskManager loadFromFile(File file) { // метод востановления данных из файла
         FileBackedTaskManager backedManager = new FileBackedTaskManager(file); // создаем новый баккет манагер
         List<String> taskList = new ArrayList<>(); // создаем список
+        int maxId = 0; // переменная для поиска максимального id у прочитанных задач
 
         try (FileReader fileReader = new FileReader(file); // в конструкции try-with-resourcestry, создаем файлреадер и баффередреадер
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
@@ -212,8 +213,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 SubTask subTask = (SubTask) task; // приводим к типу субтаск
                 backedManager.subTaskList.put(subTask.getId(), subTask); // кидаем ее в соответствующую мапу
             }
+
+            if (task.getId() > maxId) { // смотрим если айдишник задачки больше максимального в этом бакет манагере
+                maxId = task.getId(); // то присваиваем его значение переменной maxId
+            }
         }
 
+        backedManager.taskId = maxId; // присваеваем maxId переменной отвечающей за значения id при создании файла
         return backedManager; // возвращаем бакет манагер
     }
 
