@@ -164,7 +164,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static Task fromString(String value) { // метод создания задачки из строки
+    private static Task fromString(String value) { // метод создания задачки из строки
 
         String[] taskFields = value.split(","); // разбиваем строку по разделителю на массив полей задачки
         int id = Integer.parseInt(taskFields[0]); // в переменную id сохраняем первый эл-т массива (попутно его преобразовав из строки) и идем далее по массиву
