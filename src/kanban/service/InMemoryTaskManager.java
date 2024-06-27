@@ -2,6 +2,7 @@ package kanban.service;
 
 import kanban.model.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,7 @@ public class InMemoryTaskManager implements TaskManager {
             taskId++; // увеличиваем айдишник
 
             setEpicStatus(epicId); // проверили статус эпика
+            epicStartTime(epic);
         }
         return subTask; // вернули обьект подзадачи
     }
@@ -324,5 +326,26 @@ public class InMemoryTaskManager implements TaskManager {
         } else { // а здесь если есть хоть один и не new и не done
             epic.setStatus(Status.IN_PROGRESS);
         }
+    }
+
+    // расчет времени начала эпика
+    private void epicStartTime(Epic epic) {
+        ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList();
+
+        if (epicSubTaskIdList.size() == 0) {
+            epic.setStartTime(null);
+        }
+
+        SubTask firstSubTask = subTaskList.get(epicSubTaskIdList.getFirst());
+        LocalDateTime epicStartTime = firstSubTask.getStartTime();
+
+        for (int subTaskId : epicSubTaskIdList) {
+            SubTask subTask = subTaskList.get(subTaskId);
+
+            if (subTask.getStartTime().isBefore(epicStartTime)) {
+                epicStartTime = subTask.getStartTime();
+            }
+        }
+        epic.setStartTime(epicStartTime);
     }
 }
