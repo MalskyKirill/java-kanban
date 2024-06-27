@@ -36,10 +36,10 @@ public class Main {
 
         SubTask firstSubTask = new SubTask(
             "Взять семью", "Жена, дочка", Status.NEW, 3, LocalDateTime.of(2024, 8, 1, 11, 0), Duration.ofMinutes(60));
-        //manager.addNewSubTask(firstSubTask);
+        manager.addNewSubTask(firstSubTask);
 
         SubTask secondSubTask = new SubTask(
-            "Отпуск", "Отдохнуть", Status.DONE, 3, LocalDateTime.of(2024, 8, 1, 10, 0), Duration.ofDays(7));
+            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, 3, LocalDateTime.of(2024, 8, 1, 10, 0), Duration.ofDays(7));
         manager.addNewSubTask(secondSubTask);
 
         System.out.println("1 - Получение списков всех задач");
@@ -47,7 +47,6 @@ public class Main {
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTask());
 
-        System.out.println(manager.getTaskById(1).getEndTime());
 
         /*
         // спринт 7

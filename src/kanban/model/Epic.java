@@ -9,16 +9,16 @@ public class Epic extends Task {
 
     // конструктор для обработки эпика
     public Epic(String name, String description, int id) {
-        super(name, description, id, Status.NEW, null, Duration.ofMinutes(0));
+        super(name, description, id, Status.NEW, null, Duration.ZERO);
     }
 
     // конструктор для создания эпика
     public Epic(String name, String description) {
-        super(name, description, Status.NEW, null, Duration.ofMinutes(0));
+        super(name, description, Status.NEW, null, Duration.ZERO);
     }
 
     public Epic(String name, String description, int id, Status status) {
-        super(name, description, id, status, null, Duration.ofMinutes(0));
+        super(name, description, id, status, null, Duration.ZERO);
     }
 
     public ArrayList<Integer> getSubTasksIdList() { // получить список айдишников подзадач
