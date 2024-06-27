@@ -15,6 +15,10 @@ public class Epic extends Task {
         super(name, description, Status.NEW);
     }
 
+    public Epic(String name, String description, int id, Status status) {
+        super(name, description, id, status);
+    }
+
     public ArrayList<Integer> getSubTasksIdList() { // получить список айдишников подзадач
         return new ArrayList<>(subTasksIdList);
     }
@@ -39,4 +43,8 @@ public class Epic extends Task {
         }
     }
 
+    @Override
+    public TypeTask getType() {
+        return TypeTask.EPIC;
+    }
 }

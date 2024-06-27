@@ -2,15 +2,52 @@ import kanban.model.Epic;
 import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
-import kanban.service.Managers;
+import kanban.service.FileBackedTaskManager;
 import kanban.service.TaskManager;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Main {
 
     static TaskManager manager;
+    static FileBackedTaskManager backedManager;
 
-    public static void main(String[] args) {
-        manager = Managers.getDefault();
+
+    public static void main(String[] args) throws IOException {
+
+        Path path = Paths.get("vendor" + File.separator + "data.scv");
+
+        if (!path.toFile().isFile()) {
+            Files.createFile(path);
+        }
+
+        backedManager = new FileBackedTaskManager(path.toFile());
+
+        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
+        backedManager.addNewTask(firstTask);
+        Epic firstEpic = new Epic("Поехать в отпуск",
+            "Поехать в отпуск с семьей");
+        backedManager.addNewEpic(firstEpic);
+
+        SubTask firstSubTask = new SubTask(
+            "Взять семью", "Жена дочка", Status.DONE, 2);
+        backedManager.addNewSubTask(firstSubTask);
+
+        SubTask secondSubTask = new SubTask(
+            "Взять собак", "Пэди Потап Дик", Status.DONE, 2);
+        backedManager.addNewSubTask(secondSubTask);
+
+        backedManager.updateTask(new Task("Отвести дочку в школу", "Не забыть портфель и сменку и форму", 1, Status.IN_PROGRESS));
+
+        FileBackedTaskManager backedManager2 = FileBackedTaskManager.loadFromFile(path.toFile());
+
+        System.out.println(backedManager2.getEpicById(2).getSubTasksIdList());
+
+ /*       manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
         manager.addNewTask(firstTask);
@@ -108,5 +145,7 @@ public class Main {
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTask());
+
+ */
     }
 }
