@@ -175,13 +175,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             epicId = Integer.parseInt(taskFields[5]); // присваеваем epicId
         }
 
-        if (type == TypeTask.TASK) { // если тип равет TASK
-            return new Task(name, description, id, status); // возвращаем новую задачку
-        } else if (type == TypeTask.EPIC) { // ежели EPIC
-            return new Epic(name, description, id, status); // возвращаем новый эпик, создал доп конструктор
-        } else if (type == TypeTask.SUB_TASK) { // ежели SUB_TASK
-            return new SubTask(name, description, id, status, epicId); // возвращаем подзадачку
-        }
+//        if (type == TypeTask.TASK) { // если тип равет TASK
+//            return new Task(name, description, id, status); // возвращаем новую задачку
+//        } else if (type == TypeTask.EPIC) { // ежели EPIC
+//            return new Epic(name, description, id, status); // возвращаем новый эпик, создал доп конструктор
+//        } else if (type == TypeTask.SUB_TASK) { // ежели SUB_TASK
+//            return new SubTask(name, description, id, status, epicId); // возвращаем подзадачку
+//        }
 
         return null; // иначе возвращаем null
     }

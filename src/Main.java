@@ -3,6 +3,7 @@ import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
 import kanban.service.FileBackedTaskManager;
+import kanban.service.Managers;
 import kanban.service.TaskManager;
 
 import java.io.File;
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
@@ -19,6 +22,35 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        manager = Managers.getDefault();
+
+        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
+            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
+        manager.addNewTask(firstTask);
+        Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 0), Duration.ofMinutes(60));
+        manager.addNewTask(secondTask);
+
+        Epic firstEpic = new Epic("Поехать в отпуск",
+            "Поехать в отпуск с семьей");
+        manager.addNewEpic(firstEpic);
+
+        SubTask firstSubTask = new SubTask(
+            "Взять семью", "Жена, дочка", Status.NEW, 3, LocalDateTime.of(2024, 8, 1, 9, 0), Duration.ofMinutes(60));
+        manager.addNewSubTask(firstSubTask);
+
+        SubTask secondSubTask = new SubTask(
+            "Отпуск", "Отдохнуть", Status.DONE, 3, LocalDateTime.of(2024, 8, 1, 10, 0), Duration.ofDays(7));
+        manager.addNewSubTask(secondSubTask);
+
+        System.out.println("1 - Получение списков всех задач");
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTask());
+
+        System.out.println(manager.getTaskById(1).getEndTime());
+
+        /*
+        // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");
 
         if (!path.toFile().isFile()) {
@@ -46,8 +78,11 @@ public class Main {
         FileBackedTaskManager backedManager2 = FileBackedTaskManager.loadFromFile(path.toFile());
 
         System.out.println(backedManager2.getEpicById(2).getSubTasksIdList());
+        */
 
- /*       manager = Managers.getDefault();
+        /*
+        //спринт 6
+        manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
         manager.addNewTask(firstTask);

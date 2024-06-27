@@ -269,7 +269,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task createTask(Task task) { // создаем задачку
-        return new Task(task.getName(), task.getDescription(), task.getStatus());
+        return new Task(task.getName(), task.getDescription(), task.getStatus(), task.getStartTime(), task.getDuration());
     }
 
     @Override
@@ -279,7 +279,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask createSubTask(SubTask subTask) { // создаем подзадачку
-        return new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(), subTask.getEpicId());
+        return new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(), subTask.getEpicId(), subTask.getStartTime(), subTask.getDuration());
     }
 
     @Override

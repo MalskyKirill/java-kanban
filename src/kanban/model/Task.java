@@ -1,5 +1,7 @@
 package kanban.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -8,20 +10,26 @@ public class Task {
     protected String description;
     protected int id;
     protected Status status;
+    protected Duration duration;
+    protected LocalDateTime startTime;
 
     // конструктор для обработки задачи менеджером
-    public Task(String name, String description, int id, Status status) {
+    public Task(String name, String description, int id, Status status, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     // конструктор для создания задачи
-    public Task(String name, String description, Status status) {
+    public Task(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     // геттер имени
@@ -68,30 +76,47 @@ public class Task {
         return TypeTask.TASK;
     }
 
+    // геттер и сеттер продолжительности
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    // геттер и сеттер начала времени
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    //
+    public  LocalDateTime getEndTime() {
+        return this.startTime.plusMinutes(this.duration.toMinutes());
+    }
+
     public String toStringTask() {
         return getId() + "," + getType() + "," + getName() + ","
             + getStatus() + "," + getDescription() + "\n";
     }
 
-    // переопределили метод equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id &&
-            Objects.equals(name, task.name) &&
-            Objects.equals(description, task.description) &&
-            status == task.status;
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && Objects.equals(duration, task.duration) && Objects.equals(startTime, task.startTime);
     }
 
-    // переопределили метод hashCode
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, id, status);
+        return Objects.hash(name, description, id, status, duration, startTime);
     }
 
-    // переопределили метод hashCode
     @Override
     public String toString() {
         return "Task{" +
@@ -99,6 +124,8 @@ public class Task {
             ", description='" + description + '\'' +
             ", id=" + id +
             ", status=" + status +
+            ", duration=" + duration +
+            ", startTime=" + startTime +
             '}';
     }
 }
