@@ -35,7 +35,7 @@ public class Main {
         manager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(
-            "Взять семью", "Жена, дочка", Status.NEW, 3, LocalDateTime.of(2024, 8, 1, 11, 0), Duration.ofMinutes(60));
+            "Взять семью", "Жена, дочка", Status.NEW, 3, LocalDateTime.of(2024, 8, 1, 9, 0), Duration.ofMinutes(60));
         manager.addNewSubTask(firstSubTask);
 
         SubTask secondSubTask = new SubTask(
@@ -47,7 +47,7 @@ public class Main {
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTask());
 
-
+        System.out.println(manager.getEpicById(3).getEndTime());
         /*
         // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");

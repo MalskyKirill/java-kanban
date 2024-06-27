@@ -7,6 +7,8 @@ import java.util.ArrayList;
 public class Epic extends Task {
     private ArrayList<Integer> subTasksIdList = new ArrayList<>(); // список для хранения айдишников подзадач
 
+    private LocalDateTime endTime;
+
     // конструктор для обработки эпика
     public Epic(String name, String description, int id) {
         super(name, description, id, Status.NEW, null, Duration.ZERO);
@@ -31,6 +33,10 @@ public class Epic extends Task {
         } else {
             System.out.println("Вы пытаетесь добавить эпик сам в себя в виде подзадачи");
         }
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public void removeSubtaskById(Integer subTaskId) { // удалить айди подзадачки из списка айдишников подзадач

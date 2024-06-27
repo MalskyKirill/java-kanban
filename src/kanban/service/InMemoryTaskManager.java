@@ -4,10 +4,7 @@ import kanban.model.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -331,6 +328,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    Comparator<Task> comparator = (task1, task2) -> task1.getStartTime().compareTo(task2.getStartTime());
+
     // расчет времени начала эпика
     private void epicStartTime(Epic epic) {
         ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList();
@@ -339,17 +338,21 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStartTime(null);
         }
 
-        SubTask firstSubTask = subTaskList.get(epicSubTaskIdList.getFirst());
-        LocalDateTime epicStartTime = firstSubTask.getStartTime();
+//        SubTask firstSubTask = subTaskList.get(epicSubTaskIdList.getFirst());
+//        LocalDateTime epicStartTime = firstSubTask.getStartTime();
+//
+//        for (int subTaskId : epicSubTaskIdList) {
+//            SubTask subTask = subTaskList.get(subTaskId);
+//
+//            if (subTask.getStartTime().isBefore(epicStartTime)) {
+//                epicStartTime = subTask.getStartTime();
+//            }
+//        }
+        List<SubTask> epicStartTime = epicSubTaskIdList.stream()
+            .map(id -> subTaskList.get(id))
+            .sorted(Comparator.comparing(Task::getStartTime)).toList();
 
-        for (int subTaskId : epicSubTaskIdList) {
-            SubTask subTask = subTaskList.get(subTaskId);
-
-            if (subTask.getStartTime().isBefore(epicStartTime)) {
-                epicStartTime = subTask.getStartTime();
-            }
-        }
-        epic.setStartTime(epicStartTime);
+        epic.setStartTime(epicStartTime.getFirst().getStartTime());
     }
 
     //продолжительность эпика
@@ -368,5 +371,16 @@ public class InMemoryTaskManager implements TaskManager {
             .reduce(Duration.ZERO, Duration::plus);
 
         epic.setDuration(epicDuration);
+    }
+
+    // расчет времени завершения эпика
+    private void epicEndTime(Epic epic) {
+        ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList();
+
+        if (epicSubTaskIdList.size() == 0) {
+            epic.setEndTime(null);
+        }
+
+
     }
 }
