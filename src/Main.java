@@ -21,11 +21,11 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-/*
+
         manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
-            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
+            , LocalDateTime.of(2024, 9, 2, 9, 0), Duration.ofMinutes(30));
         manager.addNewTask(firstTask);
         Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 0), Duration.ofMinutes(60));
         manager.addNewTask(secondTask);
@@ -35,11 +35,11 @@ public class Main {
         manager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(
-            "Взять семью", "Жена, дочка", Status.NEW, 3, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(70));
+            "Взять семью", "Жена, дочка", Status.NEW, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(70), 3);
         manager.addNewSubTask(firstSubTask);
 
         SubTask secondSubTask = new SubTask(
-            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, 3, LocalDateTime.of(2024, 9, 1, 11, 0), Duration.ofDays(9));
+            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, LocalDateTime.of(2024, 9, 1, 11, 0), Duration.ofDays(9), 3);
         manager.addNewSubTask(secondSubTask);
 
         System.out.println("1 - Получение списков всех задач");
@@ -47,8 +47,9 @@ public class Main {
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTask());
 
+        System.out.println(manager.getPrioritizedTasks());
 
-        */
+        /*
         // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");
 
@@ -80,7 +81,7 @@ public class Main {
 
         System.out.println(backedManager2.getEpicById(2));
 
-
+*/
         /*
         //спринт 6
         manager = Managers.getDefault();

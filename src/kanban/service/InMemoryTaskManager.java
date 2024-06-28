@@ -16,11 +16,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     private HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
 
+    private Set<Task> prioritizedTask = new TreeSet<>(Comparator.comparing(task -> task.getStartTime()));
+
     @Override
     public Task addNewTask(Task task) { // метод добавления задачки в хешмапу
         task.setId(taskId); // обогатили задачку id
         tasksList.put(taskId, task); // кидаем задачку в мапу
         taskId++; // увеличиваем айдишник
+        prioritizedTask.add(task);
         return task;
     }
 
@@ -49,6 +52,8 @@ public class InMemoryTaskManager implements TaskManager {
             epicEndTime(epic); // время окончания
 
         }
+
+        prioritizedTask.add(subTask);
         return subTask; // вернули обьект подзадачи
     }
 
@@ -376,5 +381,10 @@ public class InMemoryTaskManager implements TaskManager {
             .sorted(Comparator.comparing(Task::getEndTime)).toList(); // сортируем субтаски по времени и собираем в список
 
         epic.setEndTime(endTime.getLast().getEndTime()); // эпику устанавливаем значение getEndTime последней субтаскив списке
+    }
+
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        return new ArrayList<>(prioritizedTask);
     }
 }

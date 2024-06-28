@@ -59,4 +59,6 @@ public interface TaskManager {
     SubTask createSubTask(SubTask subTask);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 }
