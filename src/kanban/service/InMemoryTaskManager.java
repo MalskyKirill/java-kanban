@@ -43,7 +43,7 @@ public class InMemoryTaskManager implements TaskManager {
             subTaskList.put(taskId, subTask); // добавляем подзадачу в мапу подзадач
             taskId++; // увеличиваем айдишник
 
-            setEpicStatus(epicId); // проверили статус эпика
+            setEpicStatus(epic); // проверили статус эпика
             epicStartTime(epic);
             epicDuration(epic);
             epicEndTime(epic);
@@ -151,7 +151,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         for (Epic epic : epicList.values()) { // пробежались по списку эпиков
             epic.clearSubTasksIdList(); // у каждого эпика очистили список айдишников подзадач
-            setEpicStatus(epic.getId()); // пересчитали статус
+            setEpicStatus(epic); // пересчитали статус
         }
     }
 
@@ -220,7 +220,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (subTaskIdByEpic == oldSubTaskIdByEpic) { // проверяем что айдишник пришедшей подзадачи и айдишни существующей подзадачи совпадают
                 subTaskList.put(subTaskId, subTask); // обновляем подзадачу
                 Epic epic = epicList.get(subTaskIdByEpic); // берем эпик
-                setEpicStatus(epic.getId());// обновляем статус эпика
+                setEpicStatus(epic);// обновляем статус эпика
             }
         }
     }
@@ -260,7 +260,7 @@ public class InMemoryTaskManager implements TaskManager {
             Epic epic = epicList.get(epicId); // получаем эпик которому пренадлежит подзадача
             if (epic != null) { // проверяем что эпик не null
                 epic.removeSubtaskById(subTask.getId()); // удаляем айдишник подзадачки из списка у эпика
-                setEpicStatus(epic.getId()); // пересчитываем статус эпика
+                setEpicStatus(epic); // пересчитываем статус эпика
             }
 
             inMemoryHistoryManager.remove(subTaskId); // удаляем подзадачку из inMemoryHistoryManager
@@ -290,13 +290,8 @@ public class InMemoryTaskManager implements TaskManager {
         return inMemoryHistoryManager.getHistory();
     }
 
-    private void setEpicStatus(int epicId) { // метод изменение статуса эпика
-        if (!epicList.containsKey(epicId)) {
-            System.out.println("Такого эпика нет в списке");
-            return;
-        }
+    private void setEpicStatus(Epic epic) { // метод изменение статуса эпика
 
-        Epic epic = epicList.get(epicId); // достаем эпик
         ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList(); // получаем список id поздадач эпика
         if (epicSubTaskIdList.isEmpty()) { // проверяем, ежели в список пуст
             epic.setStatus(Status.NEW); // устанавливаем на статус нью
@@ -347,7 +342,7 @@ public class InMemoryTaskManager implements TaskManager {
     //продолжительность эпика
     private void epicDuration(Epic epic) {
         ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList();
-        
+
         Duration epicDuration = epicSubTaskIdList.stream()
             .map(id -> subTaskList.get(id).getDuration())
             .reduce(Duration.ZERO, Duration::plus);

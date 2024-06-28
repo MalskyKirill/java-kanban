@@ -47,7 +47,7 @@ public class Main {
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTask());
 
-        System.out.println(manager.getEpicById(3).getEndTime());
+
         /*
         // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");
