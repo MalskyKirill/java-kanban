@@ -94,9 +94,9 @@ public class Task {
         this.startTime = startTime;
     }
 
-    //
+    //получить
     public  LocalDateTime getEndTime() {
-        return this.startTime.plusMinutes(this.duration.toMinutes());
+        return this.startTime.plus(this.duration);
     }
 
     public String toStringTask() {

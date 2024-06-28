@@ -39,6 +39,11 @@ public class Epic extends Task {
         this.endTime = endTime;
     }
 
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
     public void removeSubtaskById(Integer subTaskId) { // удалить айди подзадачки из списка айдишников подзадач
         if (subTasksIdList.contains(subTaskId)) {
             subTasksIdList.remove(subTaskId);

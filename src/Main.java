@@ -35,11 +35,11 @@ public class Main {
         manager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(
-            "Взять семью", "Жена, дочка", Status.NEW, 3, LocalDateTime.of(2024, 8, 1, 9, 0), Duration.ofMinutes(60));
+            "Взять семью", "Жена, дочка", Status.NEW, 3, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(70));
         manager.addNewSubTask(firstSubTask);
 
         SubTask secondSubTask = new SubTask(
-            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, 3, LocalDateTime.of(2024, 8, 1, 10, 0), Duration.ofDays(7));
+            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, 3, LocalDateTime.of(2024, 9, 1, 11, 0), Duration.ofDays(9));
         manager.addNewSubTask(secondSubTask);
 
         System.out.println("1 - Получение списков всех задач");
