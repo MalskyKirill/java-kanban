@@ -44,9 +44,9 @@ public class InMemoryTaskManager implements TaskManager {
             taskId++; // увеличиваем айдишник
 
             setEpicStatus(epic); // проверили статус эпика
-            epicStartTime(epic);
-            epicDuration(epic);
-            epicEndTime(epic);
+            epicStartTime(epic); // установили время начала
+            epicDuration(epic); // продолжительность
+            epicEndTime(epic); // время окончания
 
         }
         return subTask; // вернули обьект подзадачи
@@ -152,6 +152,9 @@ public class InMemoryTaskManager implements TaskManager {
         for (Epic epic : epicList.values()) { // пробежались по списку эпиков
             epic.clearSubTasksIdList(); // у каждого эпика очистили список айдишников подзадач
             setEpicStatus(epic); // пересчитали статус
+            epicStartTime(epic); // установили время начала
+            epicDuration(epic); // продолжительность
+            epicEndTime(epic); // время окончания
         }
     }
 
@@ -221,6 +224,9 @@ public class InMemoryTaskManager implements TaskManager {
                 subTaskList.put(subTaskId, subTask); // обновляем подзадачу
                 Epic epic = epicList.get(subTaskIdByEpic); // берем эпик
                 setEpicStatus(epic);// обновляем статус эпика
+                epicStartTime(epic); // установили время начала
+                epicDuration(epic); // продолжительность
+                epicEndTime(epic); // время окончания
             }
         }
     }
@@ -261,6 +267,9 @@ public class InMemoryTaskManager implements TaskManager {
             if (epic != null) { // проверяем что эпик не null
                 epic.removeSubtaskById(subTask.getId()); // удаляем айдишник подзадачки из списка у эпика
                 setEpicStatus(epic); // пересчитываем статус эпика
+                epicStartTime(epic); // установили время начала
+                epicDuration(epic); // продолжительность
+                epicEndTime(epic); // время окончания
             }
 
             inMemoryHistoryManager.remove(subTaskId); // удаляем подзадачку из inMemoryHistoryManager
@@ -282,7 +291,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask createSubTask(SubTask subTask) { // создаем подзадачку
-        return new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(), subTask.getEpicId(), subTask.getStartTime(), subTask.getDuration());
+        return new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(), subTask.getStartTime(), subTask.getDuration(), subTask.getEpicId());
     }
 
     @Override
@@ -325,41 +334,47 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     // расчет времени начала эпика
-    private void epicStartTime(Epic epic) {
-        ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList();
+    private void epicStartTime(Epic epic) { // получаем эпик
+        ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList(); // получаем список айдишников подзадач эпика
 
-        if (epicSubTaskIdList.size() == 0) {
-            epic.setStartTime(null);
+        if (epicSubTaskIdList.size() == 0) { // если нет подзадачек
+            epic.setStartTime(null); // устанавливаем null
         }
 
-        List<SubTask> epicStartTime = epicSubTaskIdList.stream()
-            .map(id -> subTaskList.get(id))
-            .sorted(Comparator.comparing(Task::getStartTime)).toList();
+        List<SubTask> epicStartTime = epicSubTaskIdList.stream() // если подзадачки в списке есть создаем стрим
+            .map(id -> subTaskList.get(id)) // каждый элемент списка преобразуем в субтаску
+            .sorted(Comparator.comparing(Task::getStartTime)).toList(); // с помощью sorted сортируем таски по getStartTime и собираем все в список
 
-        epic.setStartTime(epicStartTime.getFirst().getStartTime());
+        epic.setStartTime(epicStartTime.getFirst().getStartTime()); // устанавливаем эпику время getStartTime первого элемента списка
     }
 
     //продолжительность эпика
     private void epicDuration(Epic epic) {
-        ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList();
+        ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList(); // получаем список
 
-        Duration epicDuration = epicSubTaskIdList.stream()
-            .map(id -> subTaskList.get(id).getDuration())
-            .reduce(Duration.ZERO, Duration::plus);
+        if (epicSubTaskIdList.size() == 0) { // если в списке нет элементов
+            epic.setDuration(Duration.ZERO); // продолжительность устанавливаем Duration.ZERO
+        }
 
-        epic.setDuration(epicDuration);
+        Duration epicDuration = epicSubTaskIdList.stream() // если элементы есть преобразовываем список в стрим
+            .map(id -> subTaskList.get(id).getDuration()) // для каждого элемента преобразуем id в Duration
+            .reduce(Duration.ZERO, Duration::plus); // с помощью метода reduce находим сумму
+
+        epic.setDuration(epicDuration); // устанавливаем продолжительность
     }
 
     // расчет времени завершения эпика
     private void epicEndTime(Epic epic) {
         ArrayList<Integer> epicSubTaskIdList = epic.getSubTasksIdList();
+
         if (epicSubTaskIdList.size() == 0) {
             epic.setEndTime(null);
         }
 
-        List<SubTask> endTime = epicSubTaskIdList.stream().map(id -> subTaskList.get(id))
-            .sorted(Comparator.comparing(Task::getEndTime)).toList();
+        List<SubTask> endTime = epicSubTaskIdList.stream()  // если элементы есть преобразовываем список в стрим
+            .map(id -> subTaskList.get(id)) // каждый элемент списка преобразуем в субтаску
+            .sorted(Comparator.comparing(Task::getEndTime)).toList(); // сортируем субтаски по времени и собираем в список
 
-        epic.setEndTime(endTime.getLast().getEndTime());
+        epic.setEndTime(endTime.getLast().getEndTime()); // эпику устанавливаем значение getEndTime последней субтаскив списке
     }
 }

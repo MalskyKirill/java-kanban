@@ -21,7 +21,7 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-
+/*
         manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
@@ -48,7 +48,7 @@ public class Main {
         System.out.println(manager.getAllSubTask());
 
 
-        /*
+        */
         // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");
 
@@ -58,26 +58,28 @@ public class Main {
 
         backedManager = new FileBackedTaskManager(path.toFile());
 
-        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
+        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
+            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
         backedManager.addNewTask(firstTask);
         Epic firstEpic = new Epic("Поехать в отпуск",
             "Поехать в отпуск с семьей");
         backedManager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(
-            "Взять семью", "Жена дочка", Status.DONE, 2);
+            "Взять семью", "Жена дочка", Status.NEW, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(70), 2);
         backedManager.addNewSubTask(firstSubTask);
 
         SubTask secondSubTask = new SubTask(
-            "Взять собак", "Пэди Потап Дик", Status.DONE, 2);
+            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, LocalDateTime.of(2024, 9, 1, 11, 0), Duration.ofDays(9), 2);
         backedManager.addNewSubTask(secondSubTask);
 
-        backedManager.updateTask(new Task("Отвести дочку в школу", "Не забыть портфель и сменку и форму", 1, Status.IN_PROGRESS));
+        backedManager.updateTask(new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
+            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30)));
 
         FileBackedTaskManager backedManager2 = FileBackedTaskManager.loadFromFile(path.toFile());
 
-        System.out.println(backedManager2.getEpicById(2).getSubTasksIdList());
-        */
+        System.out.println(backedManager2.getEpicById(2));
+
 
         /*
         //спринт 6

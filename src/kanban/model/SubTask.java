@@ -2,8 +2,10 @@ package kanban.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class SubTask extends Task {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm");;
     private int epicId; // айдишник епика которому принадлежин подзадача
 
     //переопредилил консруктор обработки подзадачи менеджером
@@ -14,7 +16,7 @@ public class SubTask extends Task {
     }
 
     //переопредилил консруктор создания подзадачки
-    public SubTask(String name, String description, Status status, int epicId, LocalDateTime startTime, Duration duration) {
+    public SubTask(String name, String description, Status status, LocalDateTime startTime, Duration duration, int epicId) {
         super(name, description, status, startTime, duration);
 
         this.epicId = epicId;
@@ -28,7 +30,7 @@ public class SubTask extends Task {
     @Override
     public String toStringTask() {
         return getId() + "," + getType() + "," + getName() + ","
-            + getStatus() + "," + getDescription() + "," + getEpicId() + "\n";
+            + getStatus() + "," + getDescription() + "," + getStartTime().format(FORMATTER) + "," + getDuration() + "," + getEpicId() + "\n";
     }
 
     @Override

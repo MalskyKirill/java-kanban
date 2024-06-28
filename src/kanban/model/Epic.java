@@ -16,11 +16,11 @@ public class Epic extends Task {
 
     // конструктор для создания эпика
     public Epic(String name, String description) {
-        super(name, description, Status.NEW, null, Duration.ZERO);
+        super(name, description, Status.NEW, LocalDateTime.now(), Duration.ZERO);
     }
 
-    public Epic(String name, String description, int id, Status status) {
-        super(name, description, id, status, null, Duration.ZERO);
+    public Epic(String name, String description, int id, Status status, LocalDateTime startTime, Duration duration) {
+        super(name, description, id, status, startTime, duration);
     }
 
     public ArrayList<Integer> getSubTasksIdList() { // получить список айдишников подзадач
@@ -35,10 +35,12 @@ public class Epic extends Task {
         }
     }
 
+    // сеттер установки конца эпка
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
+    //геттер получения конца эпика
     @Override
     public LocalDateTime getEndTime() {
         return endTime;

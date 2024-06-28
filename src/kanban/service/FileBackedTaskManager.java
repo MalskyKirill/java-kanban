@@ -6,11 +6,15 @@ import kanban.model.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private File file; // переменная для хранения файла
+    private static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm"); // форматтер для времени
 
     public FileBackedTaskManager(File file) { // конструктор менеджера который принимает файл
         this.file = file; // присваеваем переменной файл пришедшее значение
@@ -143,7 +147,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private void save() { // метод сохранения задачек в файл
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) { // создаем bufferedWriter для записи задачек в файл
 
-            bufferedWriter.write("id,type,name,status,description,epic\n"); // записываем в файл хедер
+            bufferedWriter.write("id,type,name,status,description,startTime,duration,epic\n"); // записываем в файл хедер
 
             for (Task task : getAllTasks()) { // для каждой задачки из списка задачек
                 bufferedWriter.write(task.toStringTask()); // записываем в файл следующие данные
@@ -170,18 +174,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Status status = Status.valueOf(taskFields[3]); // сохраняем статус
         String description = taskFields[4]; // сохраняем описание
         int epicId = 0; // заводим переменную для присвоения подзадачки epicId
+        LocalDateTime startTask = LocalDateTime.parse(taskFields[5], FORMATTER); // сохраняем время начала и парсим в соответствии с форматтером
+        Duration duration = Duration.parse(taskFields[6]);
 
-        if (taskFields.length == 6) { // если в массиве 6 элементов
-            epicId = Integer.parseInt(taskFields[5]); // присваеваем epicId
+        if (taskFields.length == 8) { // если в массиве 8 элементов
+            epicId = Integer.parseInt(taskFields[7]); // присваеваем epicId
         }
 
-//        if (type == TypeTask.TASK) { // если тип равет TASK
-//            return new Task(name, description, id, status); // возвращаем новую задачку
-//        } else if (type == TypeTask.EPIC) { // ежели EPIC
-//            return new Epic(name, description, id, status); // возвращаем новый эпик, создал доп конструктор
-//        } else if (type == TypeTask.SUB_TASK) { // ежели SUB_TASK
-//            return new SubTask(name, description, id, status, epicId); // возвращаем подзадачку
-//        }
+        if (type == TypeTask.TASK) { // если тип равет TASK
+            return new Task(name, description, id, status, startTask, duration); // возвращаем новую задачку
+        } else if (type == TypeTask.EPIC) { // ежели EPIC
+            return new Epic(name, description, id, status, startTask, duration); // возвращаем новый эпик, создал доп конструктор
+        } else if (type == TypeTask.SUB_TASK) { // ежели SUB_TASK
+            return new SubTask(name, description, id, status, epicId, startTask, duration); // возвращаем подзадачку
+        }
 
         return null; // иначе возвращаем null
     }

@@ -2,6 +2,7 @@ package kanban.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -12,6 +13,8 @@ public class Task {
     protected Status status;
     protected Duration duration;
     protected LocalDateTime startTime;
+
+    private DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm");
 
     // конструктор для обработки задачи менеджером
     public Task(String name, String description, int id, Status status, LocalDateTime startTime, Duration duration) {
@@ -101,7 +104,7 @@ public class Task {
 
     public String toStringTask() {
         return getId() + "," + getType() + "," + getName() + ","
-            + getStatus() + "," + getDescription() + "\n";
+            + getStatus() + "," + getDescription() + "," + getStartTime().format(FORMATTER) + "," + getDuration() + "\n";
     }
 
     @Override
@@ -125,7 +128,7 @@ public class Task {
             ", id=" + id +
             ", status=" + status +
             ", duration=" + duration +
-            ", startTime=" + startTime +
+            ", startTime=" + startTime.format(FORMATTER) +
             '}';
     }
 }
