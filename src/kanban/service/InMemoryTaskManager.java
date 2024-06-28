@@ -119,6 +119,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         for (int id : tasksList.keySet()) { // пробегаемся по списку ключей из листа задач
             inMemoryHistoryManager.remove(id); // вызываем метод remove для каждой задачки в inMemoryHistoryManager
+            prioritizedTask.remove(getTaskById(id)); // по айдишнику нашли и удалили звадачку
         }
 
         tasksList.clear();
@@ -151,6 +152,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         for (int id : subTaskList.keySet()) { // пробегаемся по списку ключей из листа подзадачек
             inMemoryHistoryManager.remove(id);
+            prioritizedTask.remove(getSubTaskById(id));
         }
         subTaskList.clear(); // удалили все подзадачи
 
@@ -192,7 +194,9 @@ public class InMemoryTaskManager implements TaskManager {
 
         int taskId = task.getId(); // берем айдишник новой задачки
         if (tasksList.containsKey(taskId)) { // если он есть как ключ в списке задач
+            prioritizedTask.removeIf(t -> t.getId() == taskId); // если задачка с taskId есть в приорити лист удаляем
             tasksList.put(taskId, task); // обновляем задачку
+            prioritizedTask.add(tasksList.get(taskId)); // добавляем в приорити лист новую задачку
         } else { // ежели нет
             System.out.println("такой задачки нет");
         }
@@ -226,7 +230,10 @@ public class InMemoryTaskManager implements TaskManager {
             int oldSubTaskIdByEpic = subTaskList.get(subTaskId).getEpicId(); // берем старую подзадачку по айдишнику из списка и достаем оттуда айди эпика
 
             if (subTaskIdByEpic == oldSubTaskIdByEpic) { // проверяем что айдишник пришедшей подзадачи и айдишни существующей подзадачи совпадают
+                prioritizedTask.removeIf(t -> t.getId() == subTaskId); // удаляем из приорити листа
                 subTaskList.put(subTaskId, subTask); // обновляем подзадачу
+                prioritizedTask.add(subTaskList.get(subTaskId)); // добавляем в приорити лист
+
                 Epic epic = epicList.get(subTaskIdByEpic); // берем эпик
                 setEpicStatus(epic);// обновляем статус эпика
                 epicStartTime(epic); // установили время начала
@@ -240,6 +247,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeTaskById(int taskId) { // удалить задачку по айди
         if (tasksList.containsKey(taskId)) { // проверяем в списке есть ли ключ
             inMemoryHistoryManager.remove(taskId); // удаляем задачку из inMemoryHistoryManager
+            prioritizedTask.removeIf(t -> t.getId() == taskId); // удаляем из приорити листа
             tasksList.remove(taskId); // удаляем задачку
         } else {
             System.out.println("такой задачки нет");
@@ -278,6 +286,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
 
             inMemoryHistoryManager.remove(subTaskId); // удаляем подзадачку из inMemoryHistoryManager
+            prioritizedTask.removeIf(t -> t.getId() == subTaskId); //удаляем из приорити листа
             subTaskList.remove(subTaskId); // удаляем подзадачку из мапы
         } else {
             System.out.println("такого подзадачки нет");

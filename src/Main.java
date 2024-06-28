@@ -49,6 +49,10 @@ public class Main {
 
         System.out.println(manager.getPrioritizedTasks());
 
+        manager.removeSubTaskById(4);
+
+        System.out.println(manager.getPrioritizedTasks());
+        
         /*
         // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");
