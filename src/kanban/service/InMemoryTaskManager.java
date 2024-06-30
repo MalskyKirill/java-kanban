@@ -418,11 +418,11 @@ public class InMemoryTaskManager implements TaskManager {
 
             //делаем проверку
             if ((taskStart.isAfter(startTimeNewTask)  // ежели время начала задачи из списка ПОЗЖЕ времени начала новой задачи
-                    && taskStart.isBefore(endTimeNewTask)) // И время начала задачи из списка РАНЬШЕ времени окончания новой задачи
-                        || (taskEnd.isAfter(startTimeNewTask) // ИЛИ время окончания задачи из списка ПОЗЖЕ времени начала новой задачи
-                            && taskEnd.isBefore(endTimeNewTask)) // И время окончания задачи из списка РАНЬШЕ времени окончания новой задачи
-                                || (startTimeNewTask.isAfter(taskStart) // ИЛИ время начала новой задачи ПОЗЖЕ времени начала задачи из списка
-                                    && endTimeNewTask.isBefore(taskEnd))) { // и время окончания новой задачи РАНЬШЕ времени окончания задачи из списка
+                && taskStart.isBefore(endTimeNewTask)) // И время начала задачи из списка РАНЬШЕ времени окончания новой задачи
+                || (taskEnd.isAfter(startTimeNewTask) // ИЛИ время окончания задачи из списка ПОЗЖЕ времени начала новой задачи
+                && taskEnd.isBefore(endTimeNewTask)) // И время окончания задачи из списка РАНЬШЕ времени окончания новой задачи
+                || (startTimeNewTask.isAfter(taskStart) // ИЛИ время начала новой задачи ПОЗЖЕ времени начала задачи из списка
+                && endTimeNewTask.isBefore(taskEnd))) { // и время окончания новой задачи РАНЬШЕ времени окончания задачи из списка
                 throw new TaskIntersectionTimeException("Произошло пересечение задач по времени"); // кидаем исключение
             }
         }
