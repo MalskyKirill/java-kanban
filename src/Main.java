@@ -53,6 +53,25 @@ public class Main {
 
         System.out.println(manager.getPrioritizedTasks());
 
+        System.out.println("2 - Получение по идентификатору");
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubTaskById(5));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubTaskById(5));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        //  System.out.println(manager.getSubTaskById(4));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        //  System.out.println(manager.getSubTaskById(4));
+
+        System.out.println("2.1 - Получение истории");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+
         /*
         // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");

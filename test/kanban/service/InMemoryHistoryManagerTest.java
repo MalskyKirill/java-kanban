@@ -20,9 +20,8 @@ class InMemoryHistoryManagerTest {
     @BeforeEach
     void beforeEach() {
         historyManager = new InMemoryHistoryManager();
-        firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
-            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
-        secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 0), Duration.ofMinutes(60));
+        firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", 1, Status.NEW, LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
+        secondTask = new Task("Сходить на бокс", "Не получить по голове", 2, Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 0), Duration.ofMinutes(60));
     }
 
     // проверка что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных
