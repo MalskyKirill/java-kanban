@@ -14,7 +14,7 @@ public class Task {
     protected Duration duration;
     protected LocalDateTime startTime;
 
-    private DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm");
 
     // конструктор для обработки задачи менеджером
     public Task(String name, String description, int id, Status status, LocalDateTime startTime, Duration duration) {
