@@ -1,5 +1,6 @@
 package kanban.service;
 
+import kanban.exceptions.TaskIntersectionTimeException;
 import kanban.model.*;
 
 import java.time.Duration;
@@ -16,10 +17,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     private HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
 
-    private Set<Task> prioritizedTask = new TreeSet<>(Comparator.comparing(task -> task.getStartTime()));
+    private Set<Task> prioritizedTask = new TreeSet<>(Comparator.comparing(task -> task.getStartTime())); // коллекция уникальных элементов отсортированных в порядке возрастания с помощью компаратора
 
     @Override
     public Task addNewTask(Task task) { // метод добавления задачки в хешмапу
+        checkerIntersectionTimeTask(task);
         task.setId(taskId); // обогатили задачку id
         tasksList.put(taskId, task); // кидаем задачку в мапу
         taskId++; // увеличиваем айдишник
@@ -37,6 +39,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask addNewSubTask(SubTask subTask) { // метод добавления субтаски в хешмапу
+        checkerIntersectionTimeTask(subTask);
         int epicId = subTask.getEpicId(); // получил айди эпика
         Epic epic = epicList.get(epicId); //  получили эпик
 
@@ -192,6 +195,8 @@ public class InMemoryTaskManager implements TaskManager {
             return; // вылетаем
         }
 
+        checkerIntersectionTimeTask(task); // проверка на пересечении по времени
+
         int taskId = task.getId(); // берем айдишник новой задачки
         if (tasksList.containsKey(taskId)) { // если он есть как ключ в списке задач
             prioritizedTask.removeIf(t -> t.getId() == taskId); // если задачка с taskId есть в приорити лист удаляем
@@ -223,6 +228,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (subTask == null) { // проверка
             return;
         }
+
+        checkerIntersectionTimeTask(subTask); // проверка на пересечении по времени
 
         int subTaskId = subTask.getId(); // берем айди подзадачи
         if (subTaskList.containsKey(subTaskId)) { // проверяем что такая подзадача есть в списке
@@ -295,6 +302,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task createTask(Task task) { // создаем задачку
+        checkerIntersectionTimeTask(task); // проверка на пересечение времени
         return new Task(task.getName(), task.getDescription(), task.getStatus(), task.getStartTime(), task.getDuration());
     }
 
@@ -305,6 +313,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask createSubTask(SubTask subTask) { // создаем подзадачку
+        checkerIntersectionTimeTask(subTask); // проверка на пересечение по времени
         return new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(), subTask.getStartTime(), subTask.getDuration(), subTask.getEpicId());
     }
 
@@ -393,7 +402,29 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getPrioritizedTasks() {
-        return new ArrayList<>(prioritizedTask);
+    public List<Task> getPrioritizedTasks() { // вернули список задачек по приретету времени
+        return new ArrayList<>(prioritizedTask); // обернули в ArrayList
+    }
+
+    private void checkerIntersectionTimeTask(Task task) { // проверка пересечения задач по времени
+        List<Task> tasks = getPrioritizedTasks(); // получили список задач у которых указано время
+
+        LocalDateTime startTimeNewTask = task.getStartTime(); // взяли время начала новой задачки
+        LocalDateTime endTimeNewTask = task.getEndTime(); //и время ее окончания
+
+        for (Task t : tasks) { // для каждой задачки в списке
+            LocalDateTime taskStart = t.getStartTime(); // получаем время начала задачки
+            LocalDateTime taskEnd = t.getEndTime(); // получаем время окончания задачки
+
+            //делаем проверку
+            if ((taskStart.isAfter(startTimeNewTask)  // ежели время начала задачи из списка ПОЗЖЕ времени начала новой задачи
+                    && taskStart.isBefore(endTimeNewTask)) // И время начала задачи из списка РАНЬШЕ времени окончания новой задачи
+                        || (taskEnd.isAfter(startTimeNewTask) // ИЛИ время окончания задачи из списка ПОЗЖЕ времени начала новой задачи
+                            && taskEnd.isBefore(endTimeNewTask)) // И время окончания задачи из списка РАНЬШЕ времени окончания новой задачи
+                                || (startTimeNewTask.isAfter(taskStart) // ИЛИ время начала новой задачи ПОЗЖЕ времени начала задачи из списка
+                                    && endTimeNewTask.isBefore(taskEnd))) { // и время окончания новой задачи РАНЬШЕ времени окончания задачи из списка
+                throw new TaskIntersectionTimeException("Произошло пересечение задач по времени"); // кидаем исключение
+            }
+        }
     }
 }

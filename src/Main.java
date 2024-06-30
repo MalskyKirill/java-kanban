@@ -25,22 +25,27 @@ public class Main {
         manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
-            , LocalDateTime.of(2024, 9, 2, 9, 0), Duration.ofMinutes(30));
+            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
         manager.addNewTask(firstTask);
         Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 0), Duration.ofMinutes(60));
         manager.addNewTask(secondTask);
+
 
         Epic firstEpic = new Epic("Поехать в отпуск",
             "Поехать в отпуск с семьей");
         manager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(
-            "Взять семью", "Жена, дочка", Status.NEW, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(70), 3);
+            "Взять семью", "Жена, дочка", Status.NEW, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(60), 3);
         manager.addNewSubTask(firstSubTask);
 
         SubTask secondSubTask = new SubTask(
-            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, LocalDateTime.of(2024, 9, 1, 11, 0), Duration.ofDays(9), 3);
+            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, LocalDateTime.of(2024, 8, 3, 10, 30), Duration.ofDays(9), 3);
         manager.addNewSubTask(secondSubTask);
+
+//        Task firdTask = new Task("Сходить на бокс2", "Не получить по голове2", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 30), Duration.ofMinutes(20));
+//        manager.addNewTask(firdTask);
+
 
         System.out.println("1 - Получение списков всех задач");
         System.out.println(manager.getAllTasks());
@@ -52,7 +57,7 @@ public class Main {
         manager.removeSubTaskById(4);
 
         System.out.println(manager.getPrioritizedTasks());
-        
+
         /*
         // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");
