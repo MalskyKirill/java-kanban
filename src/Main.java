@@ -20,8 +20,7 @@ public class Main {
 
         manager = Managers.getDefault();
 
-        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
-            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
+        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW, LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
         manager.addNewTask(firstTask);
         Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 0), Duration.ofMinutes(60));
         manager.addNewTask(secondTask);
