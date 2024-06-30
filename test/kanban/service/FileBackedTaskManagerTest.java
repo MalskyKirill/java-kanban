@@ -31,7 +31,7 @@ class FileBackedTaskManagerTest {
             , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
         epic = new Epic("Поехать в отпуск", "Поехать в отпуск с семьей");
         subTask = new SubTask(
-            "Взять семью", "Жена, дочка", Status.NEW, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(60), 2);
+            "Взять семью", "Жена дочка", Status.NEW, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(60), 2);
     }
 
     @AfterEach
