@@ -21,7 +21,7 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-/*
+
         manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW, LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
@@ -75,7 +75,7 @@ public class Main {
         for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
-*/
+/*
 
         // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");
@@ -109,7 +109,7 @@ public class Main {
 
         System.out.println(backedManager2.getEpicById(2));
 
-
+*/
         /*
         //спринт 6
         manager = Managers.getDefault();
