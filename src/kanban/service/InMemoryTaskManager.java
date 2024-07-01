@@ -141,8 +141,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
         epicList.clear(); // удалили все эпики
 
-        for (int id : subTaskList.keySet()) { // пробегаемся по списку ключей из листа подзадачек
+        for (Task subTask : subTaskList.values()) { // пробегаемся по списку значени из листа подзадачек
+            int id = subTask.getId();
             inMemoryHistoryManager.remove(id);
+            prioritizedTask.remove(subTask);
         }
         subTaskList.clear(); // удалили все подзадачи
     }
@@ -389,6 +391,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         Duration epicDuration = epicSubTaskIdList.stream() // если элементы есть преобразовываем список в стрим
             .map(id -> subTaskList.get(id).getDuration()) // для каждого элемента преобразуем id в Duration
+            .filter(Objects::nonNull) // фильтруем Duration на null
             .reduce(Duration.ZERO, Duration::plus); // с помощью метода reduce находим сумму
 
         if (epicDuration != Duration.ZERO) { // если список не равен Duration.ZERO
