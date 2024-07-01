@@ -7,6 +7,8 @@ import kanban.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -24,10 +26,11 @@ class InMemoryTaskManagerTest {
     @BeforeEach // перед каждым тестом создаем новый менеджер и новую задачку
     public void beforeEach() {
         taskManager = new InMemoryTaskManager();
-        task = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
+        task = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
+            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
         epic = new Epic("Поехать в отпуск", "Поехать в отпуск с семьей");
-        subTask = new SubTask("Взять семью", "Жена, дочка", Status.NEW, 2);
-
+        subTask = new SubTask(
+            "Взять семью", "Жена, дочка", Status.NEW, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(60), 2);
     }
 
     void addTasks() {

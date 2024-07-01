@@ -3,13 +3,12 @@ import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
 import kanban.service.FileBackedTaskManager;
+import kanban.service.Managers;
 import kanban.service.TaskManager;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
@@ -19,6 +18,62 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        manager = Managers.getDefault();
+
+        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW, LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
+        manager.addNewTask(firstTask);
+        Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 0), Duration.ofMinutes(60));
+        manager.addNewTask(secondTask);
+
+
+        Epic firstEpic = new Epic("Поехать в отпуск",
+            "Поехать в отпуск с семьей");
+        manager.addNewEpic(firstEpic);
+
+        SubTask firstSubTask = new SubTask(
+            "Взять семью", "Жена, дочка", Status.NEW, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(60), 3);
+        manager.addNewSubTask(firstSubTask);
+
+        SubTask secondSubTask = new SubTask(
+            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, LocalDateTime.of(2024, 8, 3, 10, 30), Duration.ofDays(9), 3);
+        manager.addNewSubTask(secondSubTask);
+
+//        Task firdTask = new Task("Сходить на бокс2", "Не получить по голове2", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 30), Duration.ofMinutes(20));
+//        manager.addNewTask(firdTask);
+
+
+        System.out.println("1 - Получение списков всех задач");
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTask());
+
+        System.out.println(manager.getPrioritizedTasks());
+
+        manager.removeSubTaskById(4);
+
+        System.out.println(manager.getPrioritizedTasks());
+
+        System.out.println("2 - Получение по идентификатору");
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubTaskById(5));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        System.out.println(manager.getSubTaskById(5));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        //  System.out.println(manager.getSubTaskById(4));
+        System.out.println(manager.getTaskById(1));
+        System.out.println(manager.getEpicById(3));
+        //  System.out.println(manager.getSubTaskById(4));
+
+        System.out.println("2.1 - Получение истории");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+/*
+
+        // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");
 
         if (!path.toFile().isFile()) {
@@ -27,27 +82,33 @@ public class Main {
 
         backedManager = new FileBackedTaskManager(path.toFile());
 
-        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
+        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
+            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
         backedManager.addNewTask(firstTask);
         Epic firstEpic = new Epic("Поехать в отпуск",
             "Поехать в отпуск с семьей");
         backedManager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(
-            "Взять семью", "Жена дочка", Status.DONE, 2);
+            "Взять семью", "Жена дочка", Status.NEW, LocalDateTime.of(2024, 8, 3, 9, 0), Duration.ofMinutes(70), 2);
         backedManager.addNewSubTask(firstSubTask);
 
         SubTask secondSubTask = new SubTask(
-            "Взять собак", "Пэди Потап Дик", Status.DONE, 2);
+            "Отпуск", "Отдохнуть", Status.IN_PROGRESS, LocalDateTime.of(2024, 9, 1, 11, 0), Duration.ofDays(9), 2);
         backedManager.addNewSubTask(secondSubTask);
 
-        backedManager.updateTask(new Task("Отвести дочку в школу", "Не забыть портфель и сменку и форму", 1, Status.IN_PROGRESS));
+        backedManager.updateTask(new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW
+            , LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30)));
+
 
         FileBackedTaskManager backedManager2 = FileBackedTaskManager.loadFromFile(path.toFile());
 
-        System.out.println(backedManager2.getEpicById(2).getSubTasksIdList());
+        System.out.println(backedManager2.getEpicById(2));
 
- /*       manager = Managers.getDefault();
+*/
+        /*
+        //спринт 6
+        manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
         manager.addNewTask(firstTask);
