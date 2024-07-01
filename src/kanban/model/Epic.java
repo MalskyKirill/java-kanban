@@ -11,12 +11,12 @@ public class Epic extends Task {
 
     // конструктор для обработки эпика
     public Epic(String name, String description, int id) {
-        super(name, description, id, Status.NEW, null, Duration.ZERO);
+        super(name, description, id, Status.NEW, null, null);
     }
 
     // конструктор для создания эпика
     public Epic(String name, String description) {
-        super(name, description, Status.NEW, null, Duration.ZERO);
+        super(name, description, Status.NEW, null, null);
     }
 
     // конструктор используемый при чтения данных из файла
