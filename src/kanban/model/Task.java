@@ -105,7 +105,11 @@ public class Task {
 
     // геттер и сеттер начала времени
     public LocalDateTime getStartTime() {
-        return startTime;
+        if (startTime != null) {
+            return startTime;
+        } else {
+            return LocalDateTime.of(1, 1, 1, 1, 1);
+        }
     }
 
     public void setStartTime(LocalDateTime startTime) {
@@ -113,7 +117,7 @@ public class Task {
     }
 
     //получить
-    public  LocalDateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         if (this.startTime == null) { // проверка startTime на null
             return null;
         }
