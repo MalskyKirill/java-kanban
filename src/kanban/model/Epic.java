@@ -16,7 +16,7 @@ public class Epic extends Task {
 
     // конструктор для создания эпика
     public Epic(String name, String description) {
-        super(name, description, Status.NEW, LocalDateTime.now(), Duration.ZERO);
+        super(name, description, Status.NEW, null, Duration.ZERO);
     }
 
     public Epic(String name, String description, int id, Status status, LocalDateTime startTime, Duration duration) {
