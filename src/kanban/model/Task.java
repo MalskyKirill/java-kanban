@@ -16,7 +16,7 @@ public class Task {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm");
 
-    // конструктор для обработки задачи менеджером
+    // конструктор для обработки задачи менеджером со временем
     public Task(String name, String description, int id, Status status, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
@@ -26,13 +26,28 @@ public class Task {
         this.startTime = startTime;
     }
 
-    // конструктор для создания задачи
+    // конструктор для создания задачи со временем
     public Task(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.duration = duration;
         this.startTime = startTime;
+    }
+
+    // конструктор для обработки задачи менеджером без времени
+    public Task(String name, String description, int id, Status status) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+    }
+
+    // конструктор для создания задачи без времени
+    public Task(String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
     }
 
     // геттер имени
@@ -99,6 +114,10 @@ public class Task {
 
     //получить
     public  LocalDateTime getEndTime() {
+        if (this.startTime == null) { // проверка startTime на null
+            return null;
+        }
+
         return this.startTime.plus(this.duration);
     }
 
