@@ -1,9 +1,13 @@
 package kanban.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
     private ArrayList<Integer> subTasksIdList = new ArrayList<>(); // список для хранения айдишников подзадач
+
+    private LocalDateTime endTime;
 
     // конструктор для обработки эпика
     public Epic(String name, String description, int id) {
@@ -15,8 +19,9 @@ public class Epic extends Task {
         super(name, description, Status.NEW);
     }
 
-    public Epic(String name, String description, int id, Status status) {
-        super(name, description, id, status);
+    // конструктор используемый при чтения данных из файла
+    public Epic(String name, String description, int id, Status status, LocalDateTime startTime, Duration duration) {
+        super(name, description, id, status, startTime, duration);
     }
 
     public ArrayList<Integer> getSubTasksIdList() { // получить список айдишников подзадач
@@ -29,6 +34,17 @@ public class Epic extends Task {
         } else {
             System.out.println("Вы пытаетесь добавить эпик сам в себя в виде подзадачи");
         }
+    }
+
+    // сеттер установки конца эпка
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    //геттер получения конца эпика
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
     public void removeSubtaskById(Integer subTaskId) { // удалить айди подзадачки из списка айдишников подзадач
