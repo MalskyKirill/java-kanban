@@ -33,20 +33,23 @@ public class TaskHttpHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if(!"POST".equals(exchange.getRequestMethod())) { // проверяем что был сделан пост запрос
-
+            ErrorResponse errRes = new ErrorResponse("Неверный HTTP-метод");
+            writeResponse(errRes, exchange, 404);
+            return;
         }
         String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8); // вытаскиваем тело запроса в формате массива байтов
-
-        System.out.println(gson.fromJson(requestBody, Task.class));
-
         Task task = gson.fromJson(requestBody, Task.class); // с помощью библиотеки gson десюарилизуем данные в обьект класса Task
 
-       Task createdTask = taskManager.addNewTask(task); // с помощью taskManager создаем обьект класса Task
-        System.out.println(createdTask);
-        String resJson = gson.toJson(createdTask); // преобразовываем createdTask в формат json в строку
+        Task createdTask = taskManager.addNewTask(task); // с помощью taskManager создаем обьект класса Task
+        writeResponse(createdTask, exchange, 201);
+    }
+
+    private  void writeResponse(Object body, HttpExchange exchange, int code) throws IOException {
+        String resJson = gson.toJson(body); // преобразовываем createdTask в формат json в строку
         byte[] resBytes = resJson.getBytes(StandardCharsets.UTF_8); // преобразуем строку в массив байт в формате ютф-8
+
         exchange.getResponseHeaders().add("Content-Type", "application/json"); // начинаем наполнять обьект exchange заголовками
-        exchange.sendResponseHeaders(200, resJson.length()); // добавляем код ответа
+        exchange.sendResponseHeaders(code, resBytes.length); // добавляем код ответа
         exchange.getResponseBody().write(resBytes); // заполняем тело ответа
         exchange.close(); // закрываем exchange
     }
