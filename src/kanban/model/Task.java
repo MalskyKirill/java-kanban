@@ -151,7 +151,7 @@ public class Task {
             ", id=" + id +
             ", status=" + status +
             ", duration=" + duration +
-            ", startTime=" + startTime.format(FORMATTER) +
+            ", startTime=" + getStartTime().format(FORMATTER) +
             '}';
     }
 }
