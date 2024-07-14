@@ -32,6 +32,14 @@ public class TaskHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        if ("GET".equals((exchange.getRequestMethod()))) { // проверяем что пришел гет запрос
+            String path = exchange.getRequestURI().getPath(); // достаем путь
+            int id = Integer.parseInt(path.split("/")[2]); // достаем айдишник из пути
+            Task task = taskManager.getTaskById(id); // получаем зад
+            writeResponse(task, exchange, 200);
+            return;
+        }
+
         if(!"POST".equals(exchange.getRequestMethod())) { // проверяем что был сделан пост запрос
             ErrorResponse errRes = new ErrorResponse("Неверный HTTP-метод");
             writeResponse(errRes, exchange, 404);
@@ -40,8 +48,8 @@ public class TaskHttpHandler implements HttpHandler {
         String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8); // вытаскиваем тело запроса в формате массива байтов
         Task task = gson.fromJson(requestBody, Task.class); // с помощью библиотеки gson десюарилизуем данные в обьект класса Task
 
-        Task createdTask = taskManager.addNewTask(task); // с помощью taskManager создаем обьект класса Task
-        writeResponse(createdTask, exchange, 201);
+        Task addTask = taskManager.addNewTask(task); // с помощью taskManager добавляем обьект класса Task
+        writeResponse(addTask, exchange, 201);
     }
 
     private  void writeResponse(Object body, HttpExchange exchange, int code) throws IOException {
