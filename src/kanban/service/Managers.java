@@ -2,8 +2,8 @@ package kanban.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import kanban.server.DurationAdapter;
-import kanban.server.LocalDateTimeAdapter;
+import kanban.server.adapter.DurationAdapter;
+import kanban.server.adapter.LocalDateTimeAdapter;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

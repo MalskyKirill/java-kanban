@@ -32,24 +32,27 @@ public class TaskHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if ("GET".equals((exchange.getRequestMethod()))) { // проверяем что пришел гет запрос
-            String path = exchange.getRequestURI().getPath(); // достаем путь
-            int id = Integer.parseInt(path.split("/")[2]); // достаем айдишник из пути
-            Task task = taskManager.getTaskById(id); // получаем зад
-            writeResponse(task, exchange, 200);
-            return;
+        String httpMethod = exchange.getRequestMethod();
+        switch (HttpMethods.valueOf(httpMethod)) {
+            case GET -> {
+                String path = exchange.getRequestURI().getPath(); // достаем путь
+                int id = Integer.parseInt(path.split("/")[2]); // достаем айдишник из пути
+                Task task = taskManager.getTaskById(id); // получаем зад
+                writeResponse(task, exchange, 200);
+            }
+            case POST -> {
+                String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8); // вытаскиваем тело запроса в формате массива байтов
+                Task task = gson.fromJson(requestBody, Task.class); // с помощью библиотеки gson десюарилизуем данные в обьект класса Task
+
+                Task addTask = taskManager.addNewTask(task); // с помощью taskManager добавляем обьект класса Task
+                writeResponse(addTask, exchange, 201);
+            }
+            default -> { // по дефолту
+                ErrorResponse errRes = new ErrorResponse("Неверный HTTP-метод"); // создаем ошибку ответа
+                writeResponse(errRes, exchange, 404); // возвращаем со статус кодом 404
+            }
         }
 
-        if(!"POST".equals(exchange.getRequestMethod())) { // проверяем что был сделан пост запрос
-            ErrorResponse errRes = new ErrorResponse("Неверный HTTP-метод");
-            writeResponse(errRes, exchange, 404);
-            return;
-        }
-        String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8); // вытаскиваем тело запроса в формате массива байтов
-        Task task = gson.fromJson(requestBody, Task.class); // с помощью библиотеки gson десюарилизуем данные в обьект класса Task
-
-        Task addTask = taskManager.addNewTask(task); // с помощью taskManager добавляем обьект класса Task
-        writeResponse(addTask, exchange, 201);
     }
 
     private  void writeResponse(Object body, HttpExchange exchange, int code) throws IOException {

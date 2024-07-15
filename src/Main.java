@@ -25,11 +25,11 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        HttpServer httpServer = HttpServer.create();
-        httpServer.bind(new InetSocketAddress("localhost",8080), 0);
-        httpServer.createContext("/tasks", new TaskHttpHandler(new InMemoryTaskManager(), gson));
-        httpServer.start();
-        System.out.println("сервер запущен");
+//        HttpServer httpServer = HttpServer.create();
+//        httpServer.bind(new InetSocketAddress("localhost",8080), 0);
+//        httpServer.createContext("/tasks", new TaskHttpHandler(new InMemoryTaskManager(), gson));
+//        httpServer.start();
+//        System.out.println("сервер запущен");
 
 
 
