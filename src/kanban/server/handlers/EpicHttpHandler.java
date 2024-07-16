@@ -28,9 +28,18 @@ public class EpicHttpHandler extends ParrentHttpHandler{
                 if (Pattern.matches("/epics/\\d+$", path)) { // с помощью регулярки проверяем есть ли в пути после в URL-пути цифры
                     int id = Integer.parseInt(path.split("/")[2]); // достаем айдишник из пути
                     Epic epic = taskManager.getEpicById(id); // получаем эпик
+                    if (epic == null) {
+                        ErrorResponse errRes = new ErrorResponse("Эпика не нашлось"); // создаем ошибку ответа
+                        writeResponse(errRes, exchange, 404); // формируем ответ
+                    }
                     writeResponse(epic, exchange, 200); // формируем ответ
                 } else if (Pattern.matches("/epics/\\d+$*/subtasks", path)) {
                     int id = Integer.parseInt(path.split("/")[2]); // достаем айдишник из пути
+                    Epic epic = taskManager.getEpicById(id); // получаем эпик
+                    if (epic == null) {
+                        ErrorResponse errRes = new ErrorResponse("Эпика не нашлось"); // создаем ошибку ответа
+                        writeResponse(errRes, exchange, 404); // формируем ответ
+                    }
                     List<SubTask> subTasksByEpic = taskManager.getAllSubtasksByEpic(id);
                     writeResponse(subTasksByEpic, exchange, 200);
                 } else if (Pattern.matches("/epics", path)) {
@@ -41,14 +50,9 @@ public class EpicHttpHandler extends ParrentHttpHandler{
             case POST -> {
                 String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8); // вытаскиваем тело запроса в формате массива байтов
                 Epic epic = gson.fromJson(requestBody, Epic.class); // с помощью библиотеки gson десюарилизуем данные в обьект класса Epic
-                try { // обернули в трай кетч
-                    Epic newEpic = taskManager.createEpic(epic); // с помощью taskManager создаем обьект класса Epic
-                    taskManager.addNewEpic(newEpic); // добавили эпик в таск манагер
-                    writeResponse(newEpic, exchange, 201); // если все ок, вернули ответ
-                } catch (Exception ex) { // если поймали исключение
-                    ErrorResponse errRes = new ErrorResponse("Произошло пересечение задач по времени"); // создаем ошибку ответа
-                    writeResponse(errRes, exchange, 406); // отправляем
-                }
+
+                Epic newEpic = taskManager.createEpic(epic); // с помощью taskManager создаем обьект класса Epic
+                taskManager.addNewEpic(newEpic); // добавили эпик в таск манагер
             }
             case DELETE -> {
                 if (Pattern.matches("/epics/\\d+$", path)) { // проверяем что в URL есть айди

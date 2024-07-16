@@ -28,6 +28,10 @@ public class TaskHttpHandler extends ParrentHttpHandler {
                 if (Pattern.matches("/tasks/\\d+$", path)) { // с помощью регулярки проверяем есть ли в пути после в URL-пути цифры
                     int id = Integer.parseInt(path.split("/")[2]); // достаем айдишник из пути
                     Task task = taskManager.getTaskById(id); // получаем задачу
+                    if (task == null) {
+                        ErrorResponse errRes = new ErrorResponse("Задачи не нашлось"); // создаем ошибку ответа
+                        writeResponse(errRes, exchange, 404); // формируем ответ
+                    }
                     writeResponse(task, exchange, 200); // формируем ответ
                 } else {
                     List<Task> tasks = taskManager.getAllTasks(); // получаем все задачки

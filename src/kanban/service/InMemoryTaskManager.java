@@ -178,23 +178,32 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int taskId) { // получаем задачку по айди
-        Task task = tasksList.get(taskId);
-        inMemoryHistoryManager.addTask(task);
-        return task; // достаем и возвращаем обьект
+        if (tasksList.containsKey(taskId)) {
+            Task task = tasksList.get(taskId);
+            inMemoryHistoryManager.addTask(task);
+            return task; // достаем и возвращаем обьект
+        }
+        return null;
     }
 
     @Override
     public Epic getEpicById(int epicId) { // получаем эпик по айди
-        Epic epic = epicList.get(epicId);
-        inMemoryHistoryManager.addTask(epic);
-        return epic;
+        if (epicList.containsKey(epicId)) {
+            Epic epic = epicList.get(epicId);
+            inMemoryHistoryManager.addTask(epic);
+            return epic;
+        }
+        return null;
     }
 
     @Override
     public SubTask getSubTaskById(int subTaskId) { // получаем подзадачку по айди
-        SubTask subTask = subTaskList.get(subTaskId);
-        inMemoryHistoryManager.addTask(subTask);
-        return subTask;
+        if (subTaskList.containsKey(subTaskId)) {
+            SubTask subTask = subTaskList.get(subTaskId);
+            inMemoryHistoryManager.addTask(subTask);
+            return subTask;
+        }
+        return null;
     }
 
     @Override
