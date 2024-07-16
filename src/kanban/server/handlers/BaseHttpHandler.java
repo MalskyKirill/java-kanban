@@ -8,11 +8,11 @@ import kanban.service.TaskManager;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class ParrentHttpHandler implements HttpHandler {
+public class BaseHttpHandler implements HttpHandler {
     protected final TaskManager taskManager; // обьявляем taskManager
     protected final Gson gson; // обьявили gson
 
-    public ParrentHttpHandler(TaskManager taskManager, Gson gson) {
+    public BaseHttpHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
         this.gson = gson;
     }

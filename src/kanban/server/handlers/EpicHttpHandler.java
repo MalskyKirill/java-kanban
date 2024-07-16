@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import kanban.model.Epic;
 import kanban.model.SubTask;
-import kanban.model.Task;
 import kanban.server.ErrorResponse;
 import kanban.server.HttpMethods;
 import kanban.service.TaskManager;
@@ -14,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class EpicHttpHandler extends ParrentHttpHandler{
+public class EpicHttpHandler extends BaseHttpHandler {
     public EpicHttpHandler(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);
     }
