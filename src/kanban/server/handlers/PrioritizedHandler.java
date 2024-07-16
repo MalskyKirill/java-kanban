@@ -8,12 +8,10 @@ import kanban.server.HttpMethods;
 import kanban.service.TaskManager;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.regex.Pattern;
 
-public class HistoryHandler extends BaseHttpHandler {
-    public HistoryHandler(TaskManager taskManager, Gson gson) {
+public class PrioritizedHandler extends BaseHttpHandler{
+    public PrioritizedHandler(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);
     }
 
@@ -22,8 +20,8 @@ public class HistoryHandler extends BaseHttpHandler {
         String httpMethod = exchange.getRequestMethod();// достаем метод
         switch (HttpMethods.valueOf(httpMethod)) {
             case GET -> {
-                List<Task> history = taskManager.getHistory();
-                writeResponse(history, exchange, 200); // формируем ответ
+                List<Task> prioritized = taskManager.getPrioritizedTasks();
+                writeResponse(prioritized, exchange, 200); // формируем ответ
             }
             default -> { // по дефолту
                 ErrorResponse errRes = new ErrorResponse("Неверный HTTP-метод"); // создаем ошибку ответа

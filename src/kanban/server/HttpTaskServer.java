@@ -2,10 +2,7 @@ package kanban.server;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpServer;
-import kanban.server.handlers.EpicHttpHandler;
-import kanban.server.handlers.HistoryHandler;
-import kanban.server.handlers.SubTaskHttpHandler;
-import kanban.server.handlers.TaskHttpHandler;
+import kanban.server.handlers.*;
 import kanban.service.Managers;
 import kanban.service.TaskManager;
 
@@ -28,6 +25,7 @@ public class HttpTaskServer { // создали класс сервера
         httpServer.createContext("/epics", new EpicHttpHandler(taskManager, gson));
         httpServer.createContext("/subtasks", new SubTaskHttpHandler(taskManager, gson));
         httpServer.createContext("/history", new HistoryHandler(taskManager, gson));
+        httpServer.createContext("/prioritized", new PrioritizedHandler(taskManager, gson));
     }
 
     public static void main(String[] args) throws IOException {
