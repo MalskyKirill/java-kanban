@@ -33,7 +33,7 @@ public class Main {
 
 
 
-//        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW);
+//        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW, LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
 //        System.out.println(firstTask);
 //        String json = gson.toJson(firstTask);
 //        System.out.println(json);
@@ -41,7 +41,7 @@ public class Main {
 //        System.out.println(tas);
 
 
-        /*
+
         // 8 спринт
         manager = Managers.getDefault();
 
@@ -63,8 +63,8 @@ public class Main {
             "Отпуск", "Отдохнуть", Status.IN_PROGRESS, LocalDateTime.of(2024, 8, 3, 10, 30), Duration.ofDays(9), 3);
         manager.addNewSubTask(secondSubTask);
 
-//        Task firdTask = new Task("Сходить на бокс2", "Не получить по голове2", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 30), Duration.ofMinutes(20));
-//        manager.addNewTask(firdTask);
+        Task firdTask = new Task("Сходить на бокс2", "Не получить по голове2", Status.NEW, LocalDateTime.of(2024, 9, 1, 17, 30), Duration.ofMinutes(20));
+        manager.addNewTask(firdTask);
 
 
         System.out.println("1 - Получение списков всех задач");
@@ -96,7 +96,7 @@ public class Main {
         for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
-        */
+
         /*
 
         // спринт 7
