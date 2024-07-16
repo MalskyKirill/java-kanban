@@ -1,9 +1,10 @@
 package kanban.server;
 
 import com.google.gson.Gson;
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import kanban.service.InMemoryTaskManager;
+import kanban.server.handlers.EpicHttpHandler;
+import kanban.server.handlers.SubTaskHttpHandler;
+import kanban.server.handlers.TaskHttpHandler;
 import kanban.service.Managers;
 import kanban.service.TaskManager;
 
@@ -22,7 +23,9 @@ public class HttpTaskServer { // создали класс сервера
         this.taskManager = Managers.getDefault();
         this.gson = Managers.getGson();
         httpServer = HttpServer.create(new InetSocketAddress("localhost",8080), 0);
-        httpServer.createContext("/tasks", new TaskHttpHandler(new InMemoryTaskManager(), gson));
+        httpServer.createContext("/tasks", new TaskHttpHandler(taskManager, gson));
+        httpServer.createContext("/epics", new EpicHttpHandler(taskManager, gson));
+        httpServer.createContext("/subtasks", new SubTaskHttpHandler(taskManager, gson));
     }
 
     public static void main(String[] args) throws IOException {

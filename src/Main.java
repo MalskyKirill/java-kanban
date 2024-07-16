@@ -1,18 +1,13 @@
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpServer;
 import kanban.model.Epic;
 import kanban.model.Status;
 import kanban.model.SubTask;
 import kanban.model.Task;
-import kanban.server.TaskHttpHandler;
 import kanban.service.FileBackedTaskManager;
-import kanban.service.InMemoryTaskManager;
 import kanban.service.Managers;
 import kanban.service.TaskManager;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -47,12 +42,13 @@ public class Main {
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW, LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
         manager.addNewTask(firstTask);
-        Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 0), Duration.ofMinutes(60));
+        Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(60));
         manager.addNewTask(secondTask);
 
 
         Epic firstEpic = new Epic("Поехать в отпуск",
             "Поехать в отпуск с семьей");
+
         manager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(

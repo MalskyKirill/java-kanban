@@ -25,7 +25,9 @@ public class InMemoryTaskManager implements TaskManager {
         task.setId(taskId); // обогатили задачку id
         tasksList.put(taskId, task); // кидаем задачку в мапу
         taskId++; // увеличиваем айдишник
-        prioritizedTask.add(task);
+        if (task.getStartTime() != null) {
+            prioritizedTask.add(task);
+        }
         return task;
     }
 
@@ -56,7 +58,9 @@ public class InMemoryTaskManager implements TaskManager {
 
         }
 
-        prioritizedTask.add(subTask);
+        if (subTask.getStartTime() != null) {
+            prioritizedTask.add(subTask);
+        }
         return subTask; // вернули обьект подзадачи
     }
 
@@ -432,20 +436,22 @@ public class InMemoryTaskManager implements TaskManager {
         LocalDateTime startTimeNewTask = task.getStartTime(); // взяли время начала новой задачки
         LocalDateTime endTimeNewTask = task.getEndTime(); //и время ее окончания
 
-        for (Task t : tasks) { // для каждой задачки в списке
-            if (t.getId() != task.getId()) { // проверяем что такой задачки в списке еще нет, что бы избежать пересечений при апдейте
-                LocalDateTime taskStart = t.getStartTime(); // получаем время начала задачки
-                LocalDateTime taskEnd = t.getEndTime(); // получаем время окончания задачки
+        if (startTimeNewTask != null) { // проверели что у задачки есть начало
+            for (Task t : tasks) { // для каждой задачки в списке
+                if (t.getId() != task.getId()) { // проверяем что такой задачки в списке еще нет, что бы избежать пересечений при апдейте
+                    LocalDateTime taskStart = t.getStartTime(); // получаем время начала задачки
+                    LocalDateTime taskEnd = t.getEndTime(); // получаем время окончания задачки
 
-                //делаем проверку
-                if ((taskStart.isAfter(startTimeNewTask)  // ежели время начала задачи из списка ПОЗЖЕ времени начала новой задачи
-                    && taskStart.isBefore(endTimeNewTask)) // И время начала задачи из списка РАНЬШЕ времени окончания новой задачи
-                    || (taskEnd.isAfter(startTimeNewTask) // ИЛИ время окончания задачи из списка ПОЗЖЕ времени начала новой задачи
-                    && taskEnd.isBefore(endTimeNewTask)) // И время окончания задачи из списка РАНЬШЕ времени окончания новой задачи
-                    || (startTimeNewTask.isAfter(taskStart) // ИЛИ время начала новой задачи ПОЗЖЕ времени начала задачи из списка
-                    && endTimeNewTask.isBefore(taskEnd)) // и время окончания новой задачи РАНЬШЕ времени окончания задачи из списка
-                || (startTimeNewTask.equals(taskStart) && taskEnd.equals(endTimeNewTask))) { // ИЛИ если время начала новой задачи и время окончания новой задачи совпадают с задачей из списка
-                    throw new TaskIntersectionTimeException("Произошло пересечение задач по времени"); // кидаем исключение
+                    //делаем проверку
+                    if ((taskStart.isAfter(startTimeNewTask)  // ежели время начала задачи из списка ПОЗЖЕ времени начала новой задачи
+                        && taskStart.isBefore(endTimeNewTask)) // И время начала задачи из списка РАНЬШЕ времени окончания новой задачи
+                        || (taskEnd.isAfter(startTimeNewTask) // ИЛИ время окончания задачи из списка ПОЗЖЕ времени начала новой задачи
+                        && taskEnd.isBefore(endTimeNewTask)) // И время окончания задачи из списка РАНЬШЕ времени окончания новой задачи
+                        || (startTimeNewTask.isAfter(taskStart) // ИЛИ время начала новой задачи ПОЗЖЕ времени начала задачи из списка
+                        && endTimeNewTask.isBefore(taskEnd)) // и время окончания новой задачи РАНЬШЕ времени окончания задачи из списка
+                        || (startTimeNewTask.equals(taskStart) && taskEnd.equals(endTimeNewTask))) { // ИЛИ если время начала новой задачи и время окончания новой задачи совпадают с задачей из списка
+                        throw new TaskIntersectionTimeException("Произошло пересечение задач по времени"); // кидаем исключение
+                    }
                 }
             }
         }

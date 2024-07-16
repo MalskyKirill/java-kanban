@@ -1,30 +1,23 @@
-package kanban.server;
+package kanban.server.handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import kanban.model.Task;
+import kanban.server.ErrorResponse;
+import kanban.server.HttpMethods;
 import kanban.service.InMemoryTaskManager;
+import kanban.service.TaskManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class TaskHttpHandler implements HttpHandler {
-    private final InMemoryTaskManager taskManager; // обьявляем taskManager
-    private final Gson gson; // обьявили gson
-
-    public TaskHttpHandler(InMemoryTaskManager taskManager, Gson gson) { // конструктор
-        this.taskManager = taskManager;
-        this.gson = gson;
+public class TaskHttpHandler extends ParrentHttpHandler {
+    public TaskHttpHandler(TaskManager taskManager, Gson gson) {
+        super(taskManager, gson); // конструктор
     }
-
-    String json = "{\n" +
-        "  \"name\": \"This is my app name\",\n" +
-        "  \"description\": \"This is my app name\",\n" +
-        "  \"status\": \"NEW\"\n" +
-        "}";
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -35,7 +28,6 @@ public class TaskHttpHandler implements HttpHandler {
                 if (Pattern.matches("/tasks/\\d+$", path)) { // с помощью регулярки проверяем есть ли в пути после в URL-пути цифры
                     int id = Integer.parseInt(path.split("/")[2]); // достаем айдишник из пути
                     Task task = taskManager.getTaskById(id); // получаем задачу
-                    System.out.println(task);
                     writeResponse(task, exchange, 200); // формируем ответ
                 } else {
                     List<Task> tasks = taskManager.getAllTasks(); // получаем все задачки
@@ -53,7 +45,6 @@ public class TaskHttpHandler implements HttpHandler {
                     ErrorResponse errRes = new ErrorResponse("Произошло пересечение задач по времени"); // создаем ошибку ответа
                     writeResponse(errRes, exchange, 406); // отправляем
                 }
-
             }
             case DELETE -> {
                 if (Pattern.matches("/tasks/\\d+$", path)) { // проверяем что в URL есть айди
@@ -71,16 +62,6 @@ public class TaskHttpHandler implements HttpHandler {
                 writeResponse(errRes, exchange, 404); // возвращаем со статус кодом 404
             }
         }
-    }
-
-    private void writeResponse(Object body, HttpExchange exchange, int code) throws IOException {
-        String resJson = gson.toJson(body); // преобразовываем createdTask в формат json в строку
-        byte[] resBytes = resJson.getBytes(StandardCharsets.UTF_8); // преобразуем строку в массив байт в формате ютф-8
-
-        exchange.getResponseHeaders().add("Content-Type", "application/json"); // начинаем наполнять обьект exchange заголовками
-        exchange.sendResponseHeaders(code, resBytes.length); // добавляем код ответа
-        exchange.getResponseBody().write(resBytes); // заполняем тело ответа
-        exchange.close(); // закрываем exchange
     }
 }
 
