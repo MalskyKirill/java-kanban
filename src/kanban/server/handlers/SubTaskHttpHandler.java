@@ -17,6 +17,7 @@ public class SubTaskHttpHandler extends BaseHttpHandler {
     public SubTaskHttpHandler(TaskManager taskManager, Gson gson) {
         super(taskManager, gson); // конструктор
     }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String httpMethod = exchange.getRequestMethod();// достаем метод

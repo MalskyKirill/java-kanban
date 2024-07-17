@@ -17,10 +17,10 @@ public class HttpTaskServer { // создали класс сервера
     private TaskManager taskManager; // переменная для менеджера задач
 
 
-    public HttpTaskServer() throws IOException { // конструктор с параметрами для менеджера
+    public HttpTaskServer(TaskManager taskManager, Gson gson) throws IOException { // конструктор с параметрами для менеджера
         this.taskManager = Managers.getDefault();
-        this.gson = Managers.getGson();
-        httpServer = HttpServer.create(new InetSocketAddress("localhost",8080), 0);
+        this.gson = gson;
+        httpServer = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
         httpServer.createContext("/tasks", new TaskHttpHandler(taskManager, gson));
         httpServer.createContext("/epics", new EpicHttpHandler(taskManager, gson));
         httpServer.createContext("/subtasks", new SubTaskHttpHandler(taskManager, gson));
@@ -29,7 +29,9 @@ public class HttpTaskServer { // создали класс сервера
     }
 
     public static void main(String[] args) throws IOException {
-        HttpTaskServer server = new HttpTaskServer();
+        TaskManager taskManager = Managers.getDefault();
+        Gson gson = Managers.getGson();
+        HttpTaskServer server = new HttpTaskServer(taskManager, gson);
         server.start();
     }
 

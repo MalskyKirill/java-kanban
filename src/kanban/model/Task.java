@@ -127,7 +127,7 @@ public class Task {
 
     public String toStringTask() {
         return getId() + "," + getType() + "," + getName() + ","
-            + getStatus() + "," + getDescription() + "," + getStartTime()+ "," + getDuration() + "\n";
+            + getStatus() + "," + getDescription() + "," + getStartTime() + "," + getDuration() + "\n";
     }
 
     @Override
