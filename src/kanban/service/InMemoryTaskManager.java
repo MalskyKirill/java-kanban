@@ -1,5 +1,6 @@
 package kanban.service;
 
+import kanban.exceptions.NotFoundTaskException;
 import kanban.exceptions.TaskIntersectionTimeException;
 import kanban.model.*;
 
@@ -212,15 +213,15 @@ public class InMemoryTaskManager implements TaskManager {
             return; // вылетаем
         }
 
-        checkerIntersectionTimeTask(task); // проверка на пересечении по времени
-
         int taskId = task.getId(); // берем айдишник новой задачки
         if (tasksList.containsKey(taskId)) { // если он есть как ключ в списке задач
+            checkerIntersectionTimeTask(task); // проверка на пересечении по времени
             prioritizedTask.removeIf(t -> t.getId() == taskId); // если задачка с taskId есть в приорити лист удаляем
             tasksList.put(taskId, task); // обновляем задачку
             prioritizedTask.add(task); // добавляем в приорити лист новую задачку
         } else { // ежели нет
             System.out.println("такой задачки нет");
+            throw new NotFoundTaskException("такой задачки нет");
         }
     }
 

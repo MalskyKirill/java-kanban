@@ -2,6 +2,7 @@ package kanban.server.handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
+import kanban.exceptions.NotFoundTaskException;
 import kanban.model.Epic;
 import kanban.model.SubTask;
 import kanban.server.ErrorResponse;
@@ -49,9 +50,19 @@ public class EpicHttpHandler extends BaseHttpHandler {
             case POST -> {
                 String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8); // вытаскиваем тело запроса в формате массива байтов
                 Epic epic = gson.fromJson(requestBody, Epic.class); // с помощью библиотеки gson десюарилизуем данные в обьект класса Epic
-
-                Epic newEpic = taskManager.createEpic(epic); // с помощью taskManager создаем обьект класса Epic
-                taskManager.addNewEpic(newEpic); // добавили эпик в таск манагер
+                try {
+                    if (epic.getId() != 0) {
+                        taskManager.updateEpic(epic);
+                        writeResponse(epic, exchange, 201); // если все ок, вернули ответ
+                    } else {
+                        Epic newEpic = taskManager.createEpic(epic); // с помощью taskManager создаем обьект класса Epic
+                        taskManager.addNewEpic(newEpic); // добавили эпик в таск манагер
+                        writeResponse(newEpic, exchange, 201);
+                    }
+                } catch (NotFoundTaskException ex) {
+                    ErrorResponse errRes = new ErrorResponse(ex.getMessage()); // создаем ошибку ответа
+                    writeResponse(errRes, exchange, 404); // отправляем
+                }
             }
             case DELETE -> {
                 if (Pattern.matches("/epics/\\d+$", path)) { // проверяем что в URL есть айди

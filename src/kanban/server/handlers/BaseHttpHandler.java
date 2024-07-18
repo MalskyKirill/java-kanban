@@ -20,7 +20,6 @@ public class BaseHttpHandler implements HttpHandler {
     protected void writeResponse(Object body, HttpExchange exchange, int code) throws IOException {
         String resJson = gson.toJson(body); // преобразовываем createdTask в формат json в строку
         byte[] resBytes = resJson.getBytes(StandardCharsets.UTF_8); // преобразуем строку в массив байт в формате ютф-8
-
         exchange.getResponseHeaders().add("Content-Type", "application/json"); // начинаем наполнять обьект exchange заголовками
         exchange.sendResponseHeaders(code, resBytes.length); // добавляем код ответа
         exchange.getResponseBody().write(resBytes); // заполняем тело ответа

@@ -2,6 +2,8 @@ package kanban.server.handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
+import kanban.exceptions.NotFoundTaskException;
+import kanban.exceptions.TaskIntersectionTimeException;
 import kanban.model.SubTask;
 import kanban.server.ErrorResponse;
 import kanban.server.HttpMethods;
@@ -42,12 +44,20 @@ public class SubTaskHttpHandler extends BaseHttpHandler {
                 String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8); // вытаскиваем тело запроса в формате массива байтов
                 SubTask subTask = gson.fromJson(requestBody, SubTask.class); // с помощью библиотеки gson десюарилизуем данные в обьект класса SubTask
                 try { // обернули в трай кетч
-                    SubTask newSubTask = taskManager.createSubTask(subTask); // с помощью taskManager создаем обьект класса SubTask
-                    taskManager.addNewSubTask(newSubTask); // добавили subtask в таск манагер
-                    writeResponse(newSubTask, exchange, 201); // если все ок, вернули ответ
-                } catch (Exception ex) { // если поймали исключение
+                    if (subTask.getId() != 0) {
+                        taskManager.updateSubTask(subTask);
+                        writeResponse(subTask, exchange, 201);
+                    } else {
+                        SubTask newSubTask = taskManager.createSubTask(subTask); // с помощью taskManager создаем обьект класса SubTask
+                        taskManager.addNewSubTask(newSubTask); // добавили subtask в таск манагер
+                        writeResponse(newSubTask, exchange, 201); // если все ок, вернули ответ
+                    }
+                } catch (TaskIntersectionTimeException ex) { // если поймали исключение
                     ErrorResponse errRes = new ErrorResponse("Произошло пересечение задач по времени"); // создаем ошибку ответа
                     writeResponse(errRes, exchange, 406); // отправляем
+                } catch (NotFoundTaskException ex) {
+                    ErrorResponse errRes = new ErrorResponse(ex.getMessage()); // создаем ошибку ответа
+                    writeResponse(errRes, exchange, 404); // отправляем
                 }
             }
             case DELETE -> {

@@ -2,6 +2,8 @@ package kanban.server.handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
+import kanban.exceptions.NotFoundTaskException;
+import kanban.exceptions.TaskIntersectionTimeException;
 import kanban.model.Task;
 import kanban.server.ErrorResponse;
 import kanban.server.HttpMethods;
@@ -20,6 +22,7 @@ public class TaskHttpHandler extends BaseHttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String httpMethod = exchange.getRequestMethod();// достаем метод
+        System.out.println();
         String path = exchange.getRequestURI().getPath(); // достаем путь
         switch (HttpMethods.valueOf(httpMethod)) {
             case GET -> {
@@ -40,12 +43,20 @@ public class TaskHttpHandler extends BaseHttpHandler {
                 String requestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8); // вытаскиваем тело запроса в формате массива байтов
                 Task task = gson.fromJson(requestBody, Task.class); // с помощью библиотеки gson десюарилизуем данные в обьект класса Task
                 try { // обернули в трай кетч
-                    Task newTask = taskManager.createTask(task); // с помощью taskManager создаем обьект класса Task
-                    taskManager.addNewTask(newTask); // добавили задачку в таск манагер
-                    writeResponse(newTask, exchange, 201); // если все ок, вернули ответ
-                } catch (Exception ex) { // если поймали исключение
+                    if (task.getId() != 0) { // проверяем что айдишник задачи не равен нулю
+                        taskManager.updateTask(task); // с помощью taskManager обновляем задачу
+                        writeResponse(task, exchange, 201); // если все ок, вернули ответ
+                    } else {
+                        Task newTask = taskManager.createTask(task); // с помощью taskManager создаем обьект класса Task
+                        taskManager.addNewTask(newTask); // добавили задачку в таск манагер
+                        writeResponse(newTask, exchange, 201); // если все ок, вернули ответ
+                    }
+                } catch (TaskIntersectionTimeException ex) { // если поймали исключение
                     ErrorResponse errRes = new ErrorResponse("Произошло пересечение задач по времени"); // создаем ошибку ответа
                     writeResponse(errRes, exchange, 406); // отправляем
+                } catch (NotFoundTaskException ex) {
+                    ErrorResponse errRes = new ErrorResponse(ex.getMessage()); // создаем ошибку ответа
+                    writeResponse(errRes, exchange, 404); // отправляем
                 }
             }
             case DELETE -> {
