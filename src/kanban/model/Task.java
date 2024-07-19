@@ -108,7 +108,7 @@ public class Task {
         if (startTime != null) {
             return startTime;
         } else {
-            return LocalDateTime.of(1, 1, 1, 1, 1);
+            return null;
         }
     }
 
@@ -127,7 +127,7 @@ public class Task {
 
     public String toStringTask() {
         return getId() + "," + getType() + "," + getName() + ","
-            + getStatus() + "," + getDescription() + "," + getStartTime().format(FORMATTER) + "," + getDuration() + "\n";
+            + getStatus() + "," + getDescription() + "," + getStartTime() + "," + getDuration() + "\n";
     }
 
     @Override
@@ -151,7 +151,7 @@ public class Task {
             ", id=" + id +
             ", status=" + status +
             ", duration=" + duration +
-            ", startTime=" + startTime.format(FORMATTER) +
+            ", startTime=" + getStartTime() +
             '}';
     }
 }

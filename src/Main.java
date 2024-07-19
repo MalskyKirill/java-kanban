@@ -1,3 +1,4 @@
+import com.google.gson.Gson;
 import kanban.model.Epic;
 import kanban.model.Status;
 import kanban.model.SubTask;
@@ -14,20 +15,40 @@ public class Main {
 
     static TaskManager manager;
     static FileBackedTaskManager backedManager;
+    private static final Gson gson = Managers.getGson();
 
 
     public static void main(String[] args) throws IOException {
 
+//        HttpServer httpServer = HttpServer.create();
+//        httpServer.bind(new InetSocketAddress("localhost",8080), 0);
+//        httpServer.createContext("/tasks", new TaskHttpHandler(new InMemoryTaskManager(), gson));
+//        httpServer.start();
+//        System.out.println("сервер запущен");
+
+
+
+//        Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW, LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
+//        System.out.println(firstTask);
+//        String json = gson.toJson(firstTask);
+//        System.out.println(json);
+//        Task tas = gson.fromJson(json, Task.class);
+//        System.out.println(tas);
+
+
+
+        // 8 спринт
         manager = Managers.getDefault();
 
         Task firstTask = new Task("Отвести дочку в школу", "Не забыть портфель и сменку", Status.NEW, LocalDateTime.of(2024, 9, 1, 9, 0), Duration.ofMinutes(30));
         manager.addNewTask(firstTask);
-        Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 0), Duration.ofMinutes(60));
+        Task secondTask = new Task("Сходить на бокс", "Не получить по голове", Status.NEW, LocalDateTime.of(2024, 9, 1, 10, 0), Duration.ofMinutes(60));
         manager.addNewTask(secondTask);
 
 
         Epic firstEpic = new Epic("Поехать в отпуск",
             "Поехать в отпуск с семьей");
+
         manager.addNewEpic(firstEpic);
 
         SubTask firstSubTask = new SubTask(
@@ -38,8 +59,8 @@ public class Main {
             "Отпуск", "Отдохнуть", Status.IN_PROGRESS, LocalDateTime.of(2024, 8, 3, 10, 30), Duration.ofDays(9), 3);
         manager.addNewSubTask(secondSubTask);
 
-//        Task firdTask = new Task("Сходить на бокс2", "Не получить по голове2", Status.NEW, LocalDateTime.of(2024, 9, 1, 18, 30), Duration.ofMinutes(20));
-//        manager.addNewTask(firdTask);
+        Task firdTask = new Task("Сходить на бокс2", "Не получить по голове2", Status.NEW, LocalDateTime.of(2024, 9, 1, 17, 30), Duration.ofMinutes(20));
+        manager.addNewTask(firdTask);
 
 
         System.out.println("1 - Получение списков всех задач");
@@ -71,7 +92,8 @@ public class Main {
         for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
-/*
+
+        /*
 
         // спринт 7
         Path path = Paths.get("vendor" + File.separator + "data.scv");
@@ -105,7 +127,7 @@ public class Main {
 
         System.out.println(backedManager2.getEpicById(2));
 
-*/
+        */
         /*
         //спринт 6
         manager = Managers.getDefault();

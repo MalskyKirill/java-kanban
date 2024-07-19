@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private File file; // переменная для хранения файла
-    private static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm"); // форматтер для времени
+    private static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); // форматтер для времени
 
     public FileBackedTaskManager(File file) { // конструктор менеджера который принимает файл
         this.file = file; // присваеваем переменной файл пришедшее значение
@@ -174,7 +174,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Status status = Status.valueOf(taskFields[3]); // сохраняем статус
         String description = taskFields[4]; // сохраняем описание
         int epicId = 0; // заводим переменную для присвоения подзадачки epicId
-        LocalDateTime startTask = LocalDateTime.parse(taskFields[5], FORMATTER); // сохраняем время начала и парсим в соответствии с форматтером
+        LocalDateTime startTask = LocalDateTime.parse(taskFields[5]); // сохраняем время начала и парсим в соответствии с форматтером
         Duration duration = Duration.parse(taskFields[6]);
 
         if (taskFields.length == 8) { // если в массиве 8 элементов

@@ -70,7 +70,6 @@ class FileBackedTaskManagerTest {
     @Test
     void loadEmptyFile() {
         FileBackedTaskManager newBK = FileBackedTaskManager.loadFromFile(tmpFile);
-
         assertEquals(0, newBK.getAllTasks().size());
     }
 }

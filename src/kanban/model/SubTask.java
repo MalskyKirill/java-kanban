@@ -42,7 +42,7 @@ public class SubTask extends Task {
     @Override
     public String toStringTask() {
         return getId() + "," + getType() + "," + getName() + ","
-            + getStatus() + "," + getDescription() + "," + getStartTime().format(FORMATTER) + "," + getDuration() + "," + getEpicId() + "\n";
+            + getStatus() + "," + getDescription() + "," + getStartTime() + "," + getDuration() + "," + getEpicId() + "\n";
     }
 
     @Override

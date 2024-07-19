@@ -1,5 +1,6 @@
 package kanban.service;
 
+import kanban.exceptions.NotFoundTaskException;
 import kanban.exceptions.TaskIntersectionTimeException;
 import kanban.model.*;
 
@@ -25,7 +26,9 @@ public class InMemoryTaskManager implements TaskManager {
         task.setId(taskId); // обогатили задачку id
         tasksList.put(taskId, task); // кидаем задачку в мапу
         taskId++; // увеличиваем айдишник
-        prioritizedTask.add(task);
+        if (task.getStartTime() != null) {
+            prioritizedTask.add(task);
+        }
         return task;
     }
 
@@ -56,7 +59,9 @@ public class InMemoryTaskManager implements TaskManager {
 
         }
 
-        prioritizedTask.add(subTask);
+        if (subTask.getStartTime() != null) {
+            prioritizedTask.add(subTask);
+        }
         return subTask; // вернули обьект подзадачи
     }
 
@@ -174,23 +179,32 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int taskId) { // получаем задачку по айди
-        Task task = tasksList.get(taskId);
-        inMemoryHistoryManager.addTask(task);
-        return task; // достаем и возвращаем обьект
+        if (tasksList.containsKey(taskId)) {
+            Task task = tasksList.get(taskId);
+            inMemoryHistoryManager.addTask(task);
+            return task; // достаем и возвращаем обьект
+        }
+        return null;
     }
 
     @Override
     public Epic getEpicById(int epicId) { // получаем эпик по айди
-        Epic epic = epicList.get(epicId);
-        inMemoryHistoryManager.addTask(epic);
-        return epic;
+        if (epicList.containsKey(epicId)) {
+            Epic epic = epicList.get(epicId);
+            inMemoryHistoryManager.addTask(epic);
+            return epic;
+        }
+        return null;
     }
 
     @Override
     public SubTask getSubTaskById(int subTaskId) { // получаем подзадачку по айди
-        SubTask subTask = subTaskList.get(subTaskId);
-        inMemoryHistoryManager.addTask(subTask);
-        return subTask;
+        if (subTaskList.containsKey(subTaskId)) {
+            SubTask subTask = subTaskList.get(subTaskId);
+            inMemoryHistoryManager.addTask(subTask);
+            return subTask;
+        }
+        return null;
     }
 
     @Override
@@ -199,15 +213,15 @@ public class InMemoryTaskManager implements TaskManager {
             return; // вылетаем
         }
 
-        checkerIntersectionTimeTask(task); // проверка на пересечении по времени
-
         int taskId = task.getId(); // берем айдишник новой задачки
         if (tasksList.containsKey(taskId)) { // если он есть как ключ в списке задач
+            checkerIntersectionTimeTask(task); // проверка на пересечении по времени
             prioritizedTask.removeIf(t -> t.getId() == taskId); // если задачка с taskId есть в приорити лист удаляем
             tasksList.put(taskId, task); // обновляем задачку
             prioritizedTask.add(task); // добавляем в приорити лист новую задачку
         } else { // ежели нет
             System.out.println("такой задачки нет");
+            throw new NotFoundTaskException("такой задачки нет");
         }
     }
 
@@ -432,19 +446,22 @@ public class InMemoryTaskManager implements TaskManager {
         LocalDateTime startTimeNewTask = task.getStartTime(); // взяли время начала новой задачки
         LocalDateTime endTimeNewTask = task.getEndTime(); //и время ее окончания
 
-        for (Task t : tasks) { // для каждой задачки в списке
-            if (t.getId() != task.getId()) { // проверяем что такой задачки в списке еще нет, что бы избежать пересечений при апдейте
-                LocalDateTime taskStart = t.getStartTime(); // получаем время начала задачки
-                LocalDateTime taskEnd = t.getEndTime(); // получаем время окончания задачки
+        if (startTimeNewTask != null) { // проверели что у задачки есть начало
+            for (Task t : tasks) { // для каждой задачки в списке
+                if (t.getId() != task.getId()) { // проверяем что такой задачки в списке еще нет, что бы избежать пересечений при апдейте
+                    LocalDateTime taskStart = t.getStartTime(); // получаем время начала задачки
+                    LocalDateTime taskEnd = t.getEndTime(); // получаем время окончания задачки
 
-                //делаем проверку
-                if ((taskStart.isAfter(startTimeNewTask)  // ежели время начала задачи из списка ПОЗЖЕ времени начала новой задачи
-                    && taskStart.isBefore(endTimeNewTask)) // И время начала задачи из списка РАНЬШЕ времени окончания новой задачи
-                    || (taskEnd.isAfter(startTimeNewTask) // ИЛИ время окончания задачи из списка ПОЗЖЕ времени начала новой задачи
-                    && taskEnd.isBefore(endTimeNewTask)) // И время окончания задачи из списка РАНЬШЕ времени окончания новой задачи
-                    || (startTimeNewTask.isAfter(taskStart) // ИЛИ время начала новой задачи ПОЗЖЕ времени начала задачи из списка
-                    && endTimeNewTask.isBefore(taskEnd))) { // и время окончания новой задачи РАНЬШЕ времени окончания задачи из списка
-                    throw new TaskIntersectionTimeException("Произошло пересечение задач по времени"); // кидаем исключение
+                    //делаем проверку
+                    if ((taskStart.isAfter(startTimeNewTask)  // ежели время начала задачи из списка ПОЗЖЕ времени начала новой задачи
+                        && taskStart.isBefore(endTimeNewTask)) // И время начала задачи из списка РАНЬШЕ времени окончания новой задачи
+                        || (taskEnd.isAfter(startTimeNewTask) // ИЛИ время окончания задачи из списка ПОЗЖЕ времени начала новой задачи
+                        && taskEnd.isBefore(endTimeNewTask)) // И время окончания задачи из списка РАНЬШЕ времени окончания новой задачи
+                        || (startTimeNewTask.isAfter(taskStart) // ИЛИ время начала новой задачи ПОЗЖЕ времени начала задачи из списка
+                        && endTimeNewTask.isBefore(taskEnd)) // и время окончания новой задачи РАНЬШЕ времени окончания задачи из списка
+                        || (startTimeNewTask.equals(taskStart) && taskEnd.equals(endTimeNewTask))) { // ИЛИ если время начала новой задачи и время окончания новой задачи совпадают с задачей из списка
+                        throw new TaskIntersectionTimeException("Произошло пересечение задач по времени"); // кидаем исключение
+                    }
                 }
             }
         }
